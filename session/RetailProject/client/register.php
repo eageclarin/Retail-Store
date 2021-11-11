@@ -11,6 +11,7 @@
     <form action="register.php" method="post"> 
         Username: <input type="text" name="username" required></br>
         Password: <input type="password" name="password" required></br>
+        Something: 
         <input type="submit" value="Log In" name="login">
     </form>     
   
