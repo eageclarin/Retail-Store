@@ -18,9 +18,9 @@
             $Cu_Username = $_POST['username'];
             $Cu_Password = $_POST['password'];
 
-
+            $Cu_Password = md5($Cu_Password);
             #Username and Password checking
-            $sql = "SELECT * FROM customer;";
+            $sql = "SELECT * FROM customer;"; #fix query, no need for while loop
             $result = mysqli_query($conn,$sql);
             $resultCheck = mysqli_num_rows($result);
             $exists = false;
@@ -32,7 +32,7 @@
                         echo "[go to main.php]??";
                         $exists = true;
                         $_SESSION['CustomerID'] = $row['cust_ID'];      #$_SESSION values are accessible in other pages
-                        $_SESSION['CustomerFname'] = $row['cust_Fname'];
+                        $_SESSION['CustomerFName'] = $row['cust_FName'];
                         header("Location: main.php");                   #Return to main.php
                         exit;
                     }
@@ -41,7 +41,7 @@
             
             if ($exists == false) {         #If customer is unregistered
                 echo "Wrong username or password";
-                echo "Don't have an account yet? Register here";
+                echo "Don't have an account yet? <a href='client/register.php'>Register here</a>" ;
                 exit;
             }
 
