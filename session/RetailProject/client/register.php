@@ -69,9 +69,13 @@
         -->
         <div class="mb-3 mt-3">
             <input type="submit" value="Submit" name="register" class="form-control" style="width:150px">
+            
         </div>
     </div>
-    </form>    
+    </form>  
+    <form action="register.php" method="post" class="form-inline">   
+    <input type="submit" value="Cancel" name="back" class="form-control" style="width:150px">
+    </form>
 </div>
 
 
@@ -89,24 +93,46 @@
 
 
             #check if username or email exists
+            $check_query = "SELECT * FROM customer where cust_Username = '$username' OR cust_Email = '$email' LIMIT 1;";
+            $result = mysqli_query($conn, $check_query);
+            $resultCheck = mysqli_num_rows($result);
 
+            if ($resultCheck==0){
+                $password = md5($password1);
 
+                $insert = "INSERT INTO customer (cust_Username, cust_Password, cust_FName, cust_LName, cust_Email, cust_ABrgy, cust_ACity, cust_AProvince, cust_APostal)
+                VALUES ('$username', '$password', '$firstName', '$lastName', '$email', '$brgy', '$city', '$province', '$postal');";
+                mysqli_query($conn, $insert);
+                $_SESSION['CustomerFName']=$username;
+                echo $_SESSION['CustomerFName'];
+                header('location: ../main.php');
+            } else {
+                while ($row = mysqli_fetch_assoc($result)) {
+                    if ($row['cust_Username']==$username && $row['cust_Email']==$email) {
+                        echo "username and email already exist";
+                        break;
+                    } elseif ($row['cust_Username']==$username) {
+                        echo "username already exist";
+                        break;
+                    } elseif ($row['cust_Email']==$email) {
+                        echo "email already exist";
+                        break;
+                    }
+                }
+            }
 
-
-            $password = md5($password1);
-
-            $insert = "INSERT INTO customer (cust_Username, cust_Password, cust_FName, cust_LName, cust_Email, cust_ABrgy, cust_ACity, cust_AProvince, cust_APostal)
-            VALUES ('$username', '$password', '$firstName', '$lastName', '$email', '$brgy', '$city', '$province', '$postal');";
-            mysqli_query($conn, $insert);
-            $_SESSION['CustomerFName']=$username;
-            echo $_SESSION['CustomerFName'];
-            header('location: ../main.php');
-             
             
         }
+
+        if (isset($_POST['back'])) {
+            header('location: ../main.php');
+        }
+
         mysqli_close($conn);
+
+
+
     ?>
 
-    <!--cancel button/ back to homepage-->
 </body>
 </html>
