@@ -93,6 +93,8 @@
                 $insert = "INSERT INTO customer (cust_Username, cust_Password, cust_FName, cust_LName, cust_Email, cust_ABrgy, cust_ACity, cust_AProvince, cust_APostal)
                 VALUES ('$username', '$password', '$firstName', '$lastName', '$email', '$brgy', '$city', '$province', '$postal');";
                 mysqli_query($conn, $insert);
+                $id = mysqli_insert_id($conn);
+                $_SESSION['CustomerID'] = $id;
                 $_SESSION['CustomerFName']=$username;
                 echo $_SESSION['CustomerFName'];
                 header('location: ../main.php');

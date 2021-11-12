@@ -9,8 +9,9 @@
 
     
     <?php 
-    if (!empty($_SESSION['CustomerFName'])) { //Checks if customer is logged in
+    if (!empty($_SESSION['CustomerID'])) { //Checks if customer is logged in
         echo $_SESSION['CustomerFName'];
+        echo $_SESSION['CustomerID'];
         echo " <form action='main.php' method='post' class='form-inline'>   
         <input type='submit' value='Logout' name='logout' class='form-control' style='width:150px'>
         </form>";
