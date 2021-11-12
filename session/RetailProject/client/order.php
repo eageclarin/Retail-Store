@@ -28,35 +28,55 @@
             $order_result = mysqli_query($conn,$customer_order);
             $order_Check = mysqli_num_rows($order_result);
 
+            echo "<div class='container-sm p-5 my-3' style='max-width:50%;'>";
+            echo "<h2 class='mb-3'> Receipt </h2>";
             if ($order_Check>0) {                                               #username and password in admin table
                 while($order_row = mysqli_fetch_assoc($order_result)) {
-                    echo "customer ID: " .$order_row['customer_ID']. "</br>";
-                    echo "cart ID: " .$order_row['cart_ID']. "</br>";   
-                    echo "status: " .$order_row['status']. "</br>";                #redirect to adminHome.php
+                    echo "Name: " .$order_row['cust_FName'] .$order_row['cust_LName'];
+                    echo '<div class="float-right"> Cart ID: ' .$order_row['cart_ID']. "</div>";   
+                    echo "Address: " .$order_row['cust_ABrgy'].", " .$order_row['cust_ACity'].", " .$order_row['cust_AProvince'];
+                    echo "<div class='float-right'> Date: " .$order_row['order_Date']. "</div>";
                 }                    
             }
-
+    
+            echo '<div class="container-sm p-5 my-3 bg-dark text-white" >';
             #queries for items
             $item_query = "SELECT * FROM item INNER JOIN ca_contains_i ON (item.item_ID=ca_contains_i.item_ID) INNER JOIN cart ON(ca_contains_i.cart_ID=cart.cart_ID) WHERE cart.cart_ID = '$cartID';";
             $item_result = mysqli_query($conn, $item_query);
             $item_check = mysqli_num_rows($item_result);
-            if ($item_check>0) {                                               #username and password in admin table
+            if ($item_check>0) {  
+                echo "<table class='table' style='color:white;'>";
+                echo " <tr>
+                <th class='mb-1 mt-1'> Item </th>
+                <th class='mb-1 mt-1'> Unit Price </th>
+                <th class='mb-1 mt-1'> Qty </th>
+                <th class='mb-1 mt-1'> Total </th>
+                </tr>" ;
+        
                 while($item_row = mysqli_fetch_assoc($item_result)) {
-                    echo "Item: " .$item_row['item_Name']. "</br>";
-                }      
+                    echo "<tr>";
+                    echo "<td>" .$item_row['item_Name']. "</td>";
+                    echo "<td>" .$item_row['item_RetailPrice']. "</td>";
+                    echo "<td>" .$item_row['quantity']. "</td>";
+                    echo "<td>" .$item_row['total_Price']. "</td>"; #Note: I changed this attribute name in ca_contains_i
+                    echo "</tr>";
+                    
+                }   
+                echo "</table>";
                               
             }
-
+            echo "</div>";
 
         }
+       # echo "</div>";
         mysqli_close($conn);
     ?>
 
-<form action="../main.php" method="post" class="form-inline">   
+    <form action="../main.php" method="post" class="form-inline">   
                 <div class="mb-2 mt-2">
                     <input type="submit" value="Home" name="return" class="form-control" style="width:150px;">
                 </div>
             </form>
-
+    </div>   
     </body>
 </html>
