@@ -13,74 +13,76 @@
 
 
 <body>
-    
-<div class="container">
-    <h3> Log In </h3>
-    <form action="login.php" method="post"> 
-        Username: <input type="text" name="username" required></br>
-        Password: <input type="password" name="password" required></br>
-        <input type="submit" value="Log In" name="login">
-    </form>     
-    <form action="main.php" method="post" class="form-inline">   
-    <input type="submit" value="Return" name="return" class="form-control" style="width:150px">
-    </form>
-</div>
+    <!--Login form-->
+    <div class="container-sm p-5 my-5 text-gray" style="max-width:50%;">
+        <div class="jummbotron">
+            <h3 style="color:#343434"> Log In </h3>
+            <form action="login.php" method="post"> 
+                Username: <input type="text"  class="form-control" name="username" required></br>
+                Password: <input type="password"  class="form-control" name="password"  required></br>
+                <input type="submit" value="Log In" name="login" class="form-control" style="width:150px;">
+            </form>    
+            <form action="main.php" method="post" class="form-inline">   
+                <div class="mb-2 mt-2">
+                    <input type="submit" value="Return" name="return" class="form-control" style="width:150px;">
+                </div>
+            </form>
+            Don't have an account yet? <a href='client/register.php'>Register here</a>
+        </div>
+    </div>
+
     <?php 
-        if (isset($_POST['login'])) {           #if login button pressed
+        if (isset($_POST['login'])) {           #if login button is pressed
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            $password = md5($password);
+            $password = md5($password);         #hash
 
-
-            #Check if admin or customer
-            $admin_query = "SELECT * FROM admin WHERE admin_Username = '$username' AND admin_Password='$password';";
-           #$sql = "SELECT * FROM admin;";
+            #Check if admin or customer ------------------------------------------------------------------------------
+            $admin_query = "SELECT * FROM admin WHERE admin_Username = '$username' AND admin_Password='$password';"; #check if in admin table
             $admin_result = mysqli_query($conn,$admin_query);
             $admin_Check = mysqli_num_rows($admin_result);
 
-            if ($admin_Check>0) {
+            if ($admin_Check>0) {                                               #username and password in admin table
                 while($admin_row = mysqli_fetch_assoc($admin_result)) {
-                        $_SESSION['admin'] = $admin_row['admin_ID'];
-                        $_SESSION['admin_User'] = $admin_row['admin_Username'];
-                        mysqli_close($conn);
-                        header("Location: admin/adminHome.php");
-                        exit;
-                }
-                        
+                    $_SESSION['admin'] = $admin_row['admin_ID'];                #store in $_SESSION for referencing later
+                    $_SESSION['admin_User'] = $admin_row['admin_Username'];
+                    mysqli_close($conn);
+                    header("Location: admin/adminHome.php");                    #redirect to adminHome.php
+                    exit;
+                }                    
             }
 
-            #Username and Password checking
-            $sql = "SELECT * FROM customer;"; #fix query, no need for while loop
+            $sql = "SELECT * FROM customer;";                                    #check if in customer table
             $result = mysqli_query($conn,$sql);
             $resultCheck = mysqli_num_rows($result);
-            $exists = false;
+            $exists = false;                                                     
   
             if ($resultCheck>0){
                 while ($row = mysqli_fetch_assoc($result)) {
                     if ($row['cust_Username']==$username && $row['cust_Password']==$password) {
                         $exists = true;
-                        $_SESSION['CustomerID'] = $row['cust_ID'];      #$_SESSION values are accessible in other pages
+                        $_SESSION['CustomerID'] = $row['cust_ID'];      
                         $_SESSION['CustomerFName'] = $row['cust_FName'];
                         mysqli_close($conn);
-                        header("Location: main.php");                   #Return to main.php
+                        header("Location: main.php");                           #Return to main.php
                         exit;
                     }
                 }
             }                
             
-            if ($exists == false) {         #If customer is unregistered
+            if ($exists == false) {                                             #If customer is unregistered
                 echo "Wrong username or password";
-                echo "Don't have an account yet? <a href='client/register.php'>Register here</a>" ;
+                unset($_SESSION);
                 exit;
-            }
-
-            #if "back to homepage" is pressed: 
-            if (isset($_POST['return'])) {
-                header('location: main.php');
-            }
-            
+            }    
         }
+
+        #if "Return" is pressed: 
+        if (isset($_POST['return'])) {
+            header('location: main.php');
+        }
+
         mysqli_close($conn);
     ?>
 
