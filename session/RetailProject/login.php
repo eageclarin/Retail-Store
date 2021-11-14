@@ -1,5 +1,5 @@
 <?php
-    include_once 'env/connection.php';
+    include 'env/connection.php';
 ?>
 
 <!DOCTYPE html>
