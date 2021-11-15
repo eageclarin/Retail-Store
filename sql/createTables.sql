@@ -95,13 +95,13 @@ CREATE TABLE `Ca_contains_I` (
 );
 
 -- table for branch inventory has item
-CREATE TABLE `BI_has I` (
+CREATE TABLE `BI_has_I` (
 	`inventory_ID` int NOT NULL,
 `item_ID` int NOT NULL,
 	`item_Stock` int NOT NULL,
 	PRIMARY KEY (inventory_ID, item_ID),
 FOREIGN KEY(inventory_ID) REFERENCES branchInventory(inventory_ID) ON UPDATE CASCADE,
-	FOREIGN KEY(item_ID) REFERENCES Item(item_ID) ON UPDATE CASCADE
+	FOREIGN KEY(item_ID) REFERENCES Item(item_ID) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- table for admin manages branch
