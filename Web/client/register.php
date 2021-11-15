@@ -79,7 +79,7 @@
             $city = mysqli_real_escape_string($conn,$_POST['city']);
             $province = mysqli_real_escape_string($conn,$_POST['province']);
             $postal = mysqli_real_escape_string($conn,$_POST['postal']);
-
+        
 
             #check if username or email exists
             $check_query = "SELECT * FROM customer where cust_Username = '$username' OR cust_Email = '$email' LIMIT 1;";

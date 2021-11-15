@@ -3,7 +3,7 @@
     include '../env/connection.php';
     include '../env/adminAuth.php';
 
-    $id =0;
+    $id=0;
     $item_Name ="";
     $item_RetailPrice = 0.00;
     $item_WholesalePrice =0.00;
@@ -11,48 +11,41 @@
     $item_Image = "";
     $item_Brand = "";
 
-
-    if (isset($_GET['edit_item_id'])) {
-        $id = $_GET['edit_item_id'];
     
-        $item_query ="SELECT *FROM item WHERE item_ID = $id ";
-        $item_result = mysqli_query($conn,$item_query);
-        
-        while ($item_row = mysqli_fetch_assoc($item_result )){
-            $item_Name = $item_row["item_Name"];
-            $item_RetailPrice = $item_row["item_RetailPrice"];
-            $item_WholesalePrice = $item_row["item_WholesalePrice"];
-            $item_Category = $item_row["item_Category"];
-            $item_Image = $item_row["item_Image"];
-            $item_Brand = $item_row["item_Brand"];
+        if (isset($_GET['edit_item_id'])) {
+            $_SESSION['item_id'] = $_GET['edit_item_id'];
+
+                    $inventoryID=$_SESSION['inventoryID'];
+                    $id =  $_SESSION['item_id'];
+                    $item_query ="SELECT *FROM item  NATURAL JOIN bi_has_i WHERE item_ID = $id AND inventory_ID = $inventoryID ";
+                    $item_result = mysqli_query($conn,$item_query);
+                    $item_Check = mysqli_num_rows($item_result);
+            
+                    if ($item_Check>0){
+                        while ($item_row = mysqli_fetch_assoc($item_result)){
+                            $item_Name = $item_row["item_Name"];
+                            $item_RetailPrice = $item_row["item_RetailPrice"];
+                            $item_WholesalePrice = $item_row["item_WholesalePrice"];
+                            $item_Category = $item_row["item_Category"];
+                            $item_Image = $item_row["item_Image"];
+                            $item_Brand = $item_row["item_Brand"];
+                        }
+                    }else{
+                        header('location: inventory.php');
+                    }
+
+             
+               
+            
+            
+            
+            
+            
+    
         }
-        
+  
 
-    }
-
-    if (isset($_POST['update'])) {
-        $itemName =$_POST['Item_Name'];
-        $RetailPrice = $_POST['Retail_Price'];
-        $WholesalePrice = $_POST['Wholesale_Price'];
-        $Category = $_POST['Category'];
-        $Brand=$_POST['Brand'];
-        $Image=$_POST['Image'];
-
-        $update_query= "UPDATE item SET item_Name=$itemName,
-        item_RetailPrice = $RetailPrice ,item_WholesalePrice =$WholesalePrice, item_Category=$Category, 
-        item_Brand =$Brand, 
-        item_Image=$Image 
-        WHERE item_ID = $id";
-
-        $update_result = mysqli_query($conn,$update_query);
-
-        if($update_result){
-            header('location: inventory.php');
-        }else{
-            echo mysqli_error($conn);
-            // die(mysqli_error($conn));
-        }
-    }
+    
   
 
 
@@ -74,12 +67,12 @@
         <?php include "./components/header.html"?>
         <?php include "./components/nav.html"?>
 
-    <div class="form" action="editItem.php" method="post">
+    <div class="form" >
        
         <div class="form-con shadow">
             <h4>Edit Item Form</h4>
             <hr>
-            <form class="row g-3">
+            <form class="row g-3" action="editItem.php" method="post">
                 <div class="col-12">
                     <label for="Item_Name" class="form-label">Item name</label>
                     <input type="text" class="form-control" name="Item_Name" 
@@ -118,7 +111,45 @@
         </div>
     </div>
     </div>
-    
+    <?php
+
+            if (isset($_POST['update'])) {
+               
+                $id =  $_SESSION['item_id'];
+                $itemName =$_POST['Item_Name'];
+                $RetailPrice = $_POST['Retail_Price'];
+                $WholesalePrice = $_POST['Wholesale_Price'];
+                $Category = $_POST['Category'];
+                $Brand=$_POST['Brand'];
+                $Image=$_POST['Image'];
+
+            
+
+            $update_query = "UPDATE item SET item_Name='$itemName',
+            item_RetailPrice = $RetailPrice ,item_WholesalePrice =$WholesalePrice, item_Category='$Category', 
+            item_Brand ='$Brand', 
+            item_Image='$Image' 
+            WHERE item_ID = $id";
+
+       
+
+            
+
+            $update_result = mysqli_query($conn,$update_query);
+
+            if($update_result){
+                header('location: inventory.php');
+            }else{
+                die(mysqli_error($conn));
+            }
+
+        
+
+            }
+
+            mysqli_close($conn);
+
+    ?>
   
 </body>
 </html>

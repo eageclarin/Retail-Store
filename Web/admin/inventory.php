@@ -32,7 +32,7 @@
     <title>Admin</title>
 </head>
 <body >
-<div class="container-lg">
+<div class="body">
         <?php include "./components/header.html"?>
         <?php include "./components/nav.html"?>
 
@@ -57,16 +57,16 @@
                 <tbody>
                     <?php
                     $branchID = $_SESSION['branchID'] ;
-    
+                    $inventoryID=$_SESSION['inventoryID'];
                     $inventory_query = "SELECT item_Image,item_ID, item_Name, item_RetailPrice, item_WholesalePrice, item_Category, item_Brand, item_Stock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id = '$branchID';"; 
                     $inventory_result = mysqli_query($conn,$inventory_query);
                     $inventory_Check = mysqli_num_rows($inventory_result);
                    
                         if ($inventory_Check>0) {                                                       
                             while($inventory_row = mysqli_fetch_assoc($inventory_result)) {
-                                echo "<tr>"?>
+                                echo "<tr class=\"fs-6\">"?>
 
-                                        <td><img src="<?php echo $inventory_row["item_Image"]?>" class="rounded mx-auto d-block"></td>
+                                        <td><img src="<?php echo $inventory_row["item_Image"]?>"  style="width: 80%;"></td>
                                         <?php echo "<th>" . $inventory_row["item_ID"] . "</th>
                                         <td>" . $inventory_row["item_Name"] . "</td>
                                         <td>" . $inventory_row["item_RetailPrice"]. "</td>
@@ -76,7 +76,7 @@
                                         <td>" . $inventory_row["item_Stock"]."</td>
                                         <td>"?>       
                                             <button type="submit" class="btn btn-success" name="edit">
-                                                <a class="text-light"href="editItem.php?edit_item_id=<?php echo $inventory_row["item_ID"]?>">EDIT</a>
+                                                <a class="text-light"href="editItem.php?edit_item_id=<?php echo $inventory_row["item_ID"]; ?>">EDIT</a>
                                             </button>
 
                                          
@@ -87,36 +87,41 @@
                                                 <a class="text-light"href="delete.php?delete_item_id=<?php echo $inventory_row["item_ID"]?>">DELETE</a>
                                             </button>
                                         </td>
-                                        <td class="text-center\">
-                                            
-                                      
-                                            
-                                            <form method=\"post\">
 
-                                                <input type=\"number\" name=\"addStock\" class=\"form-control\" name=\"Stock\"  min=0 />
-                                                <input type=\"submit\" name=\"addStock\" value=\"Add\"/>                                                                           
+
+                                        <td class="text-center">
+
+                                            <form action="addStock.php" method="post">
+                                                <div class="input-group mb-3" style="width:100%;">
+                                                
+                                                    <input type="number" class="form-control "   name="Stock" min=1 value=0>
+
+                                                    <input type="number" 
+                                                    style="display:none;"
+                                                    
+                                                    value="<?php echo $inventory_row["item_ID"]?>" name="Item_ID" >
+                                                    
+                                                    <button class="btn btn-primary text-light " name="addStock" type="submit" id="button-addon2" >ADD</button>
+                                           
+                                                </div>
                                             </form>
-                                        </td>
-                                        <td class=\"text-center\">
+                                        </td >
                                             
                                       
                                             
-                                        <!-- <form method=\"post\">
-
-                                        <div class=\"row\">
-                                        <div class=\"col\">
-                                            <input type=\"number\" name=\"addStock\" class=\"form-control\" name=\"Stock\"  min=0 />
-                                        </div>     
-                                        <div class=\"col\">
-                                            <input type=\"submit\" name=\"button1\" value=\"Add Stock\"/>
-                                          </div>                                                                  
-                                        </form> -->
+                                      
                                    
                                     </tr>
                                     <?php
                             }
-                        }                    
-                        mysqli_close($conn);
+                        } 
+
+                     
+
+                        
+                        
+                      
+                        
                     ?>
                 </tbody>
             </table>

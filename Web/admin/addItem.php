@@ -23,26 +23,26 @@ include '../env/adminAuth.php';
 
     <div class="form">
        
-        <div class="form-con shadow" action="insert.php" method="post">
+        <div class="form-con shadow">
             <h4>New Item Form</h4>
             <hr>
-            <form class="row g-3">
+            <form class="row g-3"  action="addItem.php" method="post">
                 <div class="col-12">
                     <label for="ItemName" class="form-label">Item name</label>
                     <input type="text" class="form-control" name="ItemName" >
                 </div>
                 <div class="col-md-6">
                     <label for="Retail_Price" class="form-label">Retail Price</label>
-                    <input type="number" class="form-control" name="Retail_Price" min=0>
+                    <input type="number" class="form-control" name="RetailPrice" min=0>
                 </div>
                 <div class="col-md-6">
                     <label for="Wholesale_Price" class="form-label">Wholesale Price</label>
-                    <input type="number" class="form-control" name="Wholesale_Price"  min=0>
+                    <input type="number" class="form-control" name="WholesalePrice"  min=0>
                 </div>
                 
                 <div class="col-md-6">
                     <label for="Retail_Price" class="form-label">Category</label>
-                    <input type="text" class="form-control" name="Retail_Price" min=0>
+                    <input type="text" class="form-control" name="Category" min=0 step=0.001>
                 </div>
                 <div class="col-md-6">
                     <label for="Brand" class="form-label">Brand</label>
@@ -66,7 +66,62 @@ include '../env/adminAuth.php';
     </div>
     </div>
     <?php
-        
+         if (isset($_POST['Add'])) {
+               echo "Hello";
+          
+               $itemName =$_POST['ItemName'];
+               $RetailPrice = $_POST['RetailPrice'];
+               $WholesalePrice = $_POST['WholesalePrice'];
+               $Category = $_POST['Category'];
+               $Brand=$_POST['Brand'];
+               $Image=$_POST['Image'];
+               $Stock=$_POST['Stock'];
+   
+               $AddItem_query= "INSERT INTO item(item_Name,item_RetailPrice,item_WholesalePrice ,item_Category ,item_Brand ,item_Image) VALUES ('$itemName', $RetailPrice , $WholesalePrice, '$Category', '$Brand', '$Image ')";
+
+             
+               $AddItem_result = mysqli_query($conn,$AddItem_query);
+                if($AddItem_result){
+                    // exit;
+                }
+                else{
+                        die(mysqli_error($conn));
+                }
+
+           
+            $item_query = "SELECT *FROM item WHERE item.item_Name= $itemName";
+            $item_result = mysqli_query($conn,$item_query);
+            $item_Check = mysqli_num_rows($item_result);
+            
+                      
+            $itemID = 0;
+
+            if($item_Check>0){
+                while($itemrow = mysqli_fetch_assoc($item_result)) {
+                    echo $itemID;
+                    $itemID = $itemrow['item_ID'];
+                    // exit;               
+                }       
+            }else{
+                die(mysqli_error($conn));
+            }                                         
+                            
+            
+
+            $Bi_has_i_query= "INSERT INTO bi_has_i( inventory_ID,item_ID,item_Stock ) VALUES ($inventoryID , $itemID , $Stock )";
+            $Bi_has_i_result = mysqli_query($conn,$Bi_has_i_query);
+
+            if($Bi_has_i_result){
+                header('location: inventory.php');
+            }else{
+                die(mysqli_error($conn));
+            }
+
+  
+
+    
+
+        }
 
     ?>
 
