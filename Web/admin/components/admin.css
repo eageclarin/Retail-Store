@@ -1,0 +1,33 @@
+
+.body{
+    margin-left:10%;
+    margin-right:10%;
+    background-color: rgba(201, 114, 114, 0.36);
+    padding: 10px;
+    min-height: 100vh;
+}
+.nav-bg{
+    background-color: rgb(122, 211, 211);
+}
+.logout{
+    float: right;
+}
+.form{
+    margin-top: 20px;
+    /* background-color: rgb(236, 202, 157); */
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.form-con{
+    width:80%;
+    background-color: rgb(236, 202, 157);
+    padding:20px;
+  
+}
+.item-display{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+}
