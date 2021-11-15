@@ -2,11 +2,12 @@
     include_once '../env/connection.php';
 
     //variables
-	$categ = $branch = "";
+	$categ = $branch = $name = "";
 
-	if (isset($_GET['categ']) && isset($_GET['branch'])) {
+	if (isset($_GET['categ']) && isset($_GET['branch']) && isset($_GET['name'])) {
 		$categ = $_GET['categ'];
         $branch = $_GET['branch'];
+        $name = $_GET['name'];
 	}
 
     if ($categ == "PastaNoodles") {
@@ -43,11 +44,11 @@
 					$itemImg = $rowCateg['item_Image']; //item image
 	?>
 				<td>
-					<form action="main.php?action=add&name=<? echo $name ?>&item=<? echo $itemName ?>&branch=<? echo $branch ?>" method='post'>
+					<form action="main.php?action=add&name=<?php echo $name ?>&item=<?php echo $itemName ?>&branch=<?php echo $branch ?>" method='post' target='_top'>
 					<div class='itemOption'>
 						<input type="image" src="<? echo $itemImg ?>" />
 						<div class='info'>
-							<span> <? echo $itemName ?> </span> P<? echo $itemPrice ?>
+							<span> <?php echo $itemName ?> </span> P<?php echo $itemPrice ?>
 						</div>
 					</div>
 					</form>
