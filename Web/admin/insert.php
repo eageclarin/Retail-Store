@@ -1,4 +1,34 @@
 <?php
+        include_once '../env/connection.php';
+        include_once '../env/adminAuth.php';
+        $item_query = "SELECT *FROM item WHERE item.item_Name= $itemName";
+        $item_result = mysqli_query($conn,$item_query);
+        $item_Check = mysqli_num_rows($item_result);
+        
+                  
+        $itemID = 0;
+
+        if($item_Check>0){
+            while($item_row = mysqli_fetch_assoc($item_result)) {
+                echo $itemID;
+                $itemID = $itemrow['item_ID'];
+                // exit;               
+            }       
+        }else{
+            die(mysqli_error($conn));
+        }                                         
+                        
+        
+
+        $Bi_has_i_query= "INSERT INTO bi_has_i( inventory_ID,item_ID,item_Stock ) VALUES ($inventoryID , $itemID , $Stock )";
+        $Bi_has_i_result = mysqli_query($conn,$Bi_has_i_query);
+
+        if($Bi_has_i_result){
+            header('location: inventory.php');
+        }else{
+            die(mysqli_error($conn));
+        }
+
 
 // include '../env/connection.php';
 // include '../env/adminAuth.php';

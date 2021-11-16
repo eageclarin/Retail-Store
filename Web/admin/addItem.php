@@ -1,7 +1,7 @@
 <?php
 
-include '../env/connection.php';
-include '../env/adminAuth.php';
+include_once '../env/connection.php';
+include_once '../env/adminAuth.php';
 
 ?>
 
@@ -67,8 +67,8 @@ include '../env/adminAuth.php';
     </div>
     <?php
          if (isset($_POST['Add'])) {
-               echo "Hello";
-          
+               
+               $inventoryID=$_SESSION['inventoryID'];
                $itemName =$_POST['ItemName'];
                $RetailPrice = $_POST['RetailPrice'];
                $WholesalePrice = $_POST['WholesalePrice'];
@@ -82,14 +82,17 @@ include '../env/adminAuth.php';
              
                $AddItem_result = mysqli_query($conn,$AddItem_query);
                 if($AddItem_result){
-                    // exit;
+           
                 }
                 else{
                         die(mysqli_error($conn));
                 }
 
-           
-            $item_query = "SELECT *FROM item WHERE item.item_Name= $itemName";
+             
+            $item_query = "SELECT *FROM item WHERE item.item_Name= '$itemName'";
+            
+
+
             $item_result = mysqli_query($conn,$item_query);
             $item_Check = mysqli_num_rows($item_result);
             
@@ -97,7 +100,7 @@ include '../env/adminAuth.php';
             $itemID = 0;
 
             if($item_Check>0){
-                while($itemrow = mysqli_fetch_assoc($item_result)) {
+                while($itemrow = mysqli_fetch_array($item_result)) {
                     echo $itemID;
                     $itemID = $itemrow['item_ID'];
                     // exit;               
