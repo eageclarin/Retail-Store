@@ -203,7 +203,7 @@
                         ?> </p>
                 </li>
                 <li>
-                    <a href="client/cart.php"> <img src="cart.png" /> </a> 
+                    <a href="client/cart.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>"> <img src="cart.png" /> </a> 
                 </li>
                 <li>
                     Branch: <?php echo $chosenBranch ?>
