@@ -17,7 +17,6 @@
 	$sql = "CREATE DATABASE IF NOT EXISTS $db";
 	if (mysqli_query($conn, $sql)){
 		mysqli_select_db($conn, $db); //connect to database after database created 
-        echo "hehehe";
         //if success call connection.php
 
         //create tables
@@ -41,7 +40,6 @@
         }
 	} else {
 		echo "ERROR: Could not be able to execute $sql." . mysqli_error($conn);
-        echo "gegege";
 	}
 
 	

@@ -1,122 +1,167 @@
 <?php
     require 'env/connection.php';
 
-    $chosenBranch = $chosenCateg = $customerID = "";
-    $orderQty = $orderTotal = $totalPrice = 0;
+    $chosenCateg = "All"; $name = "Guest"; $id = $item = 0;
+    $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = 1;
 
-    if (isset($_GET['branch'])) {
+    if (isset($_GET['id']) || isset($_GET['item']) || isset($_GET['branch']) || isset($_GET['categ'])) {
+        $id = $_GET['id'];
+        $item = $_GET['item'];
         $chosenBranch = $_GET['branch'];
-    }
-    if (isset($_GET['categ'])) {
         $chosenCateg = $_GET['categ'];
-    }
 
-    if (isset($_GET['name']) && isset($_GET['item']) && isset($_GET['branch'])) {
-        $customerName = $_GET['name'];
-        $customerItem = $_GET['item'];
-        $chosenBranch = $_GET['branch'];
+        if ($id == 0) { //id == 0 is guest
+            header("location:login.php?itemID=$item&branch=$chosenBranch&categ=$chosenCateg");
+        }
     }
-
+    
+    /* FOR ADD TO CART ITEM */
     //search item in table
     $sqlItem = "SELECT * FROM Item i
-                    INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
-                    INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
-                    INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
-                    INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-                    WHERE i.item_Name = '$customerItem'
-                        AND bii.item_Stock > 0
-                        AND b.branch_Name = '$chosenBranch'
+                INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
+                INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
+                INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
+                INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
+                WHERE i.item_ID = '$item'
+                    AND bii.item_Stock > 0
+                    AND b.branch_ID = '$chosenBranch'
                 ";
 	$resItem = mysqli_query($conn, $sqlItem);
 	$countI = mysqli_num_rows($resItem);
 
-	//if item exists in table
-	if ($countI == 1) {
-		$rowI = mysqli_fetch_assoc($resItem);
-		$orderName = $rowI['item_Name']; //get item name
-		$orderImg = $rowI['item_Image']; //get item img
-		$orderPrice = $rowI['item_RetailPrice']; //get item price
-	}
+	//if item exists in table, get item price
+    if ($countI >= 1) {
+        $rowI = mysqli_fetch_assoc($resItem);
+        $orderPrice = $rowI['item_RetailPrice']; //get item price
+    }
 
-    //action
-	if (!empty($_GET['action'])) {
-		switch($_GET['action']) {
-			case "add":
-				$orderTotal = $orderQty * $orderPrice;
+    //action add to cart
+	if ($_GET['action'] == 'add' && $id != 0) { //action=add
+		//check if there is consisting cartID of customerID in branchID
+		$sqlCart = "SELECT * FROM Cart c
+						INNER JOIN Cu_orders_Ca cca ON (c.cart_ID = cca.cart_ID)
+						INNER JOIN Branch b ON (cca.branch_ID = b.branch_ID)
+						INNER JOIN Customer cu ON (cca.customer_ID = cu.cust_ID)
+						WHERE cu.cust_ID = '$id'
+							AND b.branch_ID = '$chosenBranch'
+					";
+		$resCart = mysqli_query($conn, $sqlCart);
+		$countC = mysqli_num_rows($resCart);
 
-				$sqlSearch = "SELECT * FROM `Orders` WHERE `table`='$orderTable' and `name`='$orderName' and `tab`='$orderTab' and `food`='$orderFood' and `price`='$orderPrice'";
-				$resSearch = mysqli_query($conn, $sqlSearch);
-				$countSearch = mysqli_num_rows($resSearch);
+        //no cart id yet for customer in branch
+		if($countC < 1) { 
+			$date = date("Y-m-d"); //get current date
 
-				if ($countSearch >= 1){ //if there's match, update
-					$rowSearch = mysqli_fetch_assoc($resSearch);
-					$orderQty = $rowSearch['qty'];
-					$orderTotal = $rowSearch['total'];
+            /* good for sql
+			INSERT INTO Cart (total) VALUES (0);
+			INSERT INTO Cu_orders_Ca VALUES
+				(@@IDENTITY, $id, $chosenBranch, '$date', 0)
+            */
 
-					$orderQty++;
-					$orderTotal = $orderQty * $orderPrice;
+            $sqlAddCart = "INSERT INTO Cart (total) VALUES (0)";
+			$resAddCart = mysqli_query($conn, $sqlAddCart);
 
-					$sqlUpdate = "UPDATE `Orders` SET `qty`='$orderQty', `total`='$orderTotal' WHERE `table`='$orderTable' and `name`='$orderName' and `tab`='$orderTab' and `food`='$orderFood'";
-					$resUpdate = mysqli_query($conn, $sqlUpdate);
+            if ($resAddCart) {
+                $lastID = mysqli_insert_id($conn);
+                $sqlAdd = "INSERT INTO Cu_orders_Ca VALUES
+								($lastID, $id, $chosenBranch, '$date', 0)";
+                $resAdd = mysqli_query($conn, $sqlAdd);
+            }
+		}
+        
+		//check if item is in cart
+		$sqlSearch = "SELECT * FROM Ca_contains_I cai
+						INNER JOIN Cu_orders_Ca cca ON (cai.cart_ID = cca.cart_ID)
+						INNER JOIN Item i ON (cai.item_ID = i.item_ID)
+						WHERE i.item_ID = '$item' AND cca.customer_ID = '$id';
+					";
+		$resSearch = mysqli_query($conn, $sqlSearch);
+		$countSearch = mysqli_num_rows($resSearch);
 
-					header("location: order.php?name=$orderName&table=$orderTable&tab=$orderTab");
-				} else { //if there's no match, insert
-					$sqlAdd = "INSERT INTO `Orders`(`table`, `name`, `tab`, `code`, `food`, `qty`, `img`, `price`, `total`) VALUES ('$orderTable', '$orderName', '$orderTab', '$orderCode', '$orderFood', '$orderQty', '$orderImg', '$orderPrice', '$orderTotal')";
-					$resAdd = mysqli_query($conn, $sqlAdd);
+        //if in cart, update
+		if ($countSearch >= 1){ 
+			$rowSearch = mysqli_fetch_assoc($resSearch);
+			$orderQty = $rowSearch['quantity']; //get current qty
+			$orderTotal = $rowSearch['total']; //get current total
 
-					header("location: order.php?name=$orderName&table=$orderTable&tab=$orderTab");	
-				}
-				break;
-			case "cancel":
-				$sqlSearch = "SELECT * FROM `Orders` WHERE `table`='$orderTable' and `name`='$orderName'";
-				$resSearch = mysqli_query($conn, $sqlSearch);
-				$countSearch = mysqli_num_rows($resSearch);
+			$orderQty++;
+			$orderTotal = $orderQty * $orderPrice;
 
-				if ($countSearch >= 1){
-					$sqlDelete = "DELETE FROM `Orders` WHERE `table`='$orderTable' and `name`='$orderName'";
-					$resDelete = mysqli_query($conn, $sqlDelete);
+            /* for sql
+			UPDATE Ca_contains_I SET quantity = '$orderQty', total = '$orderTotal'
+				WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id');
 
-					header("location: order.php?name=$orderName&table=$orderTable&tab=$orderTab");
-				}
+			UPDATE Cart SET total=(
+				SELECT SUM(total) FROM Ca_contains_I
+					WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')
+				)
+            WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id');
+            
+            UPDATE BI_has_I SET item_Stock = item_Stock - 1
+                WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$chosenBranch')
+                AND item_ID = '$item';
+            */
 
-				header("location: order.php?status=cancel&newTable=$orderTable");
-				break;
-			case "hold":
-				$sqlSearch = "SELECT * FROM `Orders` WHERE `table`='$orderTable' and `name`='$orderName'";
-				$resSearch = mysqli_query($conn, $sqlSearch);
-				$countSearch = mysqli_num_rows($resSearch);
+            //update qty and total of item in ca_contains_i then update cart and stock
+            $sqlUpdate = "UPDATE Ca_contains_I SET quantity = '$orderQty', total = '$orderTotal'
+							WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')
+						";
+            $resUpdate = mysqli_query($conn, $sqlUpdate);
 
-				if ($countSearch >= 1) {
-					while($rowHold = mysqli_fetch_assoc($resSearch)){
-						$orderFood = $rowHold['food'];
-						$orderQty = $rowHold['qty'];
-						$orderPrice = $rowHold['price'];
-						$orderTotal = $rowHold['total'];
+            if ($resUpdate){
+                //update total in cart
+                $sqlUpdate = "UPDATE Cart SET total=(
+                    SELECT SUM(total) FROM Ca_contains_I
+                        WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')
+                    )
+                WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id');";
+                $resUpdate = mysqli_query($conn, $sqlUpdate);
 
-						$sqlAdd = "INSERT INTO `Pending`(`table`, `name`, `food`, `qty`, `price`, `total`) VALUES ('$orderTable', '$orderName', '$orderFood', '$orderQty', '$orderPrice', '$orderTotal')";
-						$resAdd = mysqli_query($conn, $sqlAdd);
-					}
-				}
+                //decrease stock in bi_has_i
+                $sqlDelete = "UPDATE BI_has_I SET item_Stock = item_Stock - 1
+                                WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$chosenBranch')
+                                AND item_ID = '$item'";
+                $resDelete = mysqli_query($conn, $sqlDelete);
+            }		
 
-				$orderTable += 1;
-				if ($orderTable > 12) {
-					$orderTable = 1;
-				}
-				header("location: order.php?status=hold&newTable=$orderTable");
-				break;
-			case "delete":
-				$sqlSearch = "SELECT * FROM `Orders` WHERE `table`='$orderTable' and `name`='$orderName'";
-				$resSearch = mysqli_query($conn, $sqlSearch);
-				$countSearch = mysqli_num_rows($resSearch);
+			header("location: main.php?id=$id&branch=$chosenBranch&categ=$chosenCateg");
+		} else { //if not in cart yet, insert
+            /* for sql
+			INSERT INTO Ca_contains_I VALUES
+			    ($item, (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id'),1, '$orderPrice');
+			UPDATE Cart SET total=(
+				SELECT SUM(total) FROM Ca_contains_I
+					WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')
+				)
+                WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id');
+            UPDATE BI_has_I SET item_Stock = item_Stock - 1
+                WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$chosenBranch')
+                AND item_ID = '$item';
+            */
 
-				if ($countSearch >= 1) {
-					$sqlDelete = "DELETE FROM `Orders` WHERE `table`='$orderTable' and `name`='$orderName' and `id`='$orderID'";
-					$resDelete = mysqli_query($conn, $sqlDelete);
+            //insert into ca_contains_i then update total in cart and update stock
+            $sqlAdd = "INSERT INTO Ca_contains_I VALUES
+						($item, (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id'),
+						1, '$orderPrice')";
+            $resAdd = mysqli_query($conn, $sqlAdd);
 
-					header("location: order.php?name=$orderName&table=$orderTable&tab=$orderTab");
-				}
+            if ($resAdd){
+                //update total in cart
+                $sqlUpdate = "UPDATE Cart SET total=(
+                    SELECT SUM(total) FROM Ca_contains_I
+                        WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')
+                    )
+                    WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')";
+                $resUpdate = mysqli_query($conn, $sqlUpdate);
 
-				break;
+                //decrease stock in bi_has_i
+                $sqlDelete = "UPDATE BI_has_I SET item_Stock = item_Stock - 1
+                                WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$chosenBranch')
+                                AND item_ID = '$item'";
+                $resDelete = mysqli_query($conn, $sqlDelete);
+            }
+
+            header("location: main.php?id=$id&branch=$chosenBranch&categ=$chosenCateg");
 		}
 	}
 ?>
@@ -124,37 +169,21 @@
 <html>
 <head>
     <link rel="stylesheet" href="main.css" />
-
-    <script>
-        //choose branch
-        function chooseBranch(branch) {
-            document.location.assign("main.php?branch="+branch);
-        }
-
-        //choose categ
-        funciton chooseCateg(branch, categ) {
-            $.ajax({
-                url: 'pages/getItem.php?branch='+branch+'&categ='+categ,
-                success: function(html) {
-                    var display = document.getElementById('body-items');
-                    display.innerHTML = html;
-                }
-            });
-        }
-    </script>
 </head>
 <body>
     this is the main page..
-    <?php 
-    if (!empty($_SESSION['CustomerID'])) { //Checks if customer is logged in
-        $customerID = $_SESSION['CustomerID'];
-        echo $customerID;
-    } else {
-        echo '<a href="login.php">Log In</a>';
-        $customerID = "Guest";
-    }
-        
-    
+    <?php
+        if ($id != 0){ //if not guest (guest is id ==0)
+            $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT cust_Username FROM Customer WHERE cust_ID='$id'"));
+            $name = $row['cust_Username'];
+        }
+
+        if ($name == "Guest") { //Checks if customer is logged in
+            echo "<a href='login.php'><button>Log In</button></a>";
+            echo "<a href='client/register.php'><button>Register</button></a>";
+        } else {
+            echo " <a href='login.php'><button>Logout</button></a>";
+        }
     ?>
     
     <div>
@@ -163,7 +192,15 @@
             <!-- navigation bar -->
             <ul>
                 <li>
-                    <p> Hello, <?php echo $customerID ?> </p>
+                    <p> Hello,
+                        <?php
+                            if (strlen($name) > 5) {
+                                echo substr($name,0,-3);
+                            } else {
+                                echo $name;
+                            }
+                            
+                        ?> </p>
                 </li>
                 <li>
                     <a href="client/cart.php"> <img src="cart.png" /> </a> 
@@ -182,32 +219,19 @@
                     <li class="drp">
                         <p class="drpbtn"> Change Branch </p>
                         <div class="drp-content">
-                            <a href="main.php?branch=Paoay"> Paoay </a>
-                            <a href="main.php?branch=Vicas"> Vicas </a>
-                            <a href="main.php?branch=Cordon"> Cordon </a>
-                            
-                            <!--
-                            <button onclick="chooseBranch('Vicas')"> Vicas </button>
-                            <button onclick="chooseBranch('Vicas')"> Vicas </button>
-                            <button onclick="chooseBranch('Cordon')"> Cordon </button>
-                            -->
+                            <a href="main.php?id=<?php echo $id ?>&branch=1&categ=All"> Paoay </a>
+                            <a href="main.php?id=<?php echo $id ?>&branch=2&categ=All"> Vicas </a>
+                            <a href="main.php?id=<?php echo $id ?>&branch=3&categ=All"> Cordon </a>
                         </div>
                     </li>
                     <li class="drp">
                         <p class="drpbtn"> Change Category </p>
                         <div class="drp-content">
-                            <a href="pages/getItem.php?name=<?php echo $customerID ?>&branch=<?php echo $chosenBranch ?>&categ=Canned+Goods" target="display"> Canned Goods </a>
-                            <a href="pages/getItem.php?name=<?php echo $customerID ?>&branch=<?php echo $chosenBranch ?>&categ=Condiments" target="display"> Condiments </a>
-                            <a href="pages/getItem.php?name=<?php echo $customerID ?>&branch=<?php echo $chosenBranch ?>&categ=PastaNoodles" target="display"> Pasta & Noodles </a>
-                            <a href="pages/getItem.php?name=<?php echo $customerID ?>&branch=<?php echo $chosenBranch ?>&categ=Beverages" target="display"> Beverages </a>
-                            <a href="pages/getItem.php?name=<?php echo $customerID ?>&branch=<?php echo $chosenBranch ?>&categ=Biscuits" target="display"> Biscuits </a>
-                            <!--
-                            <button onclick="chooseCateg('<?php echo $chosenBranch ?>','Canned Goods');"> Canned Goods </button>
-                            <button onclick="chooseCateg('<?php echo $chosenBranch ?>','Condiments');"> Condiments </button>
-                            <button onclick="chooseCateg('<?php echo $chosenBranch ?>','Pasta & Noodles');"> Pasta & Noodles </button>
-                            <button onclick="chooseCateg('<?php echo $chosenBranch ?>','Beverages');"> Beverages </button>
-                            <button onclick="chooseCateg('<?php echo $chosenBranch ?>','Biscuits');"> Biscuits </button>
-                            -->
+                            <a href="pages/getItem.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>&categ=Canned+Goods" target="display"> Canned Goods </a>
+                            <a href="pages/getItem.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>&categ=Condiments" target="display"> Condiments </a>
+                            <a href="pages/getItem.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>&categ=PastaNoodles" target="display"> Pasta & Noodles </a>
+                            <a href="pages/getItem.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>&categ=Beverages" target="display"> Beverages </a>
+                            <a href="pages/getItem.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>&categ=Biscuits" target="display"> Biscuits </a>
                         </div>
                     </li>
                 </ul>       
@@ -215,7 +239,7 @@
 
             <!-- list of items -->
             <div id="body-items">
-                <iframe name="display" height="50%" width="100%">
+                <iframe name="display" height="50%" width="100%" src="pages/getItem.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>&categ=<?php echo $chosenCateg ?>">
             </div>
         </div>
     </div>

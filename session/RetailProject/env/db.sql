@@ -13,14 +13,14 @@ CREATE TABLE `Item` (
 CREATE TABLE `Customer` (
 	`cust_ID` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`cust_Username` varchar(255) NOT NULL,
-	`cust_Password` varchar(255) NOT NULL,
-	`cust_FName` varchar(25) NOT NULL,
-	`cust_LName` varchar(25) NOT NULL,
-	`cust_Email` varchar(50) NOT NULL,
-	`cust_ABrgy` varchar(25) NOT NULL,
-	`cust_ACity` varchar(25) NOT NULL,
-	`cust_AProvince` varchar(25) NOT NULL,
-	`cust_APostal` int NOT NULL
+	`cust_Password` varchar(255) NULL,
+	`cust_FName` varchar(25) NULL,
+	`cust_LName` varchar(25) NULL,
+	`cust_Email` varchar(50) NULL,
+	`cust_ABrgy` varchar(25) NULL,
+	`cust_ACity` varchar(25) NULL,
+	`cust_AProvince` varchar(25) NULL,
+	`cust_APostal` int NULL
 );
 
 -- table for customer contact
@@ -75,10 +75,11 @@ CREATE TABLE `Admin_Contact` (
 CREATE TABLE `Cu_orders_Ca` (
 	`cart_ID` int NOT NULL PRIMARY KEY,
 	`customer_ID` int NOT NULL,
+	`branch_ID` int NOT NULL,
 	`order_Date` datetime NOT NULL,
 	`status` bit,
-FOREIGN KEY (cart_ID) REFERENCES Cart(cart_ID),
-FOREIGN KEY (customer_ID) REFERENCES Customer(cust_ID)
+	FOREIGN KEY (cart_ID) REFERENCES Cart(cart_ID),
+	FOREIGN KEY (customer_ID) REFERENCES Customer(cust_ID)
 );
 
 -- table for cart contains item
@@ -203,6 +204,7 @@ VALUES
     (1,4,50),
     (1,5,50),
     (1,6,50),
+	(1,7,50),
     (1,8,50),
     (1,9,50),
     (2,1,50),
@@ -211,6 +213,7 @@ VALUES
     (2,4,50),
     (2,5,50),
     (2,6,50),
+	(2,7,50),
     (2,8,50),
     (2,9,50),
     (3,1,50),
@@ -219,6 +222,7 @@ VALUES
     (3,4,50),
     (3,5,50),
     (3,6,50),
+	(3,7,50),
     (3,8,50),
     (3,9,50)
 ;
