@@ -16,12 +16,14 @@ include_once '../env/adminAuth.php';
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>Admin</title>
 </head>
-<body>
+<body >
     <div class="body">
         <?php include "./components/header.html"?>
         <?php include "./components/nav.html"?>
        
     </div>
+    
 
+    </div>
 </body>
 </html>

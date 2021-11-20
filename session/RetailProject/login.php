@@ -43,7 +43,11 @@
             $username = $_POST['username'];
             $password = $_POST['password'];
 
+<<<<<<< HEAD
             $password = md5($password);         #hash
+=======
+            // $password = md5($password);         #hash
+>>>>>>> Elymer
 
             #Check if admin or customer ------------------------------------------------------------------------------
             $admin_query = "SELECT * FROM admin WHERE admin_Username = '$username' AND admin_Password='$password';"; #check if in admin table
