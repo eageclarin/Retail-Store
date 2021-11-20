@@ -99,7 +99,7 @@ CREATE TABLE `BI_has_I` (
 `item_ID` int NOT NULL,
 	`item_Stock` int NOT NULL,
 	PRIMARY KEY (inventory_ID, item_ID),
-FOREIGN KEY(inventory_ID) REFERENCES branchInventory(inventory_ID) ON UPDATE CASCADE,
+	FOREIGN KEY(inventory_ID) REFERENCES branchInventory(inventory_ID) ON UPDATE CASCADE,
 	FOREIGN KEY(item_ID) REFERENCES Item(item_ID) ON UPDATE CASCADE
 );
 
@@ -159,6 +159,13 @@ VALUES
     ('eigram2','admin2p@ss'),
     ('elymer3','admin3p@ss'),
     ('maam4','admin4p@ss')
+;
+
+UPDATE `Admin` SET 
+	(`admin_Password` = MD5('admin1p@ss') WHERE `Admin`.`admin_ID` = 1),
+	(`admin_Password` = MD5('admin2p@ss') WHERE `Admin`.`admin_ID` = 2),
+	(`admin_Password` = MD5('admin3p@ss') WHERE `Admin`.`admin_ID` = 3),
+	(`admin_Password` = MD5('admin4p@ss') WHERE `Admin`.`admin_ID` = 4),
 ;
 
 -- insert admin contact
