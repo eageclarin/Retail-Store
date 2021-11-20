@@ -12,6 +12,8 @@
 
         if ($id == 0) { //id == 0 is guest
             header("location:login.php?itemID=$item&branch=$chosenBranch&categ=$chosenCateg");
+        } else if ($id == "temp") {
+            header("location:login.php?branch=$chosenBranch&categ=$chosenCateg");
         }
     }
     
@@ -174,8 +176,12 @@
     this is the main page..
     <?php
         if ($id != 0){ //if not guest (guest is id ==0)
-            $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT cust_Username FROM Customer WHERE cust_ID='$id'"));
-            $name = $row['cust_Username'];
+            if ($id == 'temp') {
+                $name = "Guest";
+            } else {
+                $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT cust_Username FROM Customer WHERE cust_ID='$id'"));
+                $name = $row['cust_Username'];
+            }
         }
 
         if ($name == "Guest") { //Checks if customer is logged in
@@ -219,9 +225,16 @@
                     <li class="drp">
                         <p class="drpbtn"> Change Branch </p>
                         <div class="drp-content">
-                            <a href="main.php?id=<?php echo $id ?>&branch=1&categ=All"> Paoay </a>
-                            <a href="main.php?id=<?php echo $id ?>&branch=2&categ=All"> Vicas </a>
-                            <a href="main.php?id=<?php echo $id ?>&branch=3&categ=All"> Cordon </a>
+                            <?php
+                                if ($id == 0) {
+                                    $temp = 'temp';
+                                } else {
+                                    $temp = $id;
+                                }
+                            ?>
+                            <a href="main.php?id=<?php echo $temp ?>&branch=1&categ=All"> Paoay </a>
+                            <a href="main.php?id=<?php echo $temp ?>&branch=2&categ=All"> Vicas </a>
+                            <a href="main.php?id=<?php echo $temp ?>&branch=3&categ=All"> Cordon </a>
                         </div>
                     </li>
                     <li class="drp">
