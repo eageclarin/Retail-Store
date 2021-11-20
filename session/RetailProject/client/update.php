@@ -67,13 +67,6 @@
                 break;
             case "total":
                 //update total in cart
-                $sqlUCart = "UPDATE Cart SET total=(
-                    SELECT SUM(total) FROM Ca_contains_I
-                        WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')
-                    )
-                WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id');";
-                $resUCart = mysqli_query($conn, $sqlUCart);
-
                 $sqlTotal = "SELECT total FROM Cart c
                             INNER JOIN Cu_orders_Ca cca ON (c.cart_ID = cca.cart_ID)
                             WHERE cca.customer_ID = $id AND cca.branch_ID = $branch";
