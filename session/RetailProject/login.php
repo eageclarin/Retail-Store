@@ -24,7 +24,7 @@
     <div class="container-sm p-5 my-5 text-gray" style="max-width:50%;">
         <div class="jummbotron">
             <h3 style="color:#343434"> Log In </h3>
-            <form action="login.phpitemID=<?php echo $item ?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>" method="post"> 
+            <form action="login.php?itemID=<?php echo $item ?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>" method="post"> 
                 Username: <input type="text"  class="form-control" name="username" required></br>
                 Password: <input type="password"  class="form-control" name="password"  required></br>
                 <input type="submit" value="Log In" name="login" class="form-control" style="width:150px;">
