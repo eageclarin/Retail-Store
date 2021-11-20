@@ -1,5 +1,12 @@
 <?php
     include_once '../env/connection.php';
+    $item = $branch = $categ = "";
+
+    if (isset($_GET['itemID']) && isset($_GET['branch']) && isset($_GET['categ'])) {
+        $item = $_GET['itemID'];
+        $branch = $_GET['branch'];
+        $categ = $_GET['categ'];
+    }
 ?>
 
 <!DOCTYPE html>
@@ -15,7 +22,7 @@
     <!-- Registration form -->
     <div class="container-sm p-5 my-5 bg-dark text-white" style="max-width:50%;">
         <h2> Register </h2>
-        <form action="register.php" method="post" class="form-inline"> 
+        <form action="register.php?itemID=<?php echo $item ?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>" method="post" class="form-inline"> 
             <div class="form-group">
                 <div class="mb-1 mt-1">
                     <label for="username" >Username: </label>
@@ -79,7 +86,7 @@
             $city = mysqli_real_escape_string($conn,$_POST['city']);
             $province = mysqli_real_escape_string($conn,$_POST['province']);
             $postal = mysqli_real_escape_string($conn,$_POST['postal']);
-        
+
 
             #check if username or email exists
             $check_query = "SELECT * FROM customer where cust_Username = '$username' OR cust_Email = '$email' LIMIT 1;";
@@ -94,10 +101,10 @@
                 VALUES ('$username', '$password', '$firstName', '$lastName', '$email', '$brgy', '$city', '$province', '$postal');";
                 mysqli_query($conn, $insert);
                 $id = mysqli_insert_id($conn);
-                $_SESSION['CustomerID'] = $id;
-                $_SESSION['CustomerFName']=$username;
-                echo $_SESSION['CustomerFName'];
-                header('location: ../main.php');
+                //$_SESSION['cust_ID'] = $id;
+                //$_SESSION['cust_Username']=$username;
+                //echo $_SESSION['CustomerFName'];
+                header("location:../main.php?action=add&id=$id&item=$item&branch=$branch&categ=$categ");
             } else {                            #else, notify user
                 while ($row = mysqli_fetch_assoc($result)) {
                     if ($row['cust_Username']==$username && $row['cust_Email']==$email) {
