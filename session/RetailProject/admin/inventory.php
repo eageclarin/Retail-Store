@@ -84,7 +84,7 @@
                                         <td>
 
                                             <button type="submit" class="btn btn-danger" name="Delete">
-                                                <a class="text-light"href="delete.php?delete_item_id=<?php echo $inventory_row["item_ID"]?>">DELETE</a>
+                                                <a class="text-light"href="delete.php?delete_item_id=<?php echo $inventory_row["item_ID"]?>&inventoryID=<?php echo $branchID ?>">DELETE</a>
                                             </button>
                                         </td>
 
