@@ -1,0 +1,52 @@
+.drp {
+	position: relative;
+  	display: inline-block;
+}
+
+.drpbtn {
+	background-color: black;
+	color: white;
+	font-size: 16px;
+
+	padding-left: 0px;
+	padding-right: 50px;
+	
+	border: none;
+	cursor: pointer;
+
+	animation: fade ease-in;
+}
+
+.drp-content {
+	background-color: #1d1e22;
+	display: none;
+	position: absolute;
+	
+	min-width: 160px;
+	min-height: 250px;
+
+	overflow-y: auto;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+}
+
+.drp-content a {
+	color: white;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+}
+
+.drp-content a:hover {
+	background-color: #e8e8e8;
+	color: black;
+}
+
+.drp:hover .drp-content {
+	display: block;
+}
+
+.drp:hover .drpbtn {
+	text-decoration: none;
+	color: #e50913;
+}
