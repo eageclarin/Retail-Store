@@ -4,6 +4,7 @@ include '../env/adminAuth.php';
 
 if(isset($_GET['delete_item_id'])){
     $id=$_GET['delete_item_id'];
+    $inventoryID = $_GET['inventoryID'];
 
     $delete_query = "DELETE from BI_has_I where item_ID=$id AND inventory_ID=$inventoryID";
    
