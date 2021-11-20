@@ -15,7 +15,7 @@
     
     <?php 
     #sample only
-    $_SESSION['CartID'] = 2;
+    //$_SESSION['CartID'] = 2;
         if (!empty($_SESSION['CustomerID'])&& !empty($_SESSION['CartID'])) {           #if login button is pressed
             $id = $_SESSION['CustomerID'];
             $cartID = $_SESSION['CartID'];
@@ -41,9 +41,14 @@
     
             echo '<div class="container-sm p-5 my-3 bg-dark text-white" >';
             #queries for items
-            $item_query = "SELECT * FROM item INNER JOIN ca_contains_i ON (item.item_ID=ca_contains_i.item_ID) INNER JOIN cart ON(ca_contains_i.cart_ID=cart.cart_ID) WHERE cart.cart_ID = '$cartID';";
+            $item_query = "SELECT item_Name, item_RetailPrice, quantity, cai.total AS itemTotal, c.total AS totalPrice
+                    FROM item i
+                    INNER JOIN ca_contains_i cai ON (i.item_ID=cai.item_ID)
+                    INNER JOIN cart c ON (cai.cart_ID=c.cart_ID)
+                    WHERE c.cart_ID = '$cartID';";
             $item_result = mysqli_query($conn, $item_query);
             $item_check = mysqli_num_rows($item_result);
+            $totalPrice = 0;
             if ($item_check>0) {  
                 echo "<table class='table' style='color:white;'>";
                 echo " <tr>
@@ -58,10 +63,15 @@
                     echo "<td>" .$item_row['item_Name']. "</td>";
                     echo "<td>" .$item_row['item_RetailPrice']. "</td>";
                     echo "<td>" .$item_row['quantity']. "</td>";
-                    echo "<td>" .$item_row['total_Price']. "</td>"; #Note: I changed this attribute name in ca_contains_i
+                    echo "<td>" .$item_row['itemTotal']. "</td>"; #Note: I changed this attribute name in ca_contains_i
                     echo "</tr>";
-                    
-                }   
+
+                    $totalPrice = $item_row['totalPrice'];
+                }
+
+                echo "<tr> <td></td> <td></td> <td></td>";
+                echo "<td><b>" .$totalPrice. "</b></td>";
+                echo "</tr>";
                 echo "</table>";
                               
             }

@@ -1,6 +1,6 @@
 <?php
     include_once '../env/connection.php';
-    $id = $branch = $item = $qty = "";
+    $id = $branch = $item = $qty = $disable = "";
 
     if (isset($_GET['id']) && isset($_GET['branch'])) {
         $id = $_GET['id'];
@@ -8,9 +8,6 @@
     }
     if (isset($_GET['item'])) {
         $item = $_GET['item'];
-    }
-    if (isset($_GET['qty'])) {
-        $itemQty = $_GET['qty'];
     }
 
     $sqlTotal = "SELECT total FROM Cart c
@@ -24,13 +21,13 @@
     }
 
     if (!empty($_GET['action'])) {
-		switch($_GET['action']) {
+        switch($_GET['action']) {
             case "delete":
                 $sqlSearch = "SELECT * FROM Ca_contains_I cai
-                        INNER JOIN Cu_orders_Ca cca ON (cai.cart_ID = cca.cart_ID)
-                        INNER JOIN Item i ON (cai.item_ID = i.item_ID)
-                        WHERE cca.customer_ID='$id' AND cca.branch_ID='$branch'
-                            AND cai.item_ID='$item'";
+                                INNER JOIN Cu_orders_Ca cca ON (cai.cart_ID = cca.cart_ID)
+                                INNER JOIN Item i ON (cai.item_ID = i.item_ID)
+                                WHERE cca.customer_ID='$id' AND cca.branch_ID='$branch'
+                                    AND cai.item_ID='$item'";
                 $resSearch = mysqli_query($conn, $sqlSearch);
                 $countSearch = mysqli_num_rows($resSearch);
 
@@ -44,14 +41,14 @@
 
                     if ($resDelete) {
                         $sqlUpdate = "UPDATE Cart SET total=(
-                            SELECT SUM(total) FROM Ca_contains_I WHERE cart_ID = $cartID)
-                            WHERE cart_ID = $cartID";
+                                    SELECT SUM(total) FROM Ca_contains_I WHERE cart_ID = $cartID)
+                                    WHERE cart_ID = $cartID";
                         $resUpdate = mysqli_query($conn, $sqlUpdate);
-            
+                    
                         //increase stock in bi_has_i
                         $sqlDelete = "UPDATE BI_has_I SET item_Stock = item_Stock + $itemQty
-                                        WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$branch')
-                                        AND item_ID = '$item'";
+                                                WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$branch')
+                                                AND item_ID = '$item'";
                         $resDelete = mysqli_query($conn, $sqlDelete);
 
                         header("location: cart.php?id=$id&branch=$branch");
@@ -59,63 +56,16 @@
                 }
 
                 break;
-            case "update":
-                $sqlSearch = "SELECT * FROM Ca_contains_I cai
-                        INNER JOIN Cu_orders_Ca cca ON (cai.cart_ID = cca.cart_ID)
-                        INNER JOIN Item i ON (cai.item_ID = i.item_ID)
-                        WHERE cca.customer_ID='$id' AND cca.branch_ID='$branch'
-                            AND cai.item_ID='$item'";
-                $resSearch = mysqli_query($conn, $sqlSearch);
-                $countSearch = mysqli_num_rows($resSearch);
+            case "order":
+                $sqlOrder = "SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID='$id' AND branch_ID='$branch'";
+                $resOrder = mysqli_query($conn, $sqlOrder);
+                $rowOrder = mysqli_fetch_assoc($resOrder);
 
-				if ($countSearch >= 1){ //if there's match, update
-					$rowSearch = mysqli_fetch_assoc($resSearch);
-					$itemPrice = $rowSearch['item_RetailPrice'];
-                    $oldQty = $rowSearch['quantity'];
-
-					$itemTotalP = $itemQty * $itemPrice;
-					$sqlUpdate = "UPDATE Ca_contains_I SET quantity='$itemQty', total='$itemTotalP'";
-					$resUpdate = mysqli_query($conn, $sqlUpdate);
-
-                    //update total in cart
-                    $sqlUCart = "UPDATE Cart SET total=(
-                        SELECT SUM(total) FROM Ca_contains_I
-                            WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')
-                        )
-                    WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id');";
-                    $resUCart = mysqli_query($conn, $sqlUCart);
-
-                    if ($itemQty > $oldQty) {
-                        //delete stock in bi_has_i
-                        $remove = $itemQty - $oldQty;
-                        $sqlDelete = "UPDATE BI_has_I SET item_Stock = item_Stock - $remove
-                                        WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$branch')
-                                        AND item_ID = '$item'";
-                        $resDelete = mysqli_query($conn, $sqlDelete);
-                    } else if ($itemQty < $oldQty) {
-                        //add stock in bi_has_i
-                        $add = $oldQty - $itemQty;
-                        $sqlDelete = "UPDATE BI_has_I SET item_Stock = item_Stock - $add
-                                        WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$branch')
-                                        AND item_ID = '$item'";
-                        $resDelete = mysqli_query($conn, $sqlDelete);
-                    }
-				}
-                echo $itemTotalP;
-                break;
-            case "total":
-                $sqlTotal = "SELECT total FROM Cart c
-                            INNER JOIN Cu_orders_Ca cca ON (c.cart_ID = cca.cart_ID)
-                            WHERE cca.customer_ID = $id AND cca.branch_ID = $branch";
-                $resTotal = mysqli_query($conn, $sqlTotal);
-                $countTotal = mysqli_num_rows($resTotal);
-    
-                if($countTotal >= 1) {
-                    $rowTotal = mysqli_fetch_assoc($resTotal);
-                    $totalPrice = $rowTotal['total']; 
-                }
-                echo $totalPrice;
-                break;
+                $_SESSION['CustomerID'] = $id;                #store in $_SESSION for referencing later
+                $_SESSION['CartID'] = $rowOrder['cart_ID'];
+                mysqli_close($conn);
+                header("location: order.php");                    #redirect to adminHome.php
+                exit;
         }
     }
 ?>
@@ -129,7 +79,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "cart.php",
+                url: "update.php",
                 data: dataString,
                 success: function(data) {
                 $("#totalEach-"+getItem).html(data);
@@ -147,7 +97,7 @@
 
             $.ajax({
                 type: "GET",
-                url: "cart.php",
+                url: "update.php",
                 data: dataString,
                 success: function(data){
                 $("#totalPrice").html(data);
@@ -192,6 +142,18 @@
                                 $itemQty = $rowCart['quantity'];
                                 $itemTotal = $rowCart['total'];
                                 $cartID = $rowCart['cartID'];
+
+                                $sqlStock = "SELECT item_Stock FROM BI_has_I bii
+                                                    INNER JOIN B_has_BI bbi ON (bii.inventory_ID = bbi.inventory_ID)
+                                                    WHERE bii.item_ID = $itemID";
+                                $resStock = mysqli_query($conn, $sqlStock);
+                                $rowStock = mysqli_fetch_assoc($resStock);
+
+                                if ($rowStock['item_Stock'] <= 0) {
+                                    $disable = "disabled";
+                                } else {
+                                    $disable = "";
+                                }
                     ?>
                         <tr>
                             <!-- start order delete -->
@@ -211,7 +173,7 @@
                             <!-- start order qty -->
                             <td width="30%">
                                 <form action="" method="post">
-                                    <select name="qty" class="select" onchange="changeQty('<?php echo $id ?>', '<?php echo $itemID ?>', this.value, '<?php echo $branch ?>');">
+                                    <select <?php echo $disable ?> name="qty" class="select" onchange="changeQty('<?php echo $id ?>', '<?php echo $itemID ?>', this.value, '<?php echo $branch ?>');">
                             <?php
                                     echo '<option value="'.$itemQty.'" selected>'.$itemQty.' </option>';
                             ?>
@@ -273,7 +235,9 @@
                 <!-- end total -->
                 <!-- start content-right-pay -->
             <div class="content-right-pay" style="height: 10%;">
-                <button class="pay" onclick="payCompute()"> Pay </button>
+                <form action="cart.php?action=order&id=<?php echo $id ?>&branch=<?php echo $branch ?>" method="post">
+                    <button> Order </button>
+                </form>
             </div> <!-- end  content-right-pay -->
             </div>
             <!-- end right-total -->
