@@ -209,10 +209,16 @@
                         ?> </p>
                 </li>
                 <li>
-                    <a href="client/cart.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>"> <img src="cart.png" /> </a> 
+                    Cart <a href="client/cart.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>"> <img src="cart.png" /> </a> 
                 </li>
                 <li>
-                    Branch: <?php echo $chosenBranch ?>
+                    Branch: <?php
+                        switch($chosenBranch) {
+                            case 1: echo "Paoay"; break;
+                            case 2: echo "Vicas"; break;
+                            case 3: echo "Cordon"; break;
+                        }
+                    ?>
                 </li>
             </ul>
         </div>

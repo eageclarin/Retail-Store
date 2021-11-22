@@ -162,11 +162,13 @@ VALUES
 ;
 
 UPDATE `Admin` SET 
-	(`admin_Password` = MD5('admin1p@ss') WHERE `Admin`.`admin_ID` = 1),
-	(`admin_Password` = MD5('admin2p@ss') WHERE `Admin`.`admin_ID` = 2),
-	(`admin_Password` = MD5('admin3p@ss') WHERE `Admin`.`admin_ID` = 3),
-	(`admin_Password` = MD5('admin4p@ss') WHERE `Admin`.`admin_ID` = 4),
-;
+	`admin_Password` = MD5('admin1p@ss') WHERE `Admin`.`admin_ID` = 1;
+UPDATE `Admin` SET 
+	`admin_Password` = MD5('admin2p@ss') WHERE `Admin`.`admin_ID` = 2;
+UPDATE `Admin` SET 
+	`admin_Password` = MD5('admin3p@ss') WHERE `Admin`.`admin_ID` = 3;
+UPDATE `Admin` SET 
+	`admin_Password` = MD5('admin4p@ss') WHERE `Admin`.`admin_ID` = 4;
 
 -- insert admin contact
 INSERT INTO `Admin_Contact` (`admin_ID`,`contact`)
