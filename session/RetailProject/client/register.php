@@ -22,11 +22,7 @@
     <!-- Registration form -->
     <div class="container-sm p-5 my-5 bg-dark text-white" style="max-width:50%;">
         <h2> Register </h2>
-<<<<<<< HEAD
         <form action="register.php?itemID=<?php echo $item ?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>" method="post" class="form-inline"> 
-=======
-        <form action="register.php" method="post" class="form-inline"> 
->>>>>>> Jaemie
             <div class="form-group">
                 <div class="mb-1 mt-1">
                     <label for="username" >Username: </label>
@@ -105,17 +101,10 @@
                 VALUES ('$username', '$password', '$firstName', '$lastName', '$email', '$brgy', '$city', '$province', '$postal');";
                 mysqli_query($conn, $insert);
                 $id = mysqli_insert_id($conn);
-<<<<<<< HEAD
                 //$_SESSION['cust_ID'] = $id;
                 //$_SESSION['cust_Username']=$username;
                 //echo $_SESSION['CustomerFName'];
                 header("location:../main.php?action=add&id=$id&item=$item&branch=$branch&categ=$categ");
-=======
-                $_SESSION['CustomerID'] = $id;
-                $_SESSION['CustomerFName']=$username;
-                echo $_SESSION['CustomerFName'];
-                header('location: ../main.php');
->>>>>>> Jaemie
             } else {                            #else, notify user
                 while ($row = mysqli_fetch_assoc($result)) {
                     if ($row['cust_Username']==$username && $row['cust_Email']==$email) {

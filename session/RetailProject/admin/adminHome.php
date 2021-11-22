@@ -1,7 +1,6 @@
 <?php
 
 include_once '../env/connection.php';
-<<<<<<< HEAD
 include_once '../env/adminAuth.php';
 
 ?>
@@ -28,18 +27,3 @@ include_once '../env/adminAuth.php';
     </div>
 </body>
 </html>
-=======
-
-
-
-
-if (!empty($_SESSION['admin'])) {
-    echo "Hello admin ". $_SESSION['admin_User'];
-} else {
-    echo "You're not allowed here.";
-}
-
-
-
-?>
->>>>>>> Jaemie

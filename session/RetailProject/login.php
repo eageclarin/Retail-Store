@@ -2,7 +2,7 @@
     include_once 'env/connection.php';
     $item = $branch = $categ = "";
 
-    if (isset($_GET['itemID']) && isset($_GET['branch']) && isset($_GET['categ'])) {
+    if (isset($_GET['itemID']) || isset($_GET['branch']) || isset($_GET['categ'])) {
         $item = $_GET['itemID'];
         $branch = $_GET['branch'];
         $categ = $_GET['categ'];
@@ -24,11 +24,7 @@
     <div class="container-sm p-5 my-5 text-gray" style="max-width:50%;">
         <div class="jummbotron">
             <h3 style="color:#343434"> Log In </h3>
-<<<<<<< HEAD
             <form action="login.php?itemID=<?php echo $item ?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>" method="post"> 
-=======
-            <form action="login.php" method="post"> 
->>>>>>> Jaemie
                 Username: <input type="text"  class="form-control" name="username" required></br>
                 Password: <input type="password"  class="form-control" name="password"  required></br>
                 <input type="submit" value="Log In" name="login" class="form-control" style="width:150px;">
@@ -38,11 +34,7 @@
                     <input type="submit" value="Return" name="return" class="form-control" style="width:150px;">
                 </div>
             </form>
-<<<<<<< HEAD
             Don't have an account yet? <a href='client/register.php?itemID=<?php echo $item?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>'>Register here</a>
-=======
-            Don't have an account yet? <a href='client/register.php'>Register here</a>
->>>>>>> Jaemie
         </div>
     </div>
 
@@ -50,19 +42,9 @@
         if (isset($_POST['login'])) {           #if login button is pressed
             $username = $_POST['username'];
             $password = $_POST['password'];
-<<<<<<< HEAD
-
-<<<<<<< HEAD
-            $password = md5($password);         #hash
-=======
-            // $password = md5($password);         #hash
->>>>>>> Elymer
-
-=======
 
             $password = md5($password);         #hash
 
->>>>>>> Jaemie
             #Check if admin or customer ------------------------------------------------------------------------------
             $admin_query = "SELECT * FROM admin WHERE admin_Username = '$username' AND admin_Password='$password';"; #check if in admin table
             $admin_result = mysqli_query($conn,$admin_query);
@@ -87,18 +69,11 @@
                 while ($row = mysqli_fetch_assoc($result)) {
                     if ($row['cust_Username']==$username && $row['cust_Password']==$password) {
                         $exists = true;
-<<<<<<< HEAD
                         $customerID = $row['cust_ID'];      
                         //$_SESSION['CustomerUName'] = $row['cust_Username'];
                         mysqli_close($conn);
 
                         header("Location: main.php?action=add&id=$customerID&item=$item&branch=$branch&categ=$categ");                           #Return to main.php
-=======
-                        $_SESSION['CustomerID'] = $row['cust_ID'];      
-                        $_SESSION['CustomerFName'] = $row['cust_FName'];
-                        mysqli_close($conn);
-                        header("Location: main.php");                           #Return to main.php
->>>>>>> Jaemie
                         exit;
                     }
                 }

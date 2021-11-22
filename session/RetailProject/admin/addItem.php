@@ -1,8 +1,5 @@
 <?php
 
-<<<<<<< HEAD
-?>
-=======
 include_once '../env/connection.php';
 include_once '../env/adminAuth.php';
 
@@ -133,4 +130,3 @@ include_once '../env/adminAuth.php';
 
 </body>
 </html>
->>>>>>> Elymer
