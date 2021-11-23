@@ -20,6 +20,50 @@ include_once '../env/adminAuth.php';
     <div class="body">
         <?php include "./components/header.html"?>
         <?php include "./components/nav.html"?>
+        <div class="item-display">
+            <table class="table table-striped table-hover table-success">
+                <thead>
+                    <tr>
+                        <th scope="col">Cart ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Items</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Address</th>
+
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $branchID = $_SESSION['branchID'] ;
+                    $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca where status=1 and branch_ID=$branchID"; 
+                    $orders_result = mysqli_query($conn,$orders_query);
+                    $orders_Check = mysqli_num_rows($orders_result);
+                   
+                        if ($orders_Check>0) {                                                       
+                            while($orders_row = mysqli_fetch_assoc($orders_result)) {
+                               echo"<tr>
+                                    <td>".$orders_row['cart_ID']."</td>
+                                    <td>". $orders_row['cust_FName'] ." ".$orders_row['cust_LName'] ."</td>
+                                    <td></td>
+                                    <td></td>
+                                    <td>". $orders_row['order_Date'] ."</td>
+                                    <td>". $orders_row['cust_ABrgy'] .", ".$orders_row['cust_ACity'] .", ".$orders_row['cust_AProvince'] .", ".$orders_row['cust_APostal'] ."</td>
+                                    </tr>";
+                            }
+                        } 
+
+                     
+
+                        
+                        
+                      
+                        
+                    ?>
+                </tbody>
+            </table>
+        </div>
        
     </div>
 

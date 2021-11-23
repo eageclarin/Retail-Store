@@ -74,24 +74,43 @@
                                         <td>" . $inventory_row["item_Category"]. "</td>
                                         <td>" . $inventory_row["item_Brand"]."</td>
                                         <td>" . $inventory_row["item_Stock"]."</td>
-                                        <td>"?>       
-                                            <button type="submit" class="btn btn-success" name="edit">
+                                        <td>"?>
+                                             <form action="editItem.php" method="post">
+                                                <div class="input-group mb-3" style="width:100%;">
+                                                                               
+                                                    <input type="number" style="display:none;" value="<?php echo $inventory_row["item_ID"]?>" name="Item_ID" >
+                                                    <input type="number" style="display:none;" value="<?php echo $inventoryID?>" name="inventory_ID" >
+                                                    <button class="btn btn-success text-light " name="editItem" type="submit" id="button-addon2" >EDIT</button>
+
+                                                </div>
+                                            </form>
+
+                                            <!-- <button type="submit" class="btn btn-success" name="edit">
                                                 <a class="text-light"href="editItem.php?edit_item_id=<?php echo $inventory_row["item_ID"]; ?>">EDIT</a>
-                                            </button>
+                                            </button> -->
 
                                          
                                         </td>
                                         <td>
+                                        <form action="UpdateStock.php" method="post">
+                                                <div class="input-group mb-3" style="width:100%;">
+                                                                               
+                                                    <input type="number" style="display:none;" value="<?php echo $inventory_row["item_ID"]?>" name="Item_ID" >
+                                                    <input type="number" style="display:none;" value="<?php echo $inventoryID?>" name="inventory_ID" >
 
-                                            <button type="submit" class="btn btn-danger" name="Delete">
+                                                    <button class="btn btn-danger text-light " name="deleteStock" type="submit" id="button-addon2" >Delete</button>
+
+                                                </div>
+                                            </form>
+                                            <!-- <button type="submit" class="btn btn-danger" name="Delete">
                                                 <a class="text-light"href="delete.php?delete_item_id=<?php echo $inventory_row["item_ID"]?>&inventoryID=<?php echo $branchID ?>">DELETE</a>
-                                            </button>
+                                            </button> -->
                                         </td>
 
 
                                         <td class="text-center">
 
-                                            <form action="addStock.php" method="post">
+                                            <form action="UpdateStock.php" method="post">
                                                 <div class="input-group mb-3" style="width:100%;">
                                                 
                                                     <input type="number" class="form-control "   name="Stock" min=1 value=0>
@@ -101,7 +120,8 @@
                                                     
                                                     value="<?php echo $inventory_row["item_ID"]?>" name="Item_ID" >
                                                     
-                                                    <button class="btn btn-primary text-light " name="addStock" type="submit" id="button-addon2" >ADD</button>
+                                                    <button class="btn btn-primary text-light " name="addStock" type="submit" id="button-addon2" >+</button>
+                                                    <button class="btn btn-danger text-light " name="decreaseStock" type="submit" id="button-addon2" >-</button>
                                            
                                                 </div>
                                             </form>

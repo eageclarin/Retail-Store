@@ -33,16 +33,16 @@ include_once '../env/adminAuth.php';
                 </div>
                 <div class="col-md-6">
                     <label for="Retail_Price" class="form-label">Retail Price</label>
-                    <input type="number" class="form-control" name="RetailPrice" min=0>
+                    <input type="number" class="form-control" name="RetailPrice" min=0  step=0.01>
                 </div>
                 <div class="col-md-6">
                     <label for="Wholesale_Price" class="form-label">Wholesale Price</label>
-                    <input type="number" class="form-control" name="WholesalePrice"  min=0>
+                    <input type="number" class="form-control" name="WholesalePrice"  min=0  step=0.01>
                 </div>
                 
                 <div class="col-md-6">
                     <label for="Retail_Price" class="form-label">Category</label>
-                    <input type="text" class="form-control" name="Category" min=0 step=0.001>
+                    <input type="text" class="form-control" name="Category" >
                 </div>
                 <div class="col-md-6">
                     <label for="Brand" class="form-label">Brand</label>
@@ -103,14 +103,16 @@ include_once '../env/adminAuth.php';
                 while($itemrow = mysqli_fetch_array($item_result)) {
                     echo $itemID;
                     $itemID = $itemrow['item_ID'];
-                    // exit;               
+                                 
                 }       
             }else{
                 die(mysqli_error($conn));
             }                                         
                             
             
-
+            echo $inventoryID;
+            echo $itemID;
+            echo $Stock;
             $Bi_has_i_query= "INSERT INTO bi_has_i( inventory_ID,item_ID,item_Stock ) VALUES ($inventoryID , $itemID , $Stock )";
             $Bi_has_i_result = mysqli_query($conn,$Bi_has_i_query);
 

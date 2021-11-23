@@ -12,11 +12,12 @@
     $item_Brand = "";
 
     
-        if (isset($_GET['edit_item_id'])) {
-            $_SESSION['item_id'] = $_GET['edit_item_id'];
+        if (isset($_POST['editItem'])) {
+       
 
-                    $inventoryID=$_SESSION['inventoryID'];
-                    $id =  $_SESSION['item_id'];
+                    $inventoryID=$_POST['inventory_ID'];
+                    $id = $_POST['Item_ID'];
+                    $_SESSION['item_id']= $id ;
                     $item_query ="SELECT *FROM item  NATURAL JOIN bi_has_i WHERE item_ID = $id AND inventory_ID = $inventoryID ";
                     $item_result = mysqli_query($conn,$item_query);
                     $item_Check = mysqli_num_rows($item_result);
@@ -33,14 +34,7 @@
                     }else{
                         header('location: inventory.php');
                     }
-
-             
-               
-            
-            
-            
-            
-            
+  
     
         }
   
