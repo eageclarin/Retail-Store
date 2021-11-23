@@ -146,7 +146,7 @@
                                 $itemName = $rowCart['item_Name'];
                                 $itemQty = $rowCart['quantity'];
                                 $itemTotal = $rowCart['total'];
-                                $cartID = $rowCart['cartID'];
+                                $cartID = $rowCart['cart_ID'];
 
                                 $sqlStock = "SELECT item_Stock FROM BI_has_I bii
                                                     INNER JOIN B_has_BI bbi ON (bii.inventory_ID = bbi.inventory_ID)
