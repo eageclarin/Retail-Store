@@ -12,6 +12,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title> Register </title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -122,7 +123,7 @@
         }
 
         if (isset($_POST['back'])) {            #if cancel is pressed
-            header('location: ../main.php');
+            header("location:../main.php?branch=$branch&categ=All");
         }
 
         mysqli_close($conn);

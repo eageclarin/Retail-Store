@@ -13,7 +13,7 @@
         if ($id == 0) { //id == 0 is guest
             header("location:login.php?itemID=$item&branch=$chosenBranch&categ=$chosenCateg");
         } else if ($id == "temp") {
-            header("location:login.php?branch=$chosenBranch&categ=$chosenCateg");
+            header("location:main.php?id=$id&branch=$chosenBranch&categ=$chosenCateg");
         }
     }
     
@@ -46,6 +46,7 @@
 						INNER JOIN Customer cu ON (cca.customer_ID = cu.cust_ID)
 						WHERE cu.cust_ID = '$id'
 							AND b.branch_ID = '$chosenBranch'
+                            AND cca.status = 0;
 					";
 		$resCart = mysqli_query($conn, $sqlCart);
 		$countC = mysqli_num_rows($resCart);
@@ -75,7 +76,8 @@
 		$sqlSearch = "SELECT * FROM Ca_contains_I cai
 						INNER JOIN Cu_orders_Ca cca ON (cai.cart_ID = cca.cart_ID)
 						INNER JOIN Item i ON (cai.item_ID = i.item_ID)
-						WHERE i.item_ID = '$item' AND cca.customer_ID = '$id';
+						WHERE i.item_ID = '$item' AND cca.customer_ID = '$id'
+                        AND cca.branch_ID = '$chosenBranch' AND cca.status = 0;
 					";
 		$resSearch = mysqli_query($conn, $sqlSearch);
 		$countSearch = mysqli_num_rows($resSearch);
@@ -89,24 +91,9 @@
 			$orderQty++;
 			$orderTotal = $orderQty * $orderPrice;
 
-            /* for sql
-			UPDATE Ca_contains_I SET quantity = '$orderQty', total = '$orderTotal'
-				WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id');
-
-			UPDATE Cart SET total=(
-				SELECT SUM(total) FROM Ca_contains_I
-					WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')
-				)
-            WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id');
-            
-            UPDATE BI_has_I SET item_Stock = item_Stock - 1
-                WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$chosenBranch')
-                AND item_ID = '$item';
-            */
-
             //update qty and total of item in ca_contains_i then update cart and stock
             $sqlUpdate = "UPDATE Ca_contains_I SET quantity = '$orderQty', total = '$orderTotal'
-							WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')
+							WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id' AND branch_ID = '$chosenBranch' AND `status`=0)
 						";
             $resUpdate = mysqli_query($conn, $sqlUpdate);
 
@@ -114,9 +101,9 @@
                 //update total in cart
                 $sqlUpdate = "UPDATE Cart SET total=(
                     SELECT SUM(total) FROM Ca_contains_I
-                        WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')
+                        WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id' AND branch_ID = '$chosenBranch' AND `status`=0)
                     )
-                WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id');";
+                WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id' AND branch_ID = '$chosenBranch' AND `status`=0);";
                 $resUpdate = mysqli_query($conn, $sqlUpdate);
 
                 //decrease stock in bi_has_i
@@ -128,32 +115,21 @@
 
 			header("location: main.php?id=$id&branch=$chosenBranch&categ=$chosenCateg");
 		} else { //if not in cart yet, insert
-            /* for sql
-			INSERT INTO Ca_contains_I VALUES
-			    ($item, (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id'),1, '$orderPrice');
-			UPDATE Cart SET total=(
-				SELECT SUM(total) FROM Ca_contains_I
-					WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')
-				)
-                WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id');
-            UPDATE BI_has_I SET item_Stock = item_Stock - 1
-                WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$chosenBranch')
-                AND item_ID = '$item';
-            */
-
             //insert into ca_contains_i then update total in cart and update stock
+            $sqlCartID = mysqli_query($conn, "SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id' AND branch_ID = '$chosenBranch' AND `status`=0");
+            $rowCart = mysqli_fetch_assoc($sqlCartID);
+            $cart_ID = $rowCart['cart_ID'];
             $sqlAdd = "INSERT INTO Ca_contains_I VALUES
-						($item, (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id'),
-						1, '$orderPrice')";
+						($item,$cart_ID,1,'$orderPrice')";
             $resAdd = mysqli_query($conn, $sqlAdd);
 
             if ($resAdd){
                 //update total in cart
                 $sqlUpdate = "UPDATE Cart SET total=(
                     SELECT SUM(total) FROM Ca_contains_I
-                        WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')
+                        WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id' AND branch_ID = '$chosenBranch' AND `status`=0)
                     )
-                    WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id')";
+                    WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id' AND branch_ID = '$chosenBranch' AND `status`=0)";
                 $resUpdate = mysqli_query($conn, $sqlUpdate);
 
                 //decrease stock in bi_has_i
@@ -171,6 +147,7 @@
 <html>
 <head>
     <link rel="stylesheet" href="main.css" />
+    <title> Main </title>
 </head>
 <body>
     this is the main page..
@@ -185,10 +162,10 @@
         }
 
         if ($name == "Guest") { //Checks if customer is logged in
-            echo "<a href='login.php'><button>Log In</button></a>";
-            echo "<a href='client/register.php'><button>Register</button></a>";
+            echo "<a href='login.php?branch=".$chosenBranch."&categ=".$chosenCateg."'><button>Log In</button></a>";
+            echo "<a href='client/register.php?branch=".$chosenBranch."&categ=".$chosenCateg."'><button>Register</button></a>";
         } else {
-            echo " <a href='login.php'><button>Logout</button></a>";
+            echo " <a href='login.php?branch=".$chosenBranch."&categ=".$chosenCateg."'><button>Logout</button></a>";
         }
     ?>
     
@@ -208,9 +185,16 @@
                             
                         ?> </p>
                 </li>
-                <li>
-                    Cart <a href="client/cart.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>"> <img src="cart.png" /> </a> 
-                </li>
+                <?php
+                        if ($name != "Guest") {
+                    ?>
+                        <li>
+                    
+                            Cart <a href="client/cart.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>"> <img src="cart.png" /> </a> 
+                        </li>
+                <?php  
+                        }
+                    ?>
                 <li>
                     Branch: <?php
                         switch($chosenBranch) {

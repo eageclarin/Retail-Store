@@ -5,6 +5,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<title> Order </title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -20,7 +21,7 @@
             $id = $_SESSION['CustomerID'];
             $cartID = $_SESSION['CartID'];
             
-            $update = "UPDATE cu_orders_ca SET status='1' WHERE customer_ID ='$id' AND cart_ID='$cartID';";
+            $update = "UPDATE cu_orders_ca SET status=1 WHERE customer_ID ='$id' AND cart_ID='$cartID';";
             mysqli_query($conn, $update);
 
             #Display customer and order details ------------------------------------------------------------------------------
@@ -82,7 +83,7 @@
         mysqli_close($conn);
     ?>
 
-    <form action="../main.php" method="post" class="form-inline">   
+    <form action="../main.php?" method="post" class="form-inline">   
                 <div class="mb-2 mt-2">
                     <input type="submit" value="Home" name="return" class="form-control" style="width:150px;">
                 </div>

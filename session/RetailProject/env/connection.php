@@ -21,7 +21,7 @@
 
         //create tables
         $query = '';
-        $sqlDB = file('../env/db.sql');
+        $sqlDB = file('db.sql');
         foreach ($sqlDB as $line)	{
             $startWith = substr(trim($line), 0 ,2);
             $endWith = substr(trim($line), -1 ,1);

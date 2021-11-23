@@ -12,12 +12,14 @@
 
     $sqlTotal = "SELECT total FROM Cart c
         INNER JOIN Cu_orders_Ca cca ON (c.cart_ID = cca.cart_ID)
-        WHERE cca.customer_ID = $id AND cca.branch_ID = $branch";
+        WHERE cca.customer_ID = $id AND cca.branch_ID = $branch AND cca.status=0";
     $resTotal = mysqli_query($conn, $sqlTotal);
                         
     if ($resTotal) {
         $row = mysqli_fetch_assoc($resTotal);
         $totalPrice = $row['total'];
+    } else {
+        $totalPrice = 0;
     }
 
     if (!empty($_GET['action'])) {
@@ -64,7 +66,7 @@
                 $_SESSION['CustomerID'] = $id;                #store in $_SESSION for referencing later
                 $_SESSION['CartID'] = $rowOrder['cart_ID'];
                 mysqli_close($conn);
-                header("location: order.php");                    #redirect to adminHome.php
+                header("location: order.php?id=$id&branch=$branch&categ=All");                    #redirect to adminHome.php
                 exit;
         }
     }
@@ -72,6 +74,7 @@
 
 <html>
 <head>
+<title> Cart </title>
     <script src="jquery-3.2.1.min.js"></script>
     <script>
         function changeQty(getID, getItem, getQty, getBranch) {
@@ -107,6 +110,7 @@
     </script>
 </head>
     <body>
+        <a href="../main.php?id=<?php echo $id ?>&branch=<?php echo $branch ?>&categ=All"><button>Home</button></a>
         <!-- start content-right-cart -->
         <div class="right-cart" width="100%">
             <!-- start cart -->
@@ -127,6 +131,7 @@
                                     INNER JOIN Cu_orders_Ca cca ON (cai.cart_ID = cca.cart_ID)
                                     INNER JOIN Item i ON (cai.item_ID = i.item_ID)
                                     WHERE cca.customer_ID='$id' AND cca.branch_ID='$branch'
+                                    AND cca.status=0
                                     ORDER BY cai.item_ID ASC";
                         $resCart = mysqli_query($conn, $sqlCart);
                     ?>

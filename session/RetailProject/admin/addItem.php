@@ -111,7 +111,7 @@ include_once '../env/adminAuth.php';
                             
             
 
-            $Bi_has_i_query= "INSERT INTO bi_has_i( inventory_ID,item_ID,item_Stock ) VALUES ($inventoryID , $itemID , $Stock )";
+            $Bi_has_i_query= "INSERT INTO bi_has_i( inventory_ID,item_ID,item_Stock ) VALUES ($inventoryID,$itemID,$Stock)";
             $Bi_has_i_result = mysqli_query($conn,$Bi_has_i_query);
 
             if($Bi_has_i_result){
