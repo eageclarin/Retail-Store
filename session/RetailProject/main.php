@@ -4,9 +4,11 @@
     $chosenCateg = "All"; $name = "Guest"; $id = $item = 0;
     $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = 1;
 
-    if (isset($_GET['id']) || isset($_GET['item']) || isset($_GET['branch']) || isset($_GET['categ'])) {
-        $id = $_GET['id'];
+    if (isset($_GET['item'])) {
         $item = $_GET['item'];
+    }
+    if (isset($_GET['id']) || isset($_GET['branch']) || isset($_GET['categ'])) {
+        $id = $_GET['id'];
         $chosenBranch = $_GET['branch'];
         $chosenCateg = $_GET['categ'];
 

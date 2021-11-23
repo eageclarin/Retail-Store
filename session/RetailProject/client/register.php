@@ -2,8 +2,11 @@
     include_once '../env/connection.php';
     $item = $branch = $categ = "";
 
-    if (isset($_GET['itemID']) && isset($_GET['branch']) && isset($_GET['categ'])) {
+    if (isset($_GET['itemID'])) {
         $item = $_GET['itemID'];
+    }
+
+    if (isset($_GET['branch']) && isset($_GET['categ'])) {
         $branch = $_GET['branch'];
         $categ = $_GET['categ'];
     }
