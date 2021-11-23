@@ -19,7 +19,7 @@
 		mysqli_select_db($conn, $db); //connect to database after database created 
         //if success call connection.php
 
-        //create tables
+        /*create tables <-- ERROR NOT WORKING
         $query = '';
         $sqlDB = file('db.sql');
         foreach ($sqlDB as $line)	{
@@ -37,7 +37,7 @@
             } else {
                 die("ERROR: Could not connect. " . mysqli_connect_error());
             }
-        }
+        } */
 	} else {
 		echo "ERROR: Could not be able to execute $sql." . mysqli_error($conn);
 	}

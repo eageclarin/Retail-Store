@@ -1,3 +1,6 @@
+-- create database if not exists
+CREATE DATABASE IF NOT EXISTS CMSC127RetailProject;
+
 -- table for item
 CREATE TABLE `Item` (
 	`item_ID` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
