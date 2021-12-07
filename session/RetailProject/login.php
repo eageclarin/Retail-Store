@@ -2,12 +2,12 @@
     include_once 'env/connection.php';
     $item = $branch = $categ = "";
 
-    if (isset($_GET['itemID'])) {
-        $item = $_GET['itemID'];
+    if (isset($_SESSION['itemID'])) {
+        $item = $_SESSION['itemID'];
     }
-    if (isset($_GET['branch']) || isset($_GET['categ'])) {
-        $branch = $_GET['branch'];
-        $categ = $_GET['categ'];
+    if (isset($_SESSION['branch']) || isset($_SESSION['categ'])) {
+        $branch = $_SESSION['branch'];
+        $categ = $_SESSION['categ'];
     }
 ?>
 
@@ -73,7 +73,7 @@
                     if ($row['cust_Username']==$username && $row['cust_Password']==$password) {
                         $exists = true;
                         $customerID = $row['cust_ID'];      
-                        //$_SESSION['CustomerUName'] = $row['cust_Username'];
+                        $_SESSION['username'] = $row['cust_Username'];
                         mysqli_close($conn);
 
                         header("Location: main.php?action=add&id=$customerID&item=$item&branch=$branch&categ=$categ");                           #Return to main.php
