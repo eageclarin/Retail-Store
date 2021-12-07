@@ -72,7 +72,7 @@
                 while ($row = mysqli_fetch_assoc($result)) {
                     if ($row['cust_Username']==$username && $row['cust_Password']==$password) {
                         $exists = true;
-                        $customerID = $row['cust_ID'];      
+                        $_SESSION['userID'] = $row['cust_ID'];      
                         $_SESSION['username'] = $row['cust_Username'];
                         mysqli_close($conn);
 

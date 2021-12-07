@@ -4,8 +4,9 @@
     $chosenCateg = "All"; $name = "Guest"; $id = $item = 0;
     $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = $branch = 1;
 
-    if(isset($_SESSION['username'])) {
+    if(isset($_SESSION['username']) && isset($_SESSION['userID'])) {
         $name = $_SESSION['username'];
+        $id = $_SESSION['userID'];
     }
     
     if (isset($_GET['item'])) {
@@ -306,22 +307,22 @@
                 <div class="col d-flex flex-wrap w-100 mb-3 h-20">
                     <ul class="nav col-md-12 justify-content-between">
                         <li style="width:23%">
-                            <a href="main.php?action=brand&brand=Pringles" class="text-center text-dark h-100">
+                            <a href="main.php?action=brand&brand=Purefoods" class="text-center text-dark h-100">
                                 <img src="img/main/brand1.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
                             </a>
                         </li>
                         <li style="width:23%">
-                            <a href="main.php?action=brand&brand=Nestle" class="text-center text-dark h-100">
+                            <a href="main.php?action=brand&brand=Century" class="text-center text-dark h-100">
                                 <img src="img/main/brand2.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
                             </a>
                         </li>
                         <li style="width:23%">
-                            <a href="main.php?action=brand&brand=Purefoods" class="text-center text-dark h-100">
+                            <a href="main.php?action=brand&brand=Datu+Puti" class="text-center text-dark h-100">
                                 <img src="img/main/brand3.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
                             </a>
                         </li>
                         <li style="width:23%">
-                            <a href="main.php?action=brand&brand=Gardenia" class="text-center text-dark h-100">
+                            <a href="main.php?action=brand&brand=Lorins" class="text-center text-dark h-100">
                                 <img src="img/main/brand4.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
                             </a>
                         </li>
