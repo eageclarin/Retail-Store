@@ -126,7 +126,7 @@
         }
 
         if (isset($_POST['back'])) {            #if cancel is pressed
-            header("location:../main.php?branch=$branch&categ=All");
+            header("location:../main.php");
         }
 
         mysqli_close($conn);

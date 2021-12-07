@@ -1,12 +1,18 @@
 <?php
     require 'env/connection.php';
     session_start();
-    $chosenCateg = "All"; $name = "Guest"; $id = $item = 0;
-    $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = $branch = 1;
+    $chosenBranch = $chosenBrand = $name = ""; $chosenCateg = "All";
 
-    if(isset($_SESSION['username'])) {
+    if(isset($_SESSION)) {
+        $chosenBranch = $_SESSION['branch'];
+        $chosenBrand = $_SESSION['brand'];
         $name = $_SESSION['username'];
     }
+
+    echo $chosenBranch;
+    echo $chosenBrand;
+    echo $name;
+
     
     if (isset($_GET['item'])) {
         $item = $_GET['item'];
@@ -22,9 +28,6 @@
 
         $_SESSION['branch'] = $chosenBranch;
     }
- 
-    //header("location:login.php?itemID=$item&branch=$chosenBranch&categ=$chosenCateg");
-    //header("location:main.php?id=$id&branch=$chosenBranch&categ=$chosenCateg");
     
     /* FOR ADD TO CART ITEM */
     //search item in table
@@ -184,6 +187,19 @@
     <link rel="stylesheet" href="main.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="env/jquery-3.2.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $.ajax({
+                type: "GET",
+                data: "id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>&categ=<?php echo $chosenCateg ?>",
+                url: "pages/getItem.php",
+                success: funtion(data){
+                    $("#display").html(data);
+                };
+            });
+        });
+    </script>
     <title> Main </title>
 </head>
 <body style="background-color:#E6E9F0;" class="w-100 h-100">
@@ -278,116 +294,20 @@
     </header>
                     
     <div class="container-fluid row p-4 mx-auto">
-        <div class="col-md-7">
-                <div class="col shadow mb-3 bg-white" style="border-radius: 15px">
-                    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner" style="border-radius: 15px">
-                            <div class="carousel-item active" data-bs-interval="2000">
-                            <img src="img/main/ad1.jpg" class="d-block w-100" alt="...">
-                            </div>
-                            <div class="carousel-item" data-bs-interval="2000">
-                            <img src="img/main/ad2.jpg" class="d-block w-100" alt="...">
-                            </div>
-                            <div class="carousel-item">
-                            <img src="img/main/ad3.jpg" class="d-block w-100" alt="...">
-                            </div>
-                        </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div> 
-                </div>
-
-                <div class="col d-flex flex-wrap w-100 mb-3 h-20">
-                    <ul class="nav col-md-12 justify-content-between">
-                        <li style="width:23%">
-                            <a href="main.php?action=brand&brand=Pringles" class="text-center text-dark h-100">
-                                <img src="img/main/brand1.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
-                            </a>
-                        </li>
-                        <li style="width:23%">
-                            <a href="main.php?action=brand&brand=Nestle" class="text-center text-dark h-100">
-                                <img src="img/main/brand2.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
-                            </a>
-                        </li>
-                        <li style="width:23%">
-                            <a href="main.php?action=brand&brand=Purefoods" class="text-center text-dark h-100">
-                                <img src="img/main/brand3.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
-                            </a>
-                        </li>
-                        <li style="width:23%">
-                            <a href="main.php?action=brand&brand=Gardenia" class="text-center text-dark h-100">
-                                <img src="img/main/brand4.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
-                            </a>
-                        </li>
-                    </ul>
-                    
-                </div>
-        </div>
-
-        <div class="col-md-5">
-            <div class="shadow bg-white mb-3 p-4 w-100" style="border-radius: 15px;">
-                <div class="row">
-                    <div class="col nav-link text-dark">Categories</div>
-                    <div class="col-4"></div>
-                    <div class="col"><a href="categories.php" class="nav-link text-primary">All Categories ></a></div>
-                </div>
-                <div class="col d-flex flex-wrap mt-3 h-20">
-                    <ul class="nav col-md-12 mb-3 justify-content-between">
-                        <li style="width:23%">
-                            <a href="main.php?action=categ&categ=Canned Goods" class="card shadow bg-primary" style="border-radius: 15px; text-decoration: none">
-                                <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="img/main/categ1.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <p class="card-text text-light" style="font-size: 11px">Canned Goods</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li style="width:23%">
-                            <a href="main.php?action=categ&categ=Condiments" class="card shadow bg-success" style="border-radius: 15px; text-decoration: none">
-                                <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="img/main/categ2.jpg" alt="Card image cap">
-                                <div class="card-body ">
-                                    <p class="card-text text-light" style="font-size: 11px">Condiments</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li style="width:23%">
-                            <a href="main.php?action=categ&categ=PastaNoodles" class="card shadow bg-danger" style="border-radius: 15px; text-decoration: none">
-                                <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="img/main/categ3.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <p class="card-text text-light" style="font-size: 11px">Pasta&Noodles</p>
-                                </div>
-                            </a>
-                        </li>
-                        <li style="width:23%">
-                            <a href="main.php?action=categ&categ=Beverages" class="card shadow bg-warning" style="border-radius: 15px; text-decoration: none">
-                                <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;"src="img/main/categ4.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <p class="card-text text-dark" style="font-size: 11px">Beverages</p>
-                                </div>
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+        <div class="row">
+            <div class="col-md-7">
+                    <h1> <?php echo $chosenBrand ?> </h1> <br>
+                    <p> Brand Description here </p>
             </div>
-            <div class="shadow p-4 mb-4 bg-white" style="border-radius: 15px">
-                <p class="text-center"> About Us <br>
-                shdjkadhjkdhkdjahdjkahdkajdhakjdhajkdahdjkashdkjsd
-                shdjkadhjkdhkdjahdjkahdkajdhakjdhajkdahdjkashdkjsd
-                shdjkadhjkdhkdjahdjkahdkajdhakjdhajkdahdjkashdkjsd
-                <br><br> Contact Us <br>
-                Facebook: krusty krab <br>
-                Twitter: cmsc_127 <br>
-                Email: cmsc127@gmail.com <br>
-                Contact No.: 091234567890
-                </p>
+            <div class="col-md-5">
+                <h3> filters </h3>
             </div>
         </div>
-    </div>
+        
+        <div class="row h-50">
+            <div class="col-12" id="display">
+            </div>
+        </div>
         <!-- body
         <div>
             filter

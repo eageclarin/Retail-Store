@@ -27,7 +27,7 @@
     <div class="container-sm p-5 my-5 text-gray" style="max-width:50%;">
         <div class="jummbotron">
             <h3 style="color:#343434"> Log In </h3>
-            <form action="login.php?itemID=<?php echo $item ?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>" method="post"> 
+            <form action="login.php" method="post"> 
                 Username: <input type="text"  class="form-control" name="username" required></br>
                 Password: <input type="password"  class="form-control" name="password"  required></br>
                 <input type="submit" value="Log In" name="login" class="form-control" style="width:150px;">
@@ -76,7 +76,7 @@
                         $_SESSION['username'] = $row['cust_Username'];
                         mysqli_close($conn);
 
-                        header("Location: main.php?action=add&id=$customerID&item=$item&branch=$branch&categ=$categ");                           #Return to main.php
+                        header("Location: main.php");                           #Return to main.php
                         exit;
                     }
                 }
@@ -91,7 +91,9 @@
 
         #if "Return" is pressed: 
         if (isset($_POST['return'])) {
+            unset($_SESSION);
             header('location: main.php');
+            exit;
         }
 
         mysqli_close($conn);

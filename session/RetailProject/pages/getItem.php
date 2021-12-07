@@ -42,58 +42,61 @@
 ?>
 
 <html>
-<body>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+</head>
+<body style="background-color:transparent">
     <?php
         echo $categ;
 		if ($resCateg) {
 			$i = $row = 0;
 			$count = mysqli_num_rows($resCateg); //number of rows sa table
 	?>
-			<table>
-			<tr>
+			<div class="col-12 d-flex flex-wrap mt-3 h-20">
+                <ul class="nav col-md-12 mb-3 justify-content-between">
 	<?php
 			    while (($rowCateg = mysqli_fetch_assoc($resCateg))) {
 					$itemID = $rowCateg['item_ID'];
 					$itemName = $rowCateg['item_Name']; //item name
 					$itemPrice = $rowCateg['item_RetailPrice']; //item price
 					$itemImg = $rowCateg['item_Image']; //item image
+					$itemWeight = "0.00g";
 	?>
-				<td>
-					<form action="../main.php?action=add&id=<?php echo $id ?>&item=<?php echo $itemID ?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>" method="post" target="_top">
-					<div class='itemOption'>
-						<input type="image" src="<? echo $itemImg ?>" />
-						<div class='info'>
-							<span> <?php echo $itemName ?> </span> P<?php echo $itemPrice ?>
-						</div>
-					</div>
-					</form>
-				</td>
+				<li style="width: 18%">
+					<a href="addItem.php?action=add&id=<?php echo $id ?>&item=<?php echo $itemID ?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>" class="card shadow bg-light" style="border-radius: 15px; text-decoration: none">
+                        <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="../img/main/brand.jpg" alt="Card image cap">
+                        <div class="card-body">
+							<h7 class="card-title"><?php echo $itemName ?> &nbsp; P<?php echo $itemPrice ?></h7>
+                            <p class="card-text text-light" style="font-size: 11px"><?php echo $itemWeight ?></p>
+                        </div>
+					</a>
+				</li>
 	<?php
 					$i++; //number of items in row
-					if($i % 4 == 0) { //4 items per row display
-						echo "</tr><tr>"; //next row display
+					if($i % 5 == 0) { //4 items per row display
+						echo "</ul><ul>"; //next row display
 					}
 
 					if(++$row == $count) {
-						while ($i % 4 != 0) { //if less than 4 in row display, add extra hidden item until 4 items
-							echo "<td>
-								<form>
-									<div class='itemOption' style='visibility: hidden;'>
-										<input type='image' />
-										<div class='info'>
-											<span></span>
-										</div>
-									</div>
-								</form>
-							</td>
-							";
+						while ($i % 5 != 0) { //if less than 4 in row display, add extra hidden item until 4 items
+							echo '<li style="visibility:hidden; width: 18%">
+							<a href="" class="card shadow bg-light" style="border-radius: 15px;">
+								<img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="">
+								<div class="card-body">
+									<h5 class="card-title"></h5>
+									<p class="card-text text-light" style="font-size: 11px"></p>
+								</div>
+							</a>
+							</li
+							';
 
 							$i++;
 						}
 					}
 				}
-					echo "</tr>";
-					echo "</table>";
+					echo "</ul>";
+					echo "</div>";
 		}
 	?>
 </body>
