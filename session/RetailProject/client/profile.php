@@ -1,22 +1,36 @@
 <?php
     include_once '../env/connection.php';
-    $item = $branch = $categ = "";
+    
+    $id = 1; #Sample customer id only kasi di pa naka $_SESSION method yung sa pagkuha ng id
 
-    if (isset($_GET['itemID'])) {
-        $item = $_GET['itemID'];
-    }
-
-    if (isset($_GET['branch']) && isset($_GET['categ'])) {
-        $branch = $_GET['branch'];
-        $categ = $_GET['categ'];
-    }
+    $cust_query ="SELECT *FROM customer WHERE cust_ID = $id";
+    $cust_result = mysqli_query($conn,$cust_query);
+    $cust_Check = mysqli_num_rows($cust_result);
+            
+    if ($cust_Check>0){
+        while ($cust_row = mysqli_fetch_assoc($cust_result)){
+            $username = $cust_row['cust_Username'];
+            $password1 = $cust_row['cust_Password'];
+            $firstName = $cust_row['cust_FName'];
+            $lastName = $cust_row['cust_LName'];
+            $email = $cust_row['cust_Email'];
+            $brgy = $cust_row['cust_ABrgy'];
+            $city = $cust_row['cust_ACity'];
+            $province = $cust_row['cust_AProvince'];
+            $postal = $cust_row['cust_APostal'];
+        }
+     }else{
+            header('location: ../main.php');
+    }     
+    
+    $password = md5($password1);
 
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title> Register </title>
+<title> Profile </title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -29,29 +43,29 @@
     <!-- Registration form -->
     <div class="container-sm p-5 my-5 bg-dark text-white" style="max-width:50%;">
         <h2> Register </h2>
-        <form id="form" action="register.php" method="post" class="form-inline"> 
+        <form id="form" action="profile.php" method="post" class="form-inline"> 
             <div class="form-group">
                 <div class="mb-1 mt-1">
                     <label for="username" >Username: </label>
-                    <input type="text" class="form-control" id="username" name="username"  required>
+                    <input type="text" class="form-control" id="username" name="username"  value="<?php echo $username?>">
                 </div>
                 <div class="mb-1 mt-1">
                     <label for="password" >Password: </label>
-                    <input type="password" class="form-control" id="password" name="password"  required>
+                    <input type="password" class="form-control" id="password" name="password"  value="<?php echo $password?>">
                      
                 </div> 
                 <div class="mb-1 mt-1">
                     <label for="password" >Confirm Password: </label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"  required>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"  value="<?php echo $password?>">
                      
                 </div> 
                 <div class="mb-1 mt-1">
                     <label for="firstName" >First Name: </label>
-                    <input type="text" class="form-control" id="firstName" name="firstName"  required>    
+                    <input type="text" class="form-control" id="firstName" name="firstName"  value="<?php echo $firstName?>">    
                 </div>
                 <div class="mb-1 mt-1">  
                     <label for="lastName" >Last Name: </label>
-                    <input type="text" class="form-control" id="lastName" name="lastName"  required>
+                    <input type="text" class="form-control" id="lastName" name="lastName"  value="<?php echo $lastName?>">
                 </div>
                 <div class="mb-1 mt-1">
                     <label for="email" >Contact Number: </label>
@@ -59,51 +73,41 @@
                 </div>
                 <div class="mb-1 mt-1">
                     <label for="email" >Email: </label>
-                    <input type="text" class="form-control" id="email" name="email"  required>
+                    <input type="text" class="form-control" id="email" name="email"  value="<?php echo $email?>">
                 </div>
                 <div class="col-xs-3">
                     <div class="mb-1 mt-1">
                         <label for="brgy" >Barangay: </label>
-                        <input type="text" class="form-control" id="brgy" name="brgy"  required>
+                        <input type="text" class="form-control" id="brgy" name="brgy"  value="<?php echo $brgy?>">
                     </div>
                 </div>
                 <div class="col-xs-3">
                     <div class="mb-1 mt-1">
                         <label for="city" >City: </label>
-                        <input type="text" class="form-control" id="city" name="city"  required>
+                        <input type="text" class="form-control" id="city" name="city"  value="<?php echo $city?>">
                     </div>
                 </div>
                 <div class="mb-1 mt-1">
                     <label for="province" >Province: </label>
-                    <input type="text" class="form-control" id="province" name="province"  required>
+                    <input type="text" class="form-control" id="province" name="province"  value="<?php echo $province?>">
                 </div>
                 <div class="mb-1 mt-1">
                     <label for="postal" >Postal Code: </label>
-                    <input type="text" class="form-control" id="postal" name="postal"  required>
+                    <input type="text" class="form-control" id="postal" name="postal"  value="<?php echo $postal?>">
                 </div>
                 <div class="mb-3 mt-3">
-                    <input type="submit" value="Submit" name="register" class="btn btn-primary" style="width:150px"  >   
+                    <input type="submit" value="Update" name="update" class="btn btn-primary" style="width:150px"  >   
                         
                 </div>
             </div>
         </form>  
-        <form action="register.php" method="post" class="form-inline">   
+        <form action="profile.php" method="post" class="form-inline">   
             <input type="submit" value="Cancel" name="back" class="form-control" style="width:150px" > 
         </form>
     </div>
     
     <script>
   $(document).ready(function () {
-   /** jQuery.validator.addMethod("passcheck", function(value, element) {
-            pattern = '/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{8,20}$/';
-            if (pattern.test(value)) {
-                return true;
-            } else {
-                return false;
-            }
-        };
-    };**/
-
     $('#form').validate({
       rules: {
         username: {
@@ -168,23 +172,27 @@
 
 
             #check if username or email exists
-            $check_query = "SELECT * FROM customer where cust_Username = '$username' OR cust_Email = '$email' LIMIT 1;";
+           /* $check_query = "SELECT * FROM customer where cust_Username = '$username' OR cust_Email = '$email' LIMIT 1;";
             $result = mysqli_query($conn, $check_query);
-            $resultCheck = mysqli_num_rows($result);
+            $resultCheck = mysqli_num_rows($result);*/
 
             
-            if ($resultCheck==0){               #if username or email does not exist, insert new record
+            #if ($resultCheck==0){               #if username or email does not exist, insert new record
                 $password = md5($password1);    #hash
 
-                $insert = "INSERT INTO customer (cust_Username, cust_Password, cust_FName, cust_LName, cust_Email, cust_ABrgy, cust_ACity, cust_AProvince, cust_APostal)
-                VALUES ('$username', '$password', '$firstName', '$lastName', '$email', '$brgy', '$city', '$province', '$postal');";
-                mysqli_query($conn, $insert);
-                $id = mysqli_insert_id($conn);
+                $insert = "UPDATE customer SET cust_Username='$username', cust_Password= '$password', cust_FName='$firstName', cust_LName='$lastName', cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
+                $update_result = mysqli_query($conn, $insert);
+                //$id = mysqli_insert_id($conn);
                 //$_SESSION['cust_ID'] = $id;
                 //$_SESSION['cust_Username']=$username;
                 //echo $_SESSION['CustomerFName'];
-                header("location:../main.php");
-            } else {                            #else, notify user
+                if ($update_result) {
+                    header("location:../main.php");
+                } else {
+                    die(mysqli_error($conn));
+                }
+                
+            /*} else {                            #else, notify user
                 while ($row = mysqli_fetch_assoc($result)) {
                     if ($row['cust_Username']==$username && $row['cust_Email']==$email) {
                         echo "username and email already exist";
@@ -197,7 +205,7 @@
                         break;
                     }
                 }
-            }    
+            }   */ 
         }
 
         if (isset($_POST['back'])) {            #if cancel is pressed
