@@ -2,6 +2,7 @@
     require 'env/connection.php';
     session_start();
     $chosenBranch = $chosenBrand = $name = $id = ""; $chosenCateg = "All";
+    $sort = "ASC"; $order = "Name";
 
     if(isset($_SESSION)) {
         $chosenBranch = $_SESSION['branch'];
@@ -9,15 +10,25 @@
         $name = $_SESSION['username'];
         $id = $_SESSION['userID'];
     }
-
-    echo $chosenBranch;
-    echo $chosenBrand;
-    echo $name;
-
     
+    if (isset($_GET['brand'])) {
+        $chosenBrand = $_GET['brand'];
+        $_SESSION['brand'] = $chosenBrand;
+    }
+    if (isset($_GET['categ'])) {
+        $chosenCateg = $_GET['categ'];
+        $_SESSION['categ'] = $chosenCateg;
+    }
+    if (isset($_GET['sort']) && isset($_GET['order'])) {
+        $order = $_GET['order'];
+        $sort = $_GET['sort'];
+        $_SESSION['sort'] = $sort;
+        $_SESSION['order'] = $order;
+    }
     if (isset($_GET['item'])) {
         $item = $_GET['item'];
     }
+
     if (!empty($_GET['branch'])) {
         $branch = $_GET['branch'];
         switch($branch) {
@@ -180,17 +191,76 @@
     <div class="container-fluid p-4 mx-auto">
         <div class="row">
             <div class="col-md-7">
-                    <h1 class="mb-1"> <?php echo $chosenBrand ?> </h1> <br>
-                    <p> Brand Description here </p>
+                <h1><a class="link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <?php
+                        if ($chosenBrand == "All") { echo $chosenBrand." Brands";}
+                        else {echo $chosenBrand;}
+                    ?>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 300px;">
+                    <li><a class="dropdown-item" href="brand.php?brand=All">All Brands</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=Purefoods">Purefoods</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=Century">Century</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=Datu Puti">Datu Puti</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=Lorins">Lorins</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=White King">White King</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=Fiesta">Fiesta</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=Kopiko">Kopiko</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=Rebisco">Rebisco</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=Libbys">Libbys</a></li>
+                </ul>
+                </h1>
+                <p> Brand Description here </p>
             </div>
             <div class="col-md-5">
-                <h3> filters </h3>
+                <ul class="nav col-lg-auto mb-2 mb-md-0 justify-content-end">
+                    <li>
+                        <h5>
+                        <a class="nav-link link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Category: <?php echo $chosenCateg; ?>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 220px;">
+                            <li><a class="dropdown-item" href="brand.php?categ=Canned+Goods">Canned Goods</a></li>
+                            <li><a class="dropdown-item" href="brand.php?categ=Condiments">Condiments</a></li>
+                            <li><a class="dropdown-item" href="brand.php?categ=PastaNoodles">Pasta & Noodles</a></li>
+                            <li><a class="dropdown-item" href="brand.php?categ=Beverages">Beverages</a></li>
+                            <li><a class="dropdown-item" href="brand.php?categ=Biscuits">Biscuits</a></li>
+                        </ul>
+                        </h5>
+                    </li>
+                    <li>
+                        <h5>
+                        <a class="nav-link link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Sort by: <?php
+                                switch($order){
+                                    case "Name":
+                                        echo "Name";
+                                        if ($sort == "ASC") { echo "(A-Z)"; }
+                                        else { echo "(Z-A)"; }
+                                        break;
+                                    case "RetailPrice":
+                                        echo "Price";
+                                        if ($sort == "ASC") { echo "(&uarr;)"; }
+                                        else { echo "(&darr;)"; }
+                                        break;
+                                }
+                            ?>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 220px;">
+                            <li><a class="dropdown-item" href="brand.php?order=Name&sort=ASC">Name (A-Z)</a></li>
+                            <li><a class="dropdown-item" href="brand.php?order=Name&sort=DESC">Name (Z-A)</a></li>
+                            <li><a class="dropdown-item" href="brand.php?order=RetailPrice&sort=ASC">Price (&uarr;)</a></li>
+                            <li><a class="dropdown-item" href="brand.php?order=RetailPrice&sort=DESC">Price (&darr;)</a></li>
+                        </ul>
+                        </h5>
+                    </li>
+                </ul>
             </div>
         </div>
         
         <div class="row">
             <div class="col-md-12 w-100">
-                <iframe name="display" height="100%" width="100%" src="pages/getItem.php?branch=<?php echo $chosenBranch ?>&brand=<?php echo $chosenBrand ?>">
+                <iframe name="display" height="100%" width="100%" src="pages/getItem.php?branch=<?php echo $chosenBranch ?>&for=brand&brand=<?php echo $chosenBrand ?>&categ=<?php echo $chosenCateg ?>&sort<?php echo $sort ?>&order=<?php echo $order ?>">
             </div>
         </div>
 </body>

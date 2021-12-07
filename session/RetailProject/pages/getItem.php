@@ -3,40 +3,71 @@
 	session_start();
 	/* FOR FILTER */
     //variables
-	$branch = $brand = $item = $id = ""; $categ="All";
+	$branch = $item = $id = ""; $brand = $categ="All";
+	$sort = "ASC"; $order = "Name";
 
 	if (isset($_SESSION)) {
 		$branch = $_SESSION['branch'];
         $name = $_SESSION['username'];
 		$id = $_SESSION['userID'];
+		$categ = $_SESSION['categ'];
+		$brand = $_SESSION['brand'];
+		$sort = $_SESSION['sort'];
+		$order = $_SESSION['order'];
 	}
 
-    if (isset($_GET['categ']) && $_GET['categ'] == "PastaNoodles") {
-        $categ = "Pasta & Noodles";
+    if (!empty($_GET['categ']) && $_GET['categ'] == "PastaNoodles") {
+		$categ = $_GET['categ'];
+		$_SESSION['categ'] = $categ;
+		if ($categ == "PastaNoodles") { $categ = "Pasta & Noodles"; }
     }
-
-	if (!empty($_GET['brand'])) {
+	if (!empty($_GET['sort'])) {
+		$sort = $_GET['sort'];
+		$order = $_GET['order'];
+		$_SESSION['sort'] = $sort;
+		$_SESSION['order'] = $order;
+	}
+	if (!empty($_GET['brand'])){
 		$brand = $_GET['brand'];
-		$sqlFilter = "SELECT * FROM Item i
+		$_SESSION['brand'] = $brand;
+	}
+
+	echo $branch . $name . $id . $categ . $brand . $sort . $order;
+	if (!empty($_GET['brand']) && $_GET['for'] == 'brand') {
+		if ($brand != "All") {
+			$sqlFilter = "SELECT * FROM Item i
+							INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
+							INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
+							INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
+							INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
+							WHERE i.item_Brand = '$brand' OR i.item_Category = '$categ'
+								AND bii.item_Stock > 0
+								AND b.branch_ID = '$branch'
+							ORDER BY i.item_$order $sort
+						";
+			$resFilter = mysqli_query($conn, $sqlFilter);
+		} else {
+			$sqlFilter = "SELECT * FROM Item i
 						INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
 						INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
 						INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
 						INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-						WHERE i.item_Brand = '$brand'
-							AND bii.item_Stock > 0
+						WHERE bii.item_Stock > 0 OR i.item_Category = '$categ'
 							AND b.branch_ID = '$branch'
+						ORDER BY i.item_$order $sort
 					";
-		$resFilter = mysqli_query($conn, $sqlFilter);
+			$resFilter = mysqli_query($conn, $sqlFilter);
+		}
 	}
     //select item under category from branch
-	if (!empty($_GET['categ'])) {
+	if (!empty($_GET['categ']) && $_GET['for'] == 'categ') {
 		if ($categ != "All") {
 			$sqlFilter = "SELECT * FROM Item i
 						INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
 						INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
 						INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
 						INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-						WHERE i.item_Category = '$categ'
+						WHERE i.item_Category = '$categ' AND i.item_Brand = '$brand'
 							AND bii.item_Stock > 0
 							AND b.branch_ID = '$branch'
 					";
@@ -47,7 +78,7 @@
 						INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
 						INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
 						INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-						WHERE bii.item_Stock > 0
+						WHERE bii.item_Stock > 0 OR i.item_Brand = '$brand'
 							AND b.branch_ID = '$branch'
 					";
 			$resFilter = mysqli_query($conn, $sqlFilter);
@@ -76,7 +107,7 @@
 					$itemImg = $rowFilter['item_Image']; //item image
 					$itemWeight = "0.00g";
 	?>
-				<li style="width: 18%">
+				<li style="width:18%">
 					<form action="addItem.php?action=add" method="post" target="_top">
 					<a href="" class="card shadow bg-light" style="border-radius: 15px; text-decoration: none">
                         <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="../img/main/brand.jpg" alt="Card image cap">

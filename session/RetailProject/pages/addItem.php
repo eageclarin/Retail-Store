@@ -1,7 +1,7 @@
 <?php
     require '../env/connection.php';
     session_start();
-    $chosenCateg = "All"; $name = "Guest"; $id = $item = 0;
+    $name = "Guest"; $id = $item = 0;
     $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = $branch = 1;
 
     if(isset($_SESSION)) {
@@ -12,7 +12,6 @@
     
     if (isset($_POST['add'])) {
         $item = $_POST['itemID'];
-        
     }
     
     /* FOR ADD TO CART ITEM */
