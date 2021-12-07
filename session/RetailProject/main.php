@@ -3,7 +3,7 @@
     unset($_SESSION);
     session_start();
     $chosenCateg = "All"; $name = "Guest"; $id = $item = 0;
-    $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = 1;
+    $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = $branch = 1;
 
     if(isset($_SESSION['username'])) {
         $name = $_SESSION['username'];
@@ -12,8 +12,16 @@
     if (isset($_GET['item'])) {
         $item = $_GET['item'];
     }
-    if (isset($_GET['branch'])) {
-        $chosenBranch = $_GET['branch'];
+    if (!empty($_GET['branch'])) {
+        $branch = $_GET['branch'];
+        switch($branch) {
+            case 1: $chosenBranch = $branch; break;
+            case 2: $chosenBranch = $branch; break;
+            case 3: $chosenBranch = $branch; break;
+            default: $chosenBranch = $chosenBranch; break;
+        }
+        
+        $_SESSION['branch'] = $chosenBranch;
     }
  
     //header("location:login.php?itemID=$item&branch=$chosenBranch&categ=$chosenCateg");
