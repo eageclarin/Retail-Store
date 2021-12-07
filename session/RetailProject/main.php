@@ -1,23 +1,23 @@
 <?php
     require 'env/connection.php';
-
+    unset($_SESSION);
+    session_start();
     $chosenCateg = "All"; $name = "Guest"; $id = $item = 0;
     $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = 1;
 
+    if(isset($_SESSION['username'])) {
+        $name = $_SESSION['username'];
+    }
+    
     if (isset($_GET['item'])) {
         $item = $_GET['item'];
     }
-    if (isset($_GET['id']) || isset($_GET['branch']) || isset($_GET['categ'])) {
-        $id = $_GET['id'];
+    if (isset($_GET['branch'])) {
         $chosenBranch = $_GET['branch'];
-        $chosenCateg = $_GET['categ'];
-
-        if ($id == 0) { //id == 0 is guest
-            header("location:login.php?itemID=$item&branch=$chosenBranch&categ=$chosenCateg");
-        } else if ($id == "temp") {
-            header("location:main.php?id=$id&branch=$chosenBranch&categ=$chosenCateg");
-        }
     }
+ 
+    //header("location:login.php?itemID=$item&branch=$chosenBranch&categ=$chosenCateg");
+    //header("location:main.php?id=$id&branch=$chosenBranch&categ=$chosenCateg");
     
     /* FOR ADD TO CART ITEM */
     //search item in table
@@ -151,10 +151,11 @@
 <html>
 <head>
     <link rel="stylesheet" href="main.css" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <title> Main </title>
 </head>
-<body>
-    this is the main page..
+<body style="background-color:#E6E9F0;" class="w-100 h-100">
     <?php
         if ($id != 0){ //if not guest (guest is id ==0)
             if ($id == 'temp') {
@@ -164,73 +165,198 @@
                 $name = $row['cust_Username'];
             }
         }
-
-        if ($name == "Guest") { //Checks if customer is logged in
-            echo "<a href='login.php?branch=".$chosenBranch."&categ=".$chosenCateg."'><button>Log In</button></a>";
-            echo "<a href='client/register.php?branch=".$chosenBranch."&categ=".$chosenCateg."'><button>Register</button></a>";
-        } else {
-            echo " <a href='login.php?branch=".$chosenBranch."&categ=".$chosenCateg."'><button>Logout</button></a>";
-        }
     ?>
-    
-    <div>
-        <!-- top -->
-        <div id="top">
-            <!-- navigation bar -->
-            <ul>
-                <li>
-                    <p> Hello,
-                        <?php
-                            if (strlen($name) > 5) {
-                                echo substr($name,0,-3);
-                            } else {
-                                echo $name;
-                            }
-                            
-                        ?> </p>
-                </li>
-                <?php
-                        if ($name != "Guest") {
-                    ?>
-                        <li>
-                    
-                            Cart <a href="client/cart.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>"> <img src="cart.png" /> </a> 
-                        </li>
-                <?php  
-                        }
-                    ?>
-                <li>
-                    Branch: <?php
+    <header class="shadow p-3 mb-0 border-bottom bg-white h-20">
+        <div class="container-fluid d-grid gap-3 align-items-center">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="img/logo.jpg" height="50" role="img" />
+                <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
+            </a>
+            &nbsp; &nbsp; &nbsp;
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="main.php" class="nav-link px-2 text-dark">Home</a></li>
+            <li>
+                <a class="nav-link link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    Branch:
+                    <?php 
                         switch($chosenBranch) {
                             case 1: echo "Paoay"; break;
                             case 2: echo "Vicas"; break;
                             case 3: echo "Cordon"; break;
                         }
                     ?>
-                </li>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 220px;">
+                    <li><a class="dropdown-item" href="main.php?branch=1">Paoay</a></li>
+                    <li><a class="dropdown-item" href="main.php?branch=2">Vicas</a></li>
+                    <li><a class="dropdown-item" href="main.php?branch=3">Cordon</a></li>
+                </ul>
+            </li>
             </ul>
+
+            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
+            <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
+            </form>
+
+            <?php
+                    if (empty($_SESSION['username'])) { //Checks if customer is logged in
+                        ?>
+                        <div class="text-end">
+                            <button type="button" class="btn btn-outline-primary me-2">Login</button>
+                            <button type="button" class="btn btn-warning">Sign-up</button>
+                        </div>
+                        <?php
+                    } else {
+                        ?>
+                        <div class="text-end nav col-12 col-lg-auto mb-2 mb-md-0">
+                            <a class="nav-link px-2 text-dark"> Hello,
+                            <?php
+                                if ((substr($name,0,-3)) == "Guest") {
+                                    echo "Guest";
+                                } else {
+                                    echo $name;
+                                }
+                                
+                            ?> </a>
+                        </div>
+                        &nbsp;
+                        <div class="dropdown text-end">
+                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                            </a>
+                            <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                                <li><a class="dropdown-item" href="#">Edit Account</a></li>
+                                <li><a class="dropdown-item" href="#">Log out</a></li>
+                            </ul>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;
+                        <a href="client/cart.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
+                            <img src="img/cart4.svg" width="32" height="32"/>
+                        </a>
+                        <?php
+                    }
+            ?>
+        </div>
+        </div>
+    </header>
+                    
+    <div class="container-fluid row p-4 mx-auto">
+        <div class="col-md-7">
+                <div class="col shadow mb-3 bg-white" style="border-radius: 15px">
+                    <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner" style="border-radius: 15px">
+                            <div class="carousel-item active" data-bs-interval="2000">
+                            <img src="img/main/ad1.jpg" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item" data-bs-interval="2000">
+                            <img src="img/main/ad2.jpg" class="d-block w-100" alt="...">
+                            </div>
+                            <div class="carousel-item">
+                            <img src="img/main/ad3.jpg" class="d-block w-100" alt="...">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div> 
+                </div>
+
+                <div class="col d-flex flex-wrap w-100 mb-3 h-20">
+                    <ul class="nav col-md-12 justify-content-between">
+                        <li style="width:23%">
+                            <a href="#" class="text-center text-dark h-100">
+                                <img src="img/main/brand1.jpg" style="border-radius: 15px;"  class="shadow d-block w-100"/>
+                            </a>
+                        </li>
+                        <li style="width:23%">
+                            <a href="#" class="shadow bg-white text-center text-dark h-100">
+                                <img src="img/main/brand2.jpg" style="border-radius: 15px;"  class="shadow d-block w-100"/>
+                            </a>
+                        </li>
+                        <li style="width:23%">
+                            <a href="#" class="shadow bg-white text-center text-dark h-100">
+                                <img src="img/main/brand3.jpg" style="border-radius: 15px;" class="shadow d-block w-100"/>
+                            </a>
+                        </li>
+                        <li style="width:23%">
+                            <a href="#" class="shadow bg-white text-center text-dark h-100">
+                                <img src="img/main/brand4.jpg" style="border-radius: 15px;"  class="shadow d-block w-100"/>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
         </div>
 
-        <!-- body -->
+        <div class="col-md-5">
+            <div class="shadow bg-white mb-3 p-4 w-100" style="border-radius: 15px;">
+                <div class="row">
+                    <div class="col nav-link text-dark">Categories</div>
+                    <div class="col-4"></div>
+                    <div class="col"><a href="#" class="nav-link text-primary">All Categories ></a></div>
+                </div>
+                <div class="col d-flex flex-wrap mt-3 h-20">
+                    <ul class="nav col-md-12 mb-3 justify-content-between">
+                        <li style="width:23%">
+                            <div class="card shadow bg-primary" style="border-radius: 15px;">
+                                <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="img/main/categ1.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <p class="card-text text-light" style="font-size: 11px">Canned Goods</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="width:23%">
+                            <div class="card shadow bg-success" style="border-radius: 15px;">
+                                <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="img/main/categ2.jpg" alt="Card image cap">
+                                <div class="card-body ">
+                                    <p class="card-text text-light" style="font-size: 11px">Condiments</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="width:23%">
+                            <div class="card shadow bg-danger" style="border-radius: 15px;">
+                                <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="img/main/categ3.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <p class="card-text text-light" style="font-size: 11px">Pasta&Noodles</p>
+                                </div>
+                            </div>
+                        </li>
+                        <li style="width:23%">
+                            <div class="card shadow bg-warning" style="border-radius: 15px;">
+                                <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;"src="img/main/categ4.jpg" alt="Card image cap">
+                                <div class="card-body">
+                                    <p class="card-text" style="font-size: 11px">Beverages</p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="shadow p-4 mb-4 bg-white" style="border-radius: 15px">
+                <p class="text-center"> About Us <br>
+                shdjkadhjkdhkdjahdjkahdkajdhakjdhajkdahdjkashdkjsd
+                shdjkadhjkdhkdjahdjkahdkajdhakjdhajkdahdjkashdkjsd
+                shdjkadhjkdhkdjahdjkahdkajdhakjdhajkdahdjkashdkjsd
+                <br><br> Contact Us <br>
+                Facebook: krusty krab <br>
+                Twitter: cmsc_127 <br>
+                Email: cmsc127@gmail.com <br>
+                Contact No.: 091234567890
+                </p>
+            </div>
+        </div>
+    </div>
+        <!-- body
         <div>
-            <!-- filter -->
+            filter
             <div id="body-filter">
                 <ul>
-                    <li class="drp">
-                        <p class="drpbtn"> Change Branch </p>
-                        <div class="drp-content">
-                            <?php
-                                if ($id == 0) {
-                                    $temp = 'temp';
-                                } else {
-                                    $temp = $id;
-                                }
-                            ?>
-                            <a href="main.php?id=<?php echo $temp ?>&branch=1&categ=All"> Paoay </a>
-                            <a href="main.php?id=<?php echo $temp ?>&branch=2&categ=All"> Vicas </a>
-                            <a href="main.php?id=<?php echo $temp ?>&branch=3&categ=All"> Cordon </a>
-                        </div>
-                    </li>
                     <li class="drp">
                         <p class="drpbtn"> Change Category </p>
                         <div class="drp-content">
@@ -244,11 +370,12 @@
                 </ul>       
             </div>
 
-            <!-- list of items -->
+            list of items
             <div id="body-items">
                 <iframe name="display" height="50%" width="100%" src="pages/getItem.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>&categ=<?php echo $chosenCateg ?>">
             </div>
         </div>
-    </div>
+        
+    </div>-->
 </body>
 </html>
