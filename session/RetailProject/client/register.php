@@ -155,7 +155,7 @@
 
     <?php 
 
-        if (!empty($_POST)) {           #if register button pressed
+        if (isset($_POST['register'])) {           #if register button pressed
             $username = mysqli_real_escape_string($conn,$_POST['username']);
             $password1 = mysqli_real_escape_string($conn,$_POST['password']);
             $firstName = mysqli_real_escape_string($conn,$_POST['firstName']);
@@ -183,7 +183,8 @@
                 //$_SESSION['cust_ID'] = $id;
                 //$_SESSION['cust_Username']=$username;
                 //echo $_SESSION['CustomerFName'];
-                header("location:../main.php");
+                //header("location:../main.php");
+                echo "<script> location.replace('../main.php'); </script>";
             } else {                            #else, notify user
                 while ($row = mysqli_fetch_assoc($result)) {
                     if ($row['cust_Username']==$username && $row['cust_Email']==$email) {
@@ -199,12 +200,11 @@
                 }
             }    
         }
-
-        if (isset($_POST['back'])) {            #if cancel is pressed
-            header("location:../main.php");
-        }
-
         mysqli_close($conn);
+        if (isset($_POST['back'])) {            #if cancel is pressed
+           # header("location:cart.php");
+           echo "<script> location.replace('../main.php'); </script>";
+        }
     ?>
 
 </body>

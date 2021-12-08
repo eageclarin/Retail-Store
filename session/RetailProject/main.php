@@ -1,6 +1,6 @@
 <?php
     require 'env/connection.php';
-    session_start();
+    //session_start();
     $chosenCateg = "All"; $name = "Guest"; $id = $item = 0;
     $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = $branch = 1;
 
@@ -262,7 +262,7 @@
                                 <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
                             </a>
                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-                                <li><a class="dropdown-item" href="#">Edit Account</a></li>
+                                <li><a class="dropdown-item" href="client/profile.php">Edit Account</a></li>
                                 <li><a class="dropdown-item" href="main.php?action=logout">Log out</a></li>
                             </ul>
                         </div>

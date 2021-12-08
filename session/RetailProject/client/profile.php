@@ -1,7 +1,7 @@
 <?php
     include_once '../env/connection.php';
     
-    $id = 1; #Sample customer id only kasi di pa naka $_SESSION method yung sa pagkuha ng id
+    $id = $_SESSION['userID'];
 
     $cust_query ="SELECT *FROM customer WHERE cust_ID = $id";
     $cust_result = mysqli_query($conn,$cust_query);
@@ -96,17 +96,106 @@
                     <input type="text" class="form-control" id="postal" name="postal"  value="<?php echo $postal?>">
                 </div>
                 <div class="mb-3 mt-3">
-                    <input type="submit" value="Update" name="update" class="btn btn-primary" style="width:150px"  >   
+                    <input type="submit" value="Update" name="cust_update" class="btn btn-primary" style="width:150px"  >   
                         
                 </div>
             </div>
         </form>  
         <form action="profile.php" method="post" class="form-inline">   
-            <input type="submit" value="Cancel" name="back" class="form-control" style="width:150px" > 
+            <input  type="submit" value="Cancel" name="cancel" class="form-control" style="width:150px" > 
         </form>
     </div>
-    
+    <!--
     <script>
+  $(document).ready(function () {
+    $('#form').validate({
+      rules: {
+        username: {
+          required: true
+        },
+        email: {
+          required: true,
+          email: true
+        },
+        contact: {
+          required: true,
+          rangelength: [10, 12],
+          number: true
+        },
+        password: {
+          required: true,
+          minlength: 8,
+        },
+        confirmPassword: {
+          required: true,
+          equalTo: "#password"
+        }
+      },
+      messages: {
+        username: 'Please enter Name.',
+        email: {
+          required: 'Please enter Email Address.',
+          email: 'Please enter a valid Email Address.',
+        },
+        contact: {
+          required: 'Please enter Contact.',
+          rangelength: 'Contact should be 10 digit number.'
+        },
+        password: {
+          required: 'Please enter Password.',
+          minlength: 'Password must be at least 8 characters long.',          
+        },
+        confirmPassword: {
+          required: 'Please enter Confirm Password.',
+          equalTo: 'Confirm Password do not match with Password.',
+        }
+      },
+      submitHandler: function (form) {
+        form.submit();
+      }
+    });
+  });
+</script> -->
+
+   <?php /*
+
+        if (isset($_POST['update'])) {           #if register button pressed
+            $username = mysqli_real_escape_string($conn,$_POST['username']);
+            $password1 = mysqli_real_escape_string($conn,$_POST['password']);
+            $firstName = mysqli_real_escape_string($conn,$_POST['firstName']);
+            $lastName = mysqli_real_escape_string($conn,$_POST['lastName']);
+            $email = mysqli_real_escape_string($conn,$_POST['email']);
+            $brgy = mysqli_real_escape_string($conn,$_POST['brgy']);
+            $city = mysqli_real_escape_string($conn,$_POST['city']);
+            $province = mysqli_real_escape_string($conn,$_POST['province']);
+            $postal = mysqli_real_escape_string($conn,$_POST['postal']);
+
+
+            
+
+            
+            #if ($resultCheck==0){               #if username or email does not exist, insert new record
+                $password = md5($password1);    #hash
+                $insert = "UPDATE customer SET cust_Username='$username', cust_Password= '$password', cust_FName='$firstName', cust_LName='$lastName', cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
+                $update_result = mysqli_query($conn, $insert);
+                if ($update_result) {
+                    header("location:cart.php");
+                } else {
+                    die(mysqli_error($conn));
+                }
+
+        }
+
+        if (isset($_POST['cancel'])) {            #if cancel is pressed
+            header("location:../main.php");
+        }
+
+        mysqli_close($conn); */
+    ?> 
+
+</body>
+
+<script>
   $(document).ready(function () {
     $('#form').validate({
       rules: {
@@ -157,63 +246,44 @@
   });
 </script>
 
-    <?php 
 
-        if (!empty($_POST)) {           #if register button pressed
-            $username = mysqli_real_escape_string($conn,$_POST['username']);
-            $password1 = mysqli_real_escape_string($conn,$_POST['password']);
-            $firstName = mysqli_real_escape_string($conn,$_POST['firstName']);
-            $lastName = mysqli_real_escape_string($conn,$_POST['lastName']);
-            $email = mysqli_real_escape_string($conn,$_POST['email']);
-            $brgy = mysqli_real_escape_string($conn,$_POST['brgy']);
-            $city = mysqli_real_escape_string($conn,$_POST['city']);
-            $province = mysqli_real_escape_string($conn,$_POST['province']);
-            $postal = mysqli_real_escape_string($conn,$_POST['postal']);
-
-
-            #check if username or email exists
-           /* $check_query = "SELECT * FROM customer where cust_Username = '$username' OR cust_Email = '$email' LIMIT 1;";
-            $result = mysqli_query($conn, $check_query);
-            $resultCheck = mysqli_num_rows($result);*/
-
-            
-            #if ($resultCheck==0){               #if username or email does not exist, insert new record
-                $password = md5($password1);    #hash
-
-                $insert = "UPDATE customer SET cust_Username='$username', cust_Password= '$password', cust_FName='$firstName', cust_LName='$lastName', cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
-                $update_result = mysqli_query($conn, $insert);
-                //$id = mysqli_insert_id($conn);
-                //$_SESSION['cust_ID'] = $id;
-                //$_SESSION['cust_Username']=$username;
-                //echo $_SESSION['CustomerFName'];
-                if ($update_result) {
-                    header("location:../main.php");
-                } else {
-                    die(mysqli_error($conn));
-                }
-                
-            /*} else {                            #else, notify user
-                while ($row = mysqli_fetch_assoc($result)) {
-                    if ($row['cust_Username']==$username && $row['cust_Email']==$email) {
-                        echo "username and email already exist";
-                        break;
-                    } elseif ($row['cust_Username']==$username) {
-                        echo "username already exist";
-                        break;
-                    } elseif ($row['cust_Email']==$email) {
-                        echo "email already exist";
-                        break;
-                    }
-                }
-            }   */ 
-        }
-
-        if (isset($_POST['back'])) {            #if cancel is pressed
-            header("location:../main.php");
-        }
-
-        mysqli_close($conn);
-    ?>
-
-</body>
 </html>
+
+<?php 
+
+if (isset($_POST['cust_update'])) {           #if register button pressed
+    $username = mysqli_real_escape_string($conn,$_POST['username']);
+    $password1 = mysqli_real_escape_string($conn,$_POST['password']);
+    $firstName = mysqli_real_escape_string($conn,$_POST['firstName']);
+    $lastName = mysqli_real_escape_string($conn,$_POST['lastName']);
+    $email = mysqli_real_escape_string($conn,$_POST['email']);
+    $brgy = mysqli_real_escape_string($conn,$_POST['brgy']);
+    $city = mysqli_real_escape_string($conn,$_POST['city']);
+    $province = mysqli_real_escape_string($conn,$_POST['province']);
+    $postal = mysqli_real_escape_string($conn,$_POST['postal']);
+
+
+    #check if username or email exists
+   /* $check_query = "SELECT * FROM customer where cust_Username = '$username' OR cust_Email = '$email' LIMIT 1;";
+    $result = mysqli_query($conn, $check_query);
+    $resultCheck = mysqli_num_rows($result);*/
+
+    
+    #if ($resultCheck==0){               #if username or email does not exist, insert new record
+        $password = md5($password1);    #hash
+        $insert = "UPDATE customer SET cust_Username='$username', cust_Password= '$password', cust_FName='$firstName', cust_LName='$lastName', cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
+        $update_result = mysqli_query($conn, $insert);
+        if ($update_result) {
+            echo "<script> location.replace('../main.php'); </script>";
+        } else {
+            die(mysqli_error($conn));
+        }
+
+}
+
+if (isset($_POST['cancel'])) {            #if cancel is pressed
+    echo "<script> location.replace('../main.php'); </script>";
+}
+
+mysqli_close($conn);
+?>
