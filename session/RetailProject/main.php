@@ -154,7 +154,7 @@
                     header("location: main.php?id=$id&branch=$chosenBranch&categ=$chosenCateg");
                 }
             case 'logout':
-                unset($_SESSION['username']);
+                session_destroy();
                 header("location: main.php");
                 exit;
             case'brand':
