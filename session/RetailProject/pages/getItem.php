@@ -3,8 +3,8 @@
 	session_start();
 	/* FOR FILTER */
     //variables
-	$branch = $item = $id = ""; $brand = $categ= "All";
-	$sort = "ASC"; $order = "Name";
+	$branch = $item = $id = ""; $_SESSION['brand'] = $_SESSION['categ']= "All";
+	$_SESSION['sort'] = "ASC"; $$_SESSION['order'] = "Name";
 
 	if (isset($_SESSION)) {
 		$branch = $_SESSION['branch'];
@@ -60,8 +60,9 @@
 								INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
 								INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
 								INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-								WHERE bii.item_Stock > 0 AND i.item_Category = '$categ'
+								WHERE bii.item_Stock > 0 
 									AND b.branch_ID = '$branch'
+									OR i.item_Category = '$categ'
 								ORDER BY i.item_$order $sort
 							";
 					$resFilter = mysqli_query($conn, $sqlFilter);
