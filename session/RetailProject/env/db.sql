@@ -19,6 +19,7 @@ CREATE TABLE `Customer` (
 	`cust_Password` varchar(255) NULL,
 	`cust_FName` varchar(25) NULL,
 	`cust_LName` varchar(25) NULL,
+	`cust_Contact` varchar(10) NOT NULL,
 	`cust_Email` varchar(50) NULL,
 	`cust_ABrgy` varchar(25) NULL,
 	`cust_ACity` varchar(25) NULL,
@@ -26,13 +27,6 @@ CREATE TABLE `Customer` (
 	`cust_APostal` int NULL
 );
 
--- table for customer contact
-CREATE TABLE `Customer_Contact` (
-	`cust_ID` int NOT NULL ,
-	`contact` int(12) NOT NULL,
-	PRIMARY KEY(cust_ID,contact),
-	FOREIGN KEY(cust_ID) REFERENCES Customer(cust_ID) ON UPDATE CASCADE
-);
 
 -- table for cart
 CREATE TABLE `Cart` (
