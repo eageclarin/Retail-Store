@@ -165,7 +165,7 @@
                 } else {
                     $_SESSION['brand'] = $_GET['brand'];
                     $_SESSION['branch'] = $chosenBranch;
-                    header("location: pages/brand.php"); 
+                    header("location: brand.php"); 
                     exit;
                 }
             case 'categ':

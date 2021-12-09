@@ -130,15 +130,7 @@
                     } else {
                         ?>
                         <div class="text-end nav col-12 col-lg-auto mb-2 mb-md-0">
-                            <a class="nav-link px-2 text-dark"> Hello,
-                            <?php
-                                if ((substr($name,0,-3)) == "Guest") {
-                                    echo "Guest";
-                                } else {
-                                    echo $name;
-                                }
-                                
-                            ?> </a>
+                            <a class="nav-link px-2 text-dark"> Hello,  <?php echo $name; ?> </a>
                         </div>
                         &nbsp;
                         <div class="dropdown text-end">
@@ -162,7 +154,7 @@
         </div>
     </header>
                     
-    <div class="container-fluid p-4 mx-auto">
+    <div class="container-fluid p-4 mx-auto h-100">
         <div class="row">
             <div class="col-md-7">
                 <h1><a class="link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -232,9 +224,9 @@
             </div>
         </div>
         
-        <div class="row">
+        <div class="row h-100">
             <div class="col-md-12 w-100 h-100">
-                <iframe name="display" height="100%" width="100%" src="getItem.php?branch=<?php echo $chosenBranch ?>&for=brand&brand=<?php echo $chosenBrand ?>&categ=<?php echo $chosenCateg ?>&sort=<?php echo $sort ?>&order=<?php echo $order ?>">
+                <iframe name="display" height="100%" width="100%" src="pages/getItem.php?branch=<?php echo $chosenBranch ?>&for=brand&brand=<?php echo $chosenBrand ?>&categ=<?php echo $chosenCateg ?>&sort=<?php echo $sort ?>&order=<?php echo $order ?>">
             </div>
         </div>
 </body>

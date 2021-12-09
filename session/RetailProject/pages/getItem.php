@@ -66,6 +66,7 @@
 							";
 					$resFilter = mysqli_query($conn, $sqlFilter);
 				}
+				break;
 			case "categ":
 				if ($categ != "All") {
 					$sqlFilter = "SELECT * FROM Item i
@@ -90,6 +91,7 @@
 							";
 					$resFilter = mysqli_query($conn, $sqlFilter);
 				}
+				break;
 		}
 	}
 ?>
