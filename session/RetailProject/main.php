@@ -164,6 +164,9 @@
                     exit;
                 } else {
                     $_SESSION['brand'] = $_GET['brand'];
+                    $_SESSION['categ'] = "All";
+                    $_SESSION['sort'] = "ASC";
+                    $_SESSION['order'] = "Name";
                     $_SESSION['branch'] = $chosenBranch;
                     header("location: brand.php"); 
                     exit;

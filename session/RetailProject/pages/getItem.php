@@ -155,7 +155,7 @@
 					$itemWeight = "0.00g";
 	?>
 				<li style="width:18%">
-					<form action="addItem.php?action=add" method="post" target="_top">
+					<form action="addItem.php?itemID=<?php echo $itemID ?>" method="post" target="_top">
 					<a href="" class="card shadow bg-light" style="border-radius: 15px; text-decoration: none">
                         <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="../img/main/brand.jpg" alt="Card image cap">
                         <div class="container card-body">
@@ -163,7 +163,6 @@
 								<div class="col-md-8">
 									<h7 class="card-title text-dark"><?php echo $itemName ?></h7>
 									<p class="card-text text-dark" style="font-size: 11px"><?php echo $itemWeight ?></p>
-									<input type="hidden" name="itemID" value="<?php echo $itemID ?>" />
 									<input class="btn btn-primary" type="submit" name="add" value="Add to Cart"/>
 								</div>
 								<div class="col-md-4 text-end">

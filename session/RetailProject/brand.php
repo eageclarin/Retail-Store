@@ -51,26 +51,26 @@
         $_SESSION['branch'] = $chosenBranch;
     }
     
-    /* FOR ADD TO CART ITEM */
+    /* for brand descriptions */
     //search item in table
-    $sqlItem = "SELECT * FROM Item i
+    $sqlBrand = "SELECT COUNT(i.item_ID) AS items FROM Item i
                 INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
                 INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
                 INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
                 INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-                WHERE i.item_ID = '$item'
+                WHERE i.item_Brand = '$chosenBrand'
                     AND bii.item_Stock > 0
                     AND b.branch_ID = '$chosenBranch'
                 ";
-	$resItem = mysqli_query($conn, $sqlItem);
-	$countI = mysqli_num_rows($resItem);
-
-	//if item exists in table, get item price
-    if ($countI >= 1) {
-        $rowI = mysqli_fetch_assoc($resItem);
-        $orderPrice = $rowI['item_RetailPrice']; //get item price
+	$resBrand = mysqli_query($conn, $sqlBrand);
+    $countB = mysqli_num_rows($resBrand);
+    if ($countB > 0) {
+        $rowB = mysqli_fetch_assoc($resBrand);
+        $desc = "There is <b>a total of ".$rowB['items']." ".$chosenBrand." item/s</b>.";
+    } else {
+        $desc = "There is no ".$chosenBrand." item/s";
     }
-
+	
     //action add to cart
     if (!empty($_GET['action'])) {
         switch($_GET['action']){
@@ -184,7 +184,7 @@
                     <li><a class="dropdown-item" href="brand.php?brand=Libbys">Libbys</a></li>
                 </ul>
                 </h1>
-                <p> Brand Description here </p>
+                <p> <?php echo $desc ?> </p>
             </div>
             <div class="col-md-5">
                 <ul class="nav col-lg-auto mb-2 mb-md-0 justify-content-end">
