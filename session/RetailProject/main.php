@@ -12,6 +12,7 @@
     if (isset($_GET['item'])) {
         $item = $_GET['item'];
     }
+
     if (!empty($_GET['branch'])) {
         $branch = $_GET['branch'];
         switch($branch) {
@@ -163,6 +164,7 @@
                     exit;
                 } else {
                     $_SESSION['brand'] = $_GET['brand'];
+                    $_SESSION['branch'] = $chosenBranch;
                     header("location: pages/brand.php"); 
                     exit;
                 }
