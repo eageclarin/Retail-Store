@@ -17,11 +17,11 @@
         $chosenBrand = $_GET['brand'];
         $_SESSION['brand'] = $chosenBrand;
     }
-    if (!empty($_GET['categ'])) {
+    if (!empty($_GET['categ']) || !empty($_SESSION['categ'])) {
         $chosenCateg = $_GET['categ'];
         $_SESSION['categ'] = $chosenCateg;
     }
-    if (!empty($_GET['sort']) && !empty($_GET['order'])) {
+    if ((!empty($_GET['sort']) && !empty($_GET['order'])) || (!empty($_SESSION['sort']) && !empty($_SESSION['order'])) ) {
         $order = $_GET['order'];
         $sort = $_GET['sort'];
         $_SESSION['sort'] = $sort;
@@ -69,25 +69,7 @@
             case 'logout':
                 session_destroy();
                 header("location: main.php");
-                exit;
-            case'brand':
-                if(empty($_SESSION['username'])) {
-                    header("location: login.php");
-                    exit;
-                } else {
-                    $_SESSION['brand'] = $_GET['brand'];
-                    header("location: brand.php"); 
-                    exit;
-                }
-            case 'categ':
-                if(empty($_SESSION['username'])) {
-                    header("location: login.php");
-                    exit;
-                } else {
-                    $_SESSION['categ'] = $_GET['categ'];
-                    header("location: categories.php"); 
-                    exit;
-                }      
+                exit;   
         }
     }
 ?>
@@ -100,26 +82,16 @@
     <title> Main </title>
 </head>
 <body style="background-color:#E6E9F0;" class="w-100 h-100">
-    <?php
-        if ($id != 0){ //if not guest (guest is id ==0)
-            if ($id == 'temp') {
-                $name = "Guest";
-            } else {
-                $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT cust_Username FROM Customer WHERE cust_ID='$id'"));
-                $name = $row['cust_Username'];
-            }
-        }
-    ?>
     <header class="shadow p-3 mb-0 border-bottom bg-white h-20">
         <div class="container-fluid d-grid gap-3 align-items-center">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <a href="../main.php" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <img src="img/logo.jpg" height="50" role="img" />
                 <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
             </a>
             &nbsp; &nbsp; &nbsp;
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="main.php" class="nav-link px-2 text-dark">Home</a></li>
+            <li><a href="../main.php" class="nav-link px-2 text-dark">Home</a></li>
             <li>
                 <a class="nav-link link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Branch:
@@ -262,7 +234,7 @@
         
         <div class="row">
             <div class="col-md-12 w-100 h-100">
-                <iframe name="display" height="100%" width="100%" src="pages/getItem.php?branch=<?php echo $chosenBranch ?>&for=brand&brand=<?php echo $chosenBrand ?>&categ=<?php echo $chosenCateg ?>&sort<?php echo $sort ?>&order=<?php echo $order ?>">
+                <iframe name="display" height="100%" width="100%" src="getItem.php?branch=<?php echo $chosenBranch ?>&for=brand&brand=<?php echo $chosenBrand ?>&categ=<?php echo $chosenCateg ?>&sort=<?php echo $sort ?>&order=<?php echo $order ?>">
             </div>
         </div>
 </body>

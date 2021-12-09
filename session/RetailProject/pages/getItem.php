@@ -3,7 +3,7 @@
 	session_start();
 	/* FOR FILTER */
     //variables
-	$branch = $item = $id = ""; $brand = $categ="All";
+	$branch = $item = $id = ""; $brand = $categ= "All";
 	$sort = "ASC"; $order = "Name";
 
 	if (isset($_SESSION)) {
@@ -22,7 +22,7 @@
 		$order = $_SESSION['order'];
 	}
 
-    if (!empty($_GET['categ']) && $_GET['categ'] == "PastaNoodles") {
+    if (!empty($_GET['categ'])) {
 		$categ = $_GET['categ'];
 		$_SESSION['categ'] = $categ;
 		if ($categ == "PastaNoodles") { $categ = "Pasta & Noodles"; }

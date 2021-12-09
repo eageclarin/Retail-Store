@@ -163,7 +163,7 @@
                     exit;
                 } else {
                     $_SESSION['brand'] = $_GET['brand'];
-                    header("location: brand.php"); 
+                    header("location: pages/brand.php"); 
                     exit;
                 }
             case 'categ':
