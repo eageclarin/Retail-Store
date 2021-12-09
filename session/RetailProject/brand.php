@@ -175,9 +175,9 @@
                     <li><a class="dropdown-item" href="brand.php?brand=All">All Brands</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Purefoods">Purefoods</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Century">Century</a></li>
-                    <li><a class="dropdown-item" href="brand.php?brand=Datu Puti">Datu Puti</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=Datu+Puti">Datu Puti</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Lorins">Lorins</a></li>
-                    <li><a class="dropdown-item" href="brand.php?brand=White King">White King</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=White+King">White King</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Fiesta">Fiesta</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Kopiko">Kopiko</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Rebisco">Rebisco</a></li>
