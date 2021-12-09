@@ -145,7 +145,6 @@
         }
         mysqli_close($conn);
         if (isset($_POST['back'])) {            #if cancel is pressed
-           # header("location:cart.php");
            echo "<script> location.replace('../main.php'); </script>";
         }
     ?>

@@ -2,7 +2,7 @@
     include_once '../env/connection.php';
     
     $id = $_SESSION['userID'];
-
+    //query customer details
     $cust_query ="SELECT *FROM customer WHERE cust_ID = $id";
     $cust_result = mysqli_query($conn,$cust_query);
     $cust_Check = mysqli_num_rows($cust_result);
@@ -10,7 +10,7 @@
     if ($cust_Check>0){
         while ($cust_row = mysqli_fetch_assoc($cust_result)){
             $username = $cust_row['cust_Username'];
-            $password1 = $cust_row['cust_Password'];
+            $password = $cust_row['cust_Password'];
             $firstName = $cust_row['cust_FName'];
             $lastName = $cust_row['cust_LName'];
             $contact = $cust_row['cust_Contact'];
@@ -23,8 +23,6 @@
      }else{
             header('location: ../main.php');
     }     
-    
-    $password = md5($password1);
 
 ?>
 
@@ -40,28 +38,22 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
   <script src="client.js"></script>
+
 </head>
 
 <body>
-    <!-- Registration form -->
-    <div class="container-sm p-5 my-5 bg-dark text-white" style="max-width:50%;">
-        <h2> Profile </h2>
+    <!-- customer details -->
+    <div class="container-sm p-5 my-5 mb-1 bg-dark text-white" style="max-width:50%;">
+    <div style="display:flex; padding-right:10px; padding-bottom:10px;">
+        <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" class="pr-5 rounded-circle">
+        <h2 style="padding-left:10px;"> <?php echo $firstName." ". $lastName?> </h2>
+    </div>
         <form id="form" action="profile.php" method="post" class="form-inline"> 
             <div class="form-group">
                 <div class="mb-1 mt-1">
                     <label for="username" >Username: </label>
                     <input type="text" class="form-control" id="username" name="username"  value="<?php echo $username?>">
                 </div>
-                <div class="mb-1 mt-1">
-                    <label for="password" >Password: </label>
-                    <input type="password" class="form-control" id="password" name="password"  value="<?php echo $password?>">
-                    <span id="toggle" onclick="toggle('password')"><i class="fa fa-eye"></i> </span> 
-                </div> 
-                <div class="mb-1 mt-1">
-                    <label for="password" >Confirm Password: </label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"  value="<?php echo $password?>">
-                    <span id="toggle" onclick="toggle('confirmPassword')"><i class="fa fa-eye"></i> </span>
-                </div> 
                 <div class="mb-1 mt-1">
                     <label for="firstName" >First Name: </label>
                     <input type="text" class="form-control" id="firstName" name="firstName"  value="<?php echo $firstName?>">    
@@ -98,6 +90,7 @@
                     <label for="postal" >Postal Code: </label>
                     <input type="text" class="form-control" id="postal" name="postal"  value="<?php echo $postal?>">
                 </div>
+                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="text-decoration:underline; cursor:pointer">Change Password</a>
                 <div class="mb-3 mt-3">
                     <input type="submit" value="Update" name="cust_update" class="btn btn-primary" style="width:150px"  >   
                         
@@ -108,15 +101,52 @@
             <input  type="submit" value="Cancel" name="cancel" class="form-control" style="width:150px" > 
         </form>
     </div>
- 
+
+    <!-- change Password dialog box-->
+        <!-- Modal -->
+        <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Change Password</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="form" action="profile.php" method="post" class="form-inline"> 
+                    <div class="mb-1 mt-1">
+                        <label for="oldPassword" >Enter current password: </label>
+                        <input type="password" class="form-control" id="oldPassword" name="oldPassword"  value="<?php echo $password?>">
+                        <span id="toggle" onclick="toggle('oldPassword')"><i class="fa fa-eye" style="cursor:pointer;"></i> </span> 
+                    </div> 
+                    <div class="mb-1 mt-1">
+                        <label for="password" >Password: </label>
+                        <input type="password" class="form-control" id="newPassword" name="newPassword"   required>
+                        <span id="toggle" onclick="toggle('newPassword')"><i class="fa fa-eye"style="cursor:pointer;"></i> </span> 
+                    </div> 
+                    <div class="mb-1 mt-1">
+                        <label for="confirmPassword" >Confirm Password: </label>
+                        <input type="password" class="form-control" id="confirmNPassword" name="confirmNPassword"   required>
+                        <span id="toggle" onclick="toggle('confirmNPassword')"><i class="fa fa-eye"style="cursor:pointer;"></i> </span>
+                    </div> 
+                    <input  type="submit" value="Update" name="updatePass" class="form-control" style="width:150px" > 
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+            </div>
+        </div>
+        </div>
+            <!--end modal-->
+
 </body>
 </html>
 
 <?php 
 
-if (isset($_POST['cust_update'])) {           #if register button pressed
+if (isset($_POST['cust_update'])) {           #if update button pressed
     $username = mysqli_real_escape_string($conn,$_POST['username']);
-    $password1 = mysqli_real_escape_string($conn,$_POST['password']);
     $firstName = mysqli_real_escape_string($conn,$_POST['firstName']);
     $lastName = mysqli_real_escape_string($conn,$_POST['lastName']);
     $contact = $_POST['contact'];
@@ -126,16 +156,44 @@ if (isset($_POST['cust_update'])) {           #if register button pressed
     $province = mysqli_real_escape_string($conn,$_POST['province']);
     $postal = mysqli_real_escape_string($conn,$_POST['postal']);
 
-    
-        $password = md5($password1);    #hash
-        $insert = "UPDATE customer SET cust_Username='$username', cust_Password= '$password', cust_FName='$firstName', cust_LName='$lastName',cust_Contact=$contact, cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
-        $update_result = mysqli_query($conn, $insert);
+
+    $insert = "UPDATE customer SET cust_Username='$username', cust_FName='$firstName', cust_LName='$lastName',cust_Contact=$contact, cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
+    $update_result = mysqli_query($conn, $insert);
         if ($update_result) {
             echo "<script> location.replace('../main.php'); </script>";
         } else {
             die(mysqli_error($conn));
         }
 
+}
+
+if (isset($_POST['updatePass'])) {           #if update password is pressed
+
+    $password1 = md5(mysqli_real_escape_string($conn,$_POST["oldPassword"]));
+    
+    if ($password==$password1) {
+        if (isset($_POST['newPassword'])&& isset($_POST['confirmNPassword'])) {
+            $password = md5($_POST['newPassword']);    #hash
+            $update_pass = "UPDATE customer SET cust_Password= '$password'   WHERE cust_ID=$id";
+            $update_pass_result = mysqli_query($conn, $update_pass);
+            if ($update_pass) {
+                echo '<div class="container-sm p-1 my-1 bg-success text-white" style="max-width:50%;">
+                Password changed succesfully.
+                </div>';
+                unset($_POST['newPassword']);
+            } else {
+                die(mysqli_error($conn));
+            }
+        } else {
+            echo "Please enter and confirm new password";
+        }
+        
+    } else {
+        echo '<div class="container-sm p-1 my-1 bg-danger text-white" style="max-width:50%;">
+                Wrong Password. Please try again.
+                </div>';
+    }
+    unset($_POST['updatePass']);
 }
 
 if (isset($_POST['cancel'])) {            #if cancel is pressed

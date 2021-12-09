@@ -29,7 +29,19 @@ $(document).ready(function () {
         confirmPassword: {
           required: true,
           equalTo: "#password"
+        },
+        oldPassword: {
+          required: true,
+        },
+        newPassword: {
+          required: true,
+          minlength: 8,
+        },
+        confirmNPassword: {
+          required: true,
+          equalTo: "#newPassword"
         }
+
       },
       messages: {
         username: 'Please enter Name.',
@@ -48,14 +60,23 @@ $(document).ready(function () {
         confirmPassword: {
           required: 'Please enter Confirm Password.',
           equalTo: 'Confirm Password do not match with Password.',
+        },
+        oldPassword: {
+          required: 'Please enter old Password.',         
+        },
+        newPassword: {
+          required: 'Please enter new Password.',    
+          minlength: 'Password must be at least 8 characters long.',     
+        },
+        confirmNPassword: {
+          required: 'Please enter Confirm Password.',
+          equalTo: 'Confirm Password do not match with Password.',
         }
       },
       submitHandler: function (form) {
         form.submit();
       }
     });
-
-
 
   });
 
