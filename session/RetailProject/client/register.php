@@ -20,9 +20,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+  <script src="client.js"></script>
 </head>
 
 <body>
@@ -38,12 +40,12 @@
                 <div class="mb-1 mt-1">
                     <label for="password" >Password: </label>
                     <input type="password" class="form-control" id="password" name="password"  required>
-                     
+                    <span id="toggle" onclick="toggle('password')"><i class="fa fa-eye"></i> </span>
                 </div> 
                 <div class="mb-1 mt-1">
                     <label for="password" >Confirm Password: </label>
                     <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"  required>
-                     
+                    <span id="toggle" onclick="toggle('confirmPassword')"><i class="fa fa-eye"></i> </span>
                 </div> 
                 <div class="mb-1 mt-1">
                     <label for="firstName" >First Name: </label>
@@ -92,66 +94,6 @@
         </form>
     </div>
     
-    <script>
-  $(document).ready(function () {
-   /** jQuery.validator.addMethod("passcheck", function(value, element) {
-            pattern = '/^(?=.*[!@#$%^&*-])(?=.*[0-9])(?=.*[A-Z]).{8,20}$/';
-            if (pattern.test(value)) {
-                return true;
-            } else {
-                return false;
-            }
-        };
-    };**/
-
-    $('#form').validate({
-      rules: {
-        username: {
-          required: true
-        },
-        email: {
-          required: true,
-          email: true
-        },
-        contact: {
-          required: true,
-          rangelength: [10, 12],
-          number: true
-        },
-        password: {
-          required: true,
-          minlength: 8,
-        },
-        confirmPassword: {
-          required: true,
-          equalTo: "#password"
-        }
-      },
-      messages: {
-        username: 'Please enter Name.',
-        email: {
-          required: 'Please enter Email Address.',
-          email: 'Please enter a valid Email Address.',
-        },
-        contact: {
-          required: 'Please enter Contact.',
-          rangelength: 'Contact should be 10 digit number.'
-        },
-        password: {
-          required: 'Please enter Password.',
-          minlength: 'Password must be at least 8 characters long.',          
-        },
-        confirmPassword: {
-          required: 'Please enter Confirm Password.',
-          equalTo: 'Confirm Password do not match with Password.',
-        }
-      },
-      submitHandler: function (form) {
-        form.submit();
-      }
-    });
-  });
-</script>
 
     <?php 
 
