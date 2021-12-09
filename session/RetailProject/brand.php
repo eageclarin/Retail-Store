@@ -2,9 +2,9 @@
     require 'env/connection.php';
     session_start();
     $chosenBranch = $chosenBrand = $name = $id = "";
-	$_SESSION['categ'] = $chosenCateg = "All";
-	$_SESSION['sort'] = $sort = "ASC";
-	$_SESSION['order'] = $order = "Name";
+	$chosenCateg = "All";
+	$sort = "ASC";
+	$order = "Name";
 
     if(isset($_SESSION)) {
         $chosenBranch = $_SESSION['branch'];
@@ -13,11 +13,11 @@
         $id = $_SESSION['userID'];
     }
     
-    if(!empty($_SESSION['categ'])) {
+    if(isset($_SESSION['categ'])) {
 		$chosenCateg = $_SESSION['categ'];
-	} if (!empty($_SESSION['sort'])) {
+	} if (isset($_SESSION['sort'])) {
 		$sort = $_SESSION['sort'];
-	} if (!empty($_SESSION['order'])){
+	} if (isset($_SESSION['order'])){
 		$order = $_SESSION['order'];
 	}
 
@@ -194,6 +194,7 @@
                             Category: <?php echo $chosenCateg; ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 220px;">
+                            <li><a class="dropdown-item" href="brand.php?categ=All">All</a></li>
                             <li><a class="dropdown-item" href="brand.php?categ=Canned+Goods">Canned Goods</a></li>
                             <li><a class="dropdown-item" href="brand.php?categ=Condiments">Condiments</a></li>
                             <li><a class="dropdown-item" href="brand.php?categ=PastaNoodles">Pasta & Noodles</a></li>
