@@ -1,6 +1,5 @@
 <?php
     require 'env/connection.php';
-    session_start();
     $chosenBranch = $chosenBrand = $name = $id = ""; $chosenCateg = "All";
     $sort = "ASC"; $order = "Name";
 

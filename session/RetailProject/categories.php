@@ -1,6 +1,5 @@
 <?php
     require 'env/connection.php';
-    session_start();
 
     if(isset($_SESSION)) {
         $chosenBranch = $_SESSION['branch'];

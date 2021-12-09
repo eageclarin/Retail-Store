@@ -1,6 +1,5 @@
 <?php
     include_once '../env/connection.php';
-	session_start();
 	/* FOR FILTER */
     //variables
 	$branch = $item = $id = ""; $brand = $categ="All";
