@@ -47,9 +47,10 @@
 									INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
 									INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
 									INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-									WHERE i.item_Brand = '$brand' OR i.item_Category = '$categ'
+									WHERE i.item_Brand = '$brand'
 										AND bii.item_Stock > 0
-										AND b.branch_ID = '$branch'
+										AND bbi.branch_ID = '$branch'
+										OR i.item_Category = '$categ'
 									ORDER BY i.item_$order $sort
 								";
 					$resFilter = mysqli_query($conn, $sqlFilter);
@@ -83,8 +84,9 @@
 								INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
 								INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
 								INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-								WHERE bii.item_Stock > 0 OR i.item_Brand = '$brand'
+								WHERE bii.item_Stock > 0 
 									AND b.branch_ID = '$branch'
+									OR i.item_Brand = '$brand'
 							";
 					$resFilter = mysqli_query($conn, $sqlFilter);
 				}
