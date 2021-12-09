@@ -56,7 +56,7 @@
                     <input type="text" class="form-control" id="lastName" name="lastName"  required>
                 </div>
                 <div class="mb-1 mt-1">
-                    <label for="email" >Contact Number: </label>
+                    <label for="contact" >Contact Number: </label>
                     <input type="text" class="form-control" id="contact" name="contact"  required>
                 </div>
                 <div class="mb-1 mt-1">
@@ -102,6 +102,7 @@
             $password1 = mysqli_real_escape_string($conn,$_POST['password']);
             $firstName = mysqli_real_escape_string($conn,$_POST['firstName']);
             $lastName = mysqli_real_escape_string($conn,$_POST['lastName']);
+            $contact = $_POST['contact'];
             $email = mysqli_real_escape_string($conn,$_POST['email']);
             $brgy = mysqli_real_escape_string($conn,$_POST['brgy']);
             $city = mysqli_real_escape_string($conn,$_POST['city']);
@@ -118,8 +119,8 @@
             if ($resultCheck==0){               #if username or email does not exist, insert new record
                 $password = md5($password1);    #hash
 
-                $insert = "INSERT INTO customer (cust_Username, cust_Password, cust_FName, cust_LName, cust_Email, cust_ABrgy, cust_ACity, cust_AProvince, cust_APostal)
-                VALUES ('$username', '$password', '$firstName', '$lastName', '$email', '$brgy', '$city', '$province', '$postal');";
+                $insert = "INSERT INTO customer (cust_Username, cust_Password, cust_FName, cust_LName, cust_Contact, cust_Email, cust_ABrgy, cust_ACity, cust_AProvince, cust_APostal)
+                VALUES ('$username', '$password', '$firstName', '$lastName','$contact', '$email', '$brgy', '$city', '$province', '$postal');";
                 mysqli_query($conn, $insert);
                 $id = mysqli_insert_id($conn);
                 //$_SESSION['cust_ID'] = $id;

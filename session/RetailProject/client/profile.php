@@ -13,6 +13,7 @@
             $password1 = $cust_row['cust_Password'];
             $firstName = $cust_row['cust_FName'];
             $lastName = $cust_row['cust_LName'];
+            $contact = $cust_row['cust_Contact'];
             $email = $cust_row['cust_Email'];
             $brgy = $cust_row['cust_ABrgy'];
             $city = $cust_row['cust_ACity'];
@@ -70,8 +71,8 @@
                     <input type="text" class="form-control" id="lastName" name="lastName"  value="<?php echo $lastName?>">
                 </div>
                 <div class="mb-1 mt-1">
-                    <label for="email" >Contact Number: </label>
-                    <input type="text" class="form-control" id="contact" name="contact"  required>
+                    <label for="contact" >Contact Number: </label>
+                    <input type="text" class="form-control" id="contact" name="contact"   value="<?php echo $contact?>" >
                 </div>
                 <div class="mb-1 mt-1">
                     <label for="email" >Email: </label>
@@ -118,6 +119,7 @@ if (isset($_POST['cust_update'])) {           #if register button pressed
     $password1 = mysqli_real_escape_string($conn,$_POST['password']);
     $firstName = mysqli_real_escape_string($conn,$_POST['firstName']);
     $lastName = mysqli_real_escape_string($conn,$_POST['lastName']);
+    $contact = $_POST['contact'];
     $email = mysqli_real_escape_string($conn,$_POST['email']);
     $brgy = mysqli_real_escape_string($conn,$_POST['brgy']);
     $city = mysqli_real_escape_string($conn,$_POST['city']);
@@ -126,7 +128,7 @@ if (isset($_POST['cust_update'])) {           #if register button pressed
 
     
         $password = md5($password1);    #hash
-        $insert = "UPDATE customer SET cust_Username='$username', cust_Password= '$password', cust_FName='$firstName', cust_LName='$lastName', cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
+        $insert = "UPDATE customer SET cust_Username='$username', cust_Password= '$password', cust_FName='$firstName', cust_LName='$lastName',cust_Contact=$contact, cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
         $update_result = mysqli_query($conn, $insert);
         if ($update_result) {
             echo "<script> location.replace('../main.php'); </script>";
