@@ -2,9 +2,9 @@
     require 'env/connection.php';
     session_start();
     $chosenBranch = $chosenBrand = $name = $id = "";
-    $chosenCateg = "All";
-    $sort = "ASC";
-    $order = "Name";
+	$_SESSION['categ'] = $chosenCateg = "All";
+	$_SESSION['sort'] = $sort = "ASC";
+	$_SESSION['order'] = $order = "Name";
 
     if(isset($_SESSION)) {
         $chosenBranch = $_SESSION['branch'];
@@ -13,15 +13,23 @@
         $id = $_SESSION['userID'];
     }
     
+    if(!empty($_SESSION['categ'])) {
+		$chosenCateg = $_SESSION['categ'];
+	} if (!empty($_SESSION['sort'])) {
+		$sort = $_SESSION['sort'];
+	} if (!empty($_SESSION['order'])){
+		$order = $_SESSION['order'];
+	}
+
     if (!empty($_GET['brand'])) {
         $chosenBrand = $_GET['brand'];
         $_SESSION['brand'] = $chosenBrand;
     }
-    if (!empty($_GET['categ']) || !empty($_SESSION['categ'])) {
+    if (!empty($_GET['categ'])) {
         $chosenCateg = $_GET['categ'];
         $_SESSION['categ'] = $chosenCateg;
     }
-    if ((!empty($_GET['sort']) && !empty($_GET['order'])) || (!empty($_SESSION['sort']) && !empty($_SESSION['order'])) ) {
+    if (!empty($_GET['sort']) && !empty($_GET['order'])) {
         $order = $_GET['order'];
         $sort = $_GET['sort'];
         $_SESSION['sort'] = $sort;
@@ -91,7 +99,7 @@
             </a>
             &nbsp; &nbsp; &nbsp;
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="../main.php" class="nav-link px-2 text-dark">Home</a></li>
+            <li><a href="main.php" class="nav-link px-2 text-dark">Home</a></li>
             <li>
                 <a class="nav-link link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     Branch:

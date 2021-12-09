@@ -3,8 +3,11 @@
 	session_start();
 	/* FOR FILTER */
     //variables
-	$branch = $item = $id = ""; $_SESSION['brand'] = $_SESSION['categ']= "All";
-	$_SESSION['sort'] = "ASC"; $$_SESSION['order'] = "Name";
+	$branch = $item = $id = "";
+	$_SESSION['brand'] = $brand = "All";
+	$_SESSION['categ'] = $categ = "All";
+	$_SESSION['sort'] = $sort = "ASC";
+	$_SESSION['order'] = $order = "Name";
 
 	if (isset($_SESSION)) {
 		$branch = $_SESSION['branch'];
