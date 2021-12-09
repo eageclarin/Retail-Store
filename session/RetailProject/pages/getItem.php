@@ -9,9 +9,15 @@
 		$branch = $_SESSION['branch'];
         $name = $_SESSION['username'];
 		$id = $_SESSION['userID'];
+	}
+
+	if(!empty($_SESSION['categ'])) {
 		$categ = $_SESSION['categ'];
+	} if (!empty($_SESSON['brand'])) {
 		$brand = $_SESSION['brand'];
+	} if (!empty($_SESSION['sort'])) {
 		$sort = $_SESSION['sort'];
+	} if (!empty($_SESSION['order'])){
 		$order = $_SESSION['order'];
 	}
 
@@ -31,56 +37,56 @@
 		$_SESSION['brand'] = $brand;
 	}
 
-	echo $branch . $name . $id . $categ . $brand . $sort . $order;
-	if (!empty($_GET['brand']) && $_GET['for'] == 'brand') {
-		if ($brand != "All") {
-			$sqlFilter = "SELECT * FROM Item i
-							INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
-							INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
-							INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
-							INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-							WHERE i.item_Brand = '$brand' OR i.item_Category = '$categ'
-								AND bii.item_Stock > 0
-								AND b.branch_ID = '$branch'
-							ORDER BY i.item_$order $sort
-						";
-			$resFilter = mysqli_query($conn, $sqlFilter);
-		} else {
-			$sqlFilter = "SELECT * FROM Item i
-						INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
-						INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
-						INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
-						INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-						WHERE bii.item_Stock > 0 OR i.item_Category = '$categ'
-							AND b.branch_ID = '$branch'
-						ORDER BY i.item_$order $sort
-					";
-			$resFilter = mysqli_query($conn, $sqlFilter);
-		}
-	}
-    //select item under category from branch
-	if (!empty($_GET['categ']) && $_GET['for'] == 'categ') {
-		if ($categ != "All") {
-			$sqlFilter = "SELECT * FROM Item i
-						INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
-						INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
-						INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
-						INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-						WHERE i.item_Category = '$categ' AND i.item_Brand = '$brand'
-							AND bii.item_Stock > 0
-							AND b.branch_ID = '$branch'
-					";
-			$resFilter = mysqli_query($conn, $sqlFilter);
-		} else {
-			$sqlFilter = "SELECT * FROM Item i
-						INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
-						INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
-						INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
-						INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-						WHERE bii.item_Stock > 0 OR i.item_Brand = '$brand'
-							AND b.branch_ID = '$branch'
-					";
-			$resFilter = mysqli_query($conn, $sqlFilter);
+	if (!empty($_GET['for'])) {
+		switch($_GET['for']) {
+			case "brand":
+				if ($brand != "All") {
+					$sqlFilter = "SELECT * FROM Item i
+									INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
+									INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
+									INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
+									INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
+									WHERE i.item_Brand = '$brand' OR i.item_Category = '$categ'
+										AND bii.item_Stock > 0
+										AND b.branch_ID = '$branch'
+									ORDER BY i.item_$order $sort
+								";
+					$resFilter = mysqli_query($conn, $sqlFilter);
+				} else {
+					$sqlFilter = "SELECT * FROM Item i
+								INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
+								INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
+								INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
+								INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
+								WHERE bii.item_Stock > 0 AND i.item_Category = '$categ'
+									AND b.branch_ID = '$branch'
+								ORDER BY i.item_$order $sort
+							";
+					$resFilter = mysqli_query($conn, $sqlFilter);
+				}
+			case "categ":
+				if ($categ != "All") {
+					$sqlFilter = "SELECT * FROM Item i
+								INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
+								INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
+								INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
+								INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
+								WHERE i.item_Category = '$categ' AND i.item_Brand = '$brand'
+									AND bii.item_Stock > 0
+									AND b.branch_ID = '$branch'
+							";
+					$resFilter = mysqli_query($conn, $sqlFilter);
+				} else {
+					$sqlFilter = "SELECT * FROM Item i
+								INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
+								INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
+								INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
+								INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
+								WHERE bii.item_Stock > 0 OR i.item_Brand = '$brand'
+									AND b.branch_ID = '$branch'
+							";
+					$resFilter = mysqli_query($conn, $sqlFilter);
+				}
 		}
 	}
 ?>

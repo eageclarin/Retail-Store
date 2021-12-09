@@ -1,7 +1,10 @@
 <?php
     require 'env/connection.php';
-    $chosenBranch = $chosenBrand = $name = $id = ""; $chosenCateg = "All";
-    $sort = "ASC"; $order = "Name";
+    //session_start();
+    $chosenBranch = $chosenBrand = $name = $id = "";
+    $chosenCateg = "All";
+    $sort = "ASC";
+    $order = "Name";
 
     if(isset($_SESSION)) {
         $chosenBranch = $_SESSION['branch'];
@@ -10,21 +13,21 @@
         $id = $_SESSION['userID'];
     }
     
-    if (isset($_GET['brand'])) {
+    if (!empty($_GET['brand'])) {
         $chosenBrand = $_GET['brand'];
         $_SESSION['brand'] = $chosenBrand;
     }
-    if (isset($_GET['categ'])) {
+    if (!empty($_GET['categ'])) {
         $chosenCateg = $_GET['categ'];
         $_SESSION['categ'] = $chosenCateg;
     }
-    if (isset($_GET['sort']) && isset($_GET['order'])) {
+    if (!empty($_GET['sort']) && !empty($_GET['order'])) {
         $order = $_GET['order'];
         $sort = $_GET['sort'];
         $_SESSION['sort'] = $sort;
         $_SESSION['order'] = $order;
     }
-    if (isset($_GET['item'])) {
+    if (!empty($_GET['item'])) {
         $item = $_GET['item'];
     }
 
@@ -64,7 +67,7 @@
     if (!empty($_GET['action'])) {
         switch($_GET['action']){
             case 'logout':
-                unset($_SESSION['username']);
+                session_destroy();
                 header("location: main.php");
                 exit;
             case'brand':
@@ -258,7 +261,7 @@
         </div>
         
         <div class="row">
-            <div class="col-md-12 w-100">
+            <div class="col-md-12 w-100 h-100">
                 <iframe name="display" height="100%" width="100%" src="pages/getItem.php?branch=<?php echo $chosenBranch ?>&for=brand&brand=<?php echo $chosenBrand ?>&categ=<?php echo $chosenCateg ?>&sort<?php echo $sort ?>&order=<?php echo $order ?>">
             </div>
         </div>
