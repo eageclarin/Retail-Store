@@ -51,24 +51,24 @@
         $_SESSION['branch'] = $chosenBranch;
     }
     
-    /* for brand descriptions */
+    /* for categpry descriptions */
     //search item in table
-    $sqlBrand = "SELECT COUNT(i.item_ID) AS items FROM Item i
+    $sqlCateg = "SELECT COUNT(i.item_ID) AS items FROM Item i
                 INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
                 INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
                 INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
                 INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-                WHERE i.item_Brand = '$chosenBrand'
+                WHERE i.item_Category = '$chosenCateg'
                     AND bii.item_Stock > 0
                     AND b.branch_ID = '$chosenBranch'
                 ";
-	$resBrand = mysqli_query($conn, $sqlBrand);
-    $countB = mysqli_num_rows($resBrand);
-    if ($countB > 0) {
-        $rowB = mysqli_fetch_assoc($resBrand);
-        $desc = "There is <b>a total of ".$rowB['items']." ".$chosenBrand." item/s</b>.";
+	$resCateg = mysqli_query($conn, $sqlCateg);
+    $countC = mysqli_num_rows($resCateg);
+    if ($countC > 0) {
+        $rowC = mysqli_fetch_assoc($resCateg);
+        $desc = "There is <b>a total of ".$rowC['items']." ".$chosenCateg." item/s</b>.";
     } else {
-        $desc = "There is no ".$chosenBrand." item/s";
+        $desc = "There is no ".$chosenCateg." item/s";
     }
 	
     //action add to cart
