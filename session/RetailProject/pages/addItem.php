@@ -1,7 +1,7 @@
 <?php
     require '../env/connection.php';
     session_start();
-    $name = "Guest"; $id = $item = 0;
+    $id = $item = "";
     $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = $branch = 1;
 
     if(isset($_SESSION)) {
@@ -10,8 +10,8 @@
         $id = $_SESSION['userID'];
     }
     
-    if (isset($_POST['add'])) {
-        $item = $_POST['itemID'];
+    if (isset($_GET['itemID'])) {
+        $item = $_GET['itemID'];
     }
     
     /* FOR ADD TO CART ITEM */
@@ -35,9 +35,6 @@
     }
 
     //action add to cart
-    if (!empty($_GET['action'])) {
-        switch($_GET['action']){
-            case 'add':
                 //check if there is consisting cartID of customerID in branchID
                 $sqlCart = "SELECT * FROM Cart c
                                 INNER JOIN Cu_orders_Ca cca ON (c.cart_ID = cca.cart_ID)
@@ -130,11 +127,13 @@
                                         WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$chosenBranch')
                                         AND item_ID = '$item'";
                         $resDelete = mysqli_query($conn, $sqlDelete);
-                    }
-                    header("location: ../brand.php?inserted");
-                }   
-        }
-    }
 
-    echo "ERROR: Could not be able to execute $sqlItem." . mysqli_error($conn);
+                        header("location: ../brand.php?inserted");
+                    } else {
+                        echo "ERROR: Could not be able to execute $sqlAdd." . mysqli_error($conn);
+                    }
+                    
+                }   
+
+    //echo "ERROR: Could not be able to execute $sqlItem." . mysqli_error($conn);
 ?>

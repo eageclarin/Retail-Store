@@ -2,9 +2,9 @@
     require 'env/connection.php';
     //session_start();
     $chosenBranch = $chosenBrand = $name = $id = "";
-    $chosenCateg = "All";
-    $sort = "ASC";
-    $order = "Name";
+	$chosenCateg = "All";
+	$sort = "ASC";
+	$order = "Name";
 
     if(isset($_SESSION)) {
         $chosenBranch = $_SESSION['branch'];
@@ -13,6 +13,14 @@
         $id = $_SESSION['userID'];
     }
     
+    if(isset($_SESSION['categ'])) {
+		$chosenCateg = $_SESSION['categ'];
+	} if (isset($_SESSION['sort'])) {
+		$sort = $_SESSION['sort'];
+	} if (isset($_SESSION['order'])){
+		$order = $_SESSION['order'];
+	}
+
     if (!empty($_GET['brand'])) {
         $chosenBrand = $_GET['brand'];
         $_SESSION['brand'] = $chosenBrand;
@@ -43,51 +51,33 @@
         $_SESSION['branch'] = $chosenBranch;
     }
     
-    /* FOR ADD TO CART ITEM */
+    /* for brand descriptions */
     //search item in table
-    $sqlItem = "SELECT * FROM Item i
+    $sqlBrand = "SELECT COUNT(i.item_ID) AS items FROM Item i
                 INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
                 INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
                 INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
                 INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-                WHERE i.item_ID = '$item'
+                WHERE i.item_Brand = '$chosenBrand'
                     AND bii.item_Stock > 0
                     AND b.branch_ID = '$chosenBranch'
                 ";
-	$resItem = mysqli_query($conn, $sqlItem);
-	$countI = mysqli_num_rows($resItem);
-
-	//if item exists in table, get item price
-    if ($countI >= 1) {
-        $rowI = mysqli_fetch_assoc($resItem);
-        $orderPrice = $rowI['item_RetailPrice']; //get item price
+	$resBrand = mysqli_query($conn, $sqlBrand);
+    $countB = mysqli_num_rows($resBrand);
+    if ($countB > 0) {
+        $rowB = mysqli_fetch_assoc($resBrand);
+        $desc = "There is <b>a total of ".$rowB['items']." ".$chosenBrand." item/s</b>.";
+    } else {
+        $desc = "There is no ".$chosenBrand." item/s";
     }
-
+	
     //action add to cart
     if (!empty($_GET['action'])) {
         switch($_GET['action']){
             case 'logout':
                 session_destroy();
                 header("location: main.php");
-                exit;
-            case'brand':
-                if(empty($_SESSION['username'])) {
-                    header("location: login.php");
-                    exit;
-                } else {
-                    $_SESSION['brand'] = $_GET['brand'];
-                    header("location: brand.php"); 
-                    exit;
-                }
-            case 'categ':
-                if(empty($_SESSION['username'])) {
-                    header("location: login.php");
-                    exit;
-                } else {
-                    $_SESSION['categ'] = $_GET['categ'];
-                    header("location: categories.php"); 
-                    exit;
-                }      
+                exit;   
         }
     }
 ?>
@@ -100,20 +90,10 @@
     <title> Main </title>
 </head>
 <body style="background-color:#E6E9F0;" class="w-100 h-100">
-    <?php
-        if ($id != 0){ //if not guest (guest is id ==0)
-            if ($id == 'temp') {
-                $name = "Guest";
-            } else {
-                $row = mysqli_fetch_assoc(mysqli_query($conn, "SELECT cust_Username FROM Customer WHERE cust_ID='$id'"));
-                $name = $row['cust_Username'];
-            }
-        }
-    ?>
     <header class="shadow p-3 mb-0 border-bottom bg-white h-20">
         <div class="container-fluid d-grid gap-3 align-items-center">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <a href="../main.php" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <img src="img/logo.jpg" height="50" role="img" />
                 <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
             </a>
@@ -158,15 +138,7 @@
                     } else {
                         ?>
                         <div class="text-end nav col-12 col-lg-auto mb-2 mb-md-0">
-                            <a class="nav-link px-2 text-dark"> Hello,
-                            <?php
-                                if ((substr($name,0,-3)) == "Guest") {
-                                    echo "Guest";
-                                } else {
-                                    echo $name;
-                                }
-                                
-                            ?> </a>
+                            <a class="nav-link px-2 text-dark"> Hello,  <?php echo $name; ?> </a>
                         </div>
                         &nbsp;
                         <div class="dropdown text-end">
@@ -190,7 +162,7 @@
         </div>
     </header>
                     
-    <div class="container-fluid p-4 mx-auto">
+    <div class="container-fluid p-4 mx-auto h-100">
         <div class="row">
             <div class="col-md-7">
                 <h1><a class="link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -203,16 +175,16 @@
                     <li><a class="dropdown-item" href="brand.php?brand=All">All Brands</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Purefoods">Purefoods</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Century">Century</a></li>
-                    <li><a class="dropdown-item" href="brand.php?brand=Datu Puti">Datu Puti</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=Datu+Puti">Datu Puti</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Lorins">Lorins</a></li>
-                    <li><a class="dropdown-item" href="brand.php?brand=White King">White King</a></li>
+                    <li><a class="dropdown-item" href="brand.php?brand=White+King">White King</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Fiesta">Fiesta</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Kopiko">Kopiko</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Rebisco">Rebisco</a></li>
                     <li><a class="dropdown-item" href="brand.php?brand=Libbys">Libbys</a></li>
                 </ul>
                 </h1>
-                <p> Brand Description here </p>
+                <p> <?php echo $desc ?> </p>
             </div>
             <div class="col-md-5">
                 <ul class="nav col-lg-auto mb-2 mb-md-0 justify-content-end">
@@ -222,6 +194,7 @@
                             Category: <?php echo $chosenCateg; ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 220px;">
+                            <li><a class="dropdown-item" href="brand.php?categ=All">All</a></li>
                             <li><a class="dropdown-item" href="brand.php?categ=Canned+Goods">Canned Goods</a></li>
                             <li><a class="dropdown-item" href="brand.php?categ=Condiments">Condiments</a></li>
                             <li><a class="dropdown-item" href="brand.php?categ=PastaNoodles">Pasta & Noodles</a></li>
@@ -260,9 +233,9 @@
             </div>
         </div>
         
-        <div class="row">
+        <div class="row h-100">
             <div class="col-md-12 w-100 h-100">
-                <iframe name="display" height="100%" width="100%" src="pages/getItem.php?branch=<?php echo $chosenBranch ?>&for=brand&brand=<?php echo $chosenBrand ?>&categ=<?php echo $chosenCateg ?>&sort<?php echo $sort ?>&order=<?php echo $order ?>">
+                <iframe name="display" height="100%" width="100%" src="pages/getItem.php?branch=<?php echo $chosenBranch ?>&for=brand&brand=<?php echo $chosenBrand ?>&categ=<?php echo $chosenCateg ?>&sort=<?php echo $sort ?>&order=<?php echo $order ?>">
             </div>
         </div>
 </body>
