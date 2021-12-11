@@ -151,7 +151,7 @@
                             </ul>
                         </div>
                         &nbsp;&nbsp;&nbsp;
-                        <a href="client/cart.php?id=<?php echo $id ?>&branch=<?php echo $chosenBranch ?>" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <a href="client/cart.php?branch=<?php echo $chosenBranch ?>" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                         <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
                             <img src="img/cart4.svg" width="32" height="32"/>
                         </a>
