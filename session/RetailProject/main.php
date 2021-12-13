@@ -1,6 +1,5 @@
 <?php
-    require 'env/connection.php';
-    //session_start();
+    include_once 'env/connection.php';
     $chosenCateg = "All"; $name = "Guest"; $id = $item = $opacity = 0; $display = "";
     $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = $branch = 1;
 
