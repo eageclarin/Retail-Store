@@ -56,7 +56,7 @@
 ?>
 
 <script>
-    var duration = 300;
+    var duration = 5;
     setInterval(updateTimer, 1000);
 
     function updateTimer() {
@@ -74,6 +74,6 @@
     window.addEventListener("mousemove", resetTimer);
 
     function resetTimer() {
-        duration =300;
+        duration =5;
     }
 </script>
