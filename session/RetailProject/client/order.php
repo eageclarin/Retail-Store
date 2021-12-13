@@ -74,7 +74,7 @@
                 echo "<td><b>" .$totalPrice. "</b></td>";
                 echo "</tr>";
                 echo "</table>";
-                              
+                unset($_SESSION['CartID']);
             }
             echo "</div>";
 
