@@ -74,7 +74,7 @@
 
                 break;
             case "order":
-                $sqlOrder = "SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID='$id' AND branch_ID='$branch'";
+                $sqlOrder = "SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID='$id' AND branch_ID='$branch' AND status=0";
                 $resOrder = mysqli_query($conn, $sqlOrder);
                 $rowOrder = mysqli_fetch_assoc($resOrder);
 
