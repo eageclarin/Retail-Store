@@ -353,6 +353,14 @@
                             <label for="adminPass" class="form-label">Admin Password</label>
                             <input type="password" class="form-control" name="AdminPass" required>
                         </div>
+                        <div class="col-12">
+                        <button class="btn btn-primary text-light " name="addStock" type="submit" id="button-addon2" >Increase Stock</button>
+                        
+                        </div>
+
+                        <div class="col-12">
+                        <button class="btn btn-danger text-light " name="decreaseStock" type="submit" id="button-addon2" >Decrease Stock</button>                                          
+                        </div>
                                                                                   
                     </form>
                 </div>
