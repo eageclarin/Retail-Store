@@ -51,7 +51,7 @@ $(document).ready(function () {
         },
         contact: {
           required: 'Please enter Contact.',
-          rangelength: 'Contact should be 10 digit number.'
+          rangelength: 'Enter a valid number.',
         },
         password: {
           required: 'Please enter Password.',
