@@ -21,14 +21,117 @@ include_once '../env/adminAuth.php';
  
     <?php include "./components/nav.html"?>
     
-    <div class="container bg-info p-2 text-dark bg-opacity-10   mt-4 pt-4 pb-4 ps-4 pe-4">
-                <h1>MEMO 124 s.2022</h1>
-                <p class="fw-light"><small>December 31, 2021</small></p>
-                <p>This example is a quick exercise to illustrate how the navbar and its contents work. Some navbars extend the width of the viewport, others are confined within a <code>.container</code>. For positioning of navbars, checkout the <a href="/docs/5.1/examples/navbar-static/">top</a> and <a href="/docs/5.1/examples/navbar-fixed/">fixed top</a> examples.</p>
-                <p>At the smallest breakpoint, the collapse plugin is used to hide the links and show a menu button to toggle the collapsed content.</p>
-                <p>
-                    <a class="btn btn-primary" href="/docs/5.1/components/navbar/" role="button">View full memo</a>
-                </p>
+    <div class="container-fluid     mt-4 pt-4 pb-4 ps-4 pe-4">
+        <div class="row align-items-start">
+          <div class="col ">
+            
+          </div>
+          <div class="col  bg-danger ms-2 me-2 p-2 text-dark bg-opacity-50 rounded">
+            <h1 class="text-center">Low on Stocks<h1>
+
+            <table class="table table-striped table-hover fs-6  fw-normal">
+                <thead>
+                    <tr>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Stock</th>
+            
+
+                        
+                    </tr>
+                </thead>
+                <tbody>
+            <?php
+                
+                       
+                         $inventoryID=$_SESSION['inventoryID'];
+                         $inventory_query = "SELECT  item_Name,item_Stock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id =$inventoryID and item_Stock<500 "; 
+                         $inventory_result = mysqli_query($conn,$inventory_query);
+                         $inventory_Check = mysqli_num_rows($inventory_result);
+                      
+                            if ( $inventory_Check>0) {                                                       
+                                while($inventory_row = mysqli_fetch_assoc($inventory_result)) {
+                                  echo"<tr>
+                                  <td>".$inventory_row['item_Name']."</td>
+                                  <td>". $inventory_row['item_Stock'] ." </td>                           
+                                  </tr>";
+                          
+                                }
+                            } 
+
+                        
+
+                            
+                            
+                          
+                            
+                        ?>
+                         </tbody>
+            </table>  
+
+          </div>
+          <div class="col ">
+            <div class="row align-items-center bg-info p-2 text-dark bg-opacity-50  text-center rounded">
+
+            <div class="col   ">
+                <h1 > Total Sales<h1>
+                <?php
+                        $branchID = $_SESSION['branchID'] ;
+                        $orders_query = "SELECT sum(total) FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
+                        $orders_result = mysqli_query($conn,$orders_query);
+                        $orders_Check = mysqli_num_rows($orders_result);
+                      
+                            if ($orders_Check>0) {                                                       
+                                while($orders_row = mysqli_fetch_assoc($orders_result)) {
+                                  ?>  
+                                  <p class="display-4 "><?php echo $orders_row['sum(total)']  ?>  </p> 
+
+
+                                
+                                  <?php
+                                }
+                            } 
+
+                        
+
+                            
+                            
+                          
+                            
+                        ?>
+
+
+            </div>
+            <div class="col">   
+                <h1>Total Order</h1>
+                <?php
+                        $branchID = $_SESSION['branchID'] ;
+                        $orders_query = "SELECT COUNT(cart_ID) FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
+                        $orders_result = mysqli_query($conn,$orders_query);
+                        $orders_Check = mysqli_num_rows($orders_result);
+                      
+                            if ($orders_Check>0) {                                                       
+                                while($orders_row = mysqli_fetch_assoc($orders_result)) {
+                                  ?>  
+                                  <p class="display-4"><?php echo $orders_row['COUNT(cart_ID)']  ?>  </p> 
+
+
+                                
+                                  <?php
+                                }
+                            } 
+
+                        
+
+                            
+                            
+                          
+                            
+                        ?>
+
+            </div>
+          </div> 
+          </div>
+      </div>
     </div>
   
   

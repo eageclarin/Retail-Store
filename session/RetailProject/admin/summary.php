@@ -30,7 +30,8 @@ include_once '../env/adminAuth.php';
                         <th scope="col">Total</th>
                         <th scope="col">Date</th>
                         <th scope="col">Address</th>
-                        <th scope="col">Packed</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Action</th>
 
                         
                     </tr>
@@ -52,6 +53,8 @@ include_once '../env/adminAuth.php';
                                     <td>" .  $orders_row['total']."</td>
                                     <td>". $orders_row['order_Date'] ."</td>
                                     <td>". $orders_row['cust_ABrgy'] .", ".$orders_row['cust_ACity'] .", ".$orders_row['cust_AProvince'] .", ".$orders_row['cust_APostal'] ."</td>
+                                    <td> </td>
+                                    <td>"?> <button type="button" class="btn btn-secondary" >Action</button> <?php "</td>
                                     </tr>";
                             }
                         } 
@@ -84,23 +87,14 @@ include_once '../env/adminAuth.php';
 
             $.post("displayItems.php",{cartID:cartID},function(data,status){
                 var json=JSON.parse(data);
-                // $("#updateItem_ID").val(json.item_ID);
-                // $("#updateItem_Name").val(json.item_Name);
-                // $('#updateRetail_Price').val(json.item_RetailPrice);
-                // $('#updateWholesale_Price').val(json.item_WholesalePrice);
-                // $('#updateCategory').val(json.item_Category);
-                // $('#updateImage').val(json.item_Image);
-                // $('#updateBrand').val(json.item_Brand);
-                // alert("Data: " + data );
-                // alert("json: " + json );
-                // const myJSON = JSON.stringify(json);
+
 
                 let cleanJSON = json;
 
                 document.getElementById("demo").innerHTML = cleanJSON.map(getItem).join("");
 
                 function getItem(item) {
-                return "<tr><td>"+ item.item_ID + "</td></tr>";
+                return "<tr><td>"+ item.item_ID + "</td><td>"+ item.item_Name + "</td><td>"+ item.item_RetailPrice + "</td><td>"+ item.quantity + "</td></tr>";
                 }
                 // document.getElementById("demo").innerHTML = myJSON;
             
@@ -111,23 +105,21 @@ include_once '../env/adminAuth.php';
     </script>
     <!-- show items modal ##################################-->
     <div class="modal fade" id="showItems" tabindex="-1" aria-labelledby="showItemsLabel" aria-hidden="true">
-        <div class="modal-dialog">
+        <div class="modal-dialog modal-lg">
             <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="showItemsLabel">Password Incorrect</h5>
+                <h5 class="modal-title" id="showItemsLabel">Cart Items</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <table class="table table-striped table-hover table-success">
+                <table class="table table-striped table-hover ">
                     <thead>
                         <tr>
                             <th scope="col">Item ID</th>
-                            <!-- <th scope="col">Name</th>
-                            <th scope="col">Items</th>
-                            <th scope="col">Total</th>
-                            <th scope="col">Date</th>
-                            <th scope="col">Address</th>
-                            <th scope="col">Packed</th> -->  
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+  
                         </tr>
                     </thead>
                     <tbody id="demo" >

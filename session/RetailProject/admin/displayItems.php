@@ -8,7 +8,7 @@
         
         
         $cart_id=$_POST['cartID'];
-        $item_query ="SELECT * FROM ca_contains_i where cart_ID=$cart_id;" ;
+        $item_query ="SELECT * FROM ca_contains_i natural join item where cart_ID=$cart_id;" ;
         $item_result = mysqli_query($conn,$item_query);
         $response=array();
        

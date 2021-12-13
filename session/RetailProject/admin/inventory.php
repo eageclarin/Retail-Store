@@ -53,81 +53,28 @@
                 <h1>Inventory</h1>    
         </div>
 
-        <div class="container mt-5 bg-info p-2 text-dark bg-opacity-10" >
-                <form class="d-flex container-sm mx-auto mt-3 mb-3"style="width: 50%;">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-primary" type="submit">Search</button>
-                </form>
-        </div>
-
-        <div class="container bg-info p-2 text-dark bg-opacity-10" >
-            <!-- Button trigger modal -->
-            <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#newItemModal">
-                New item
-            </button>
-
-                <!-- New Item Modal ##################################-->
-                <div class="modal fade" id="newItemModal" tabindex="-1" aria-labelledby="newItemModalLabel"  aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="newItemModalLabel">New Item Form</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body">
-                                <form class="row g-3 pb-4" action="addItem.php" method="post">
-                                    <div class="col-12">
-                                        <label for="ItemName" class="form-label">Item name</label>
-                                        <input type="text" class="form-control" name="ItemName" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="Retail_Price" class="form-label">Retail Price</label>
-                                        <input type="number" class="form-control" name="RetailPrice" min=0 required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="Wholesale_Price" class="form-label">Wholesale Price</label>
-                                        <input type="number" class="form-control" name="WholesalePrice"  min=0 required>
-                                    </div>
-                                    
-                                    <div class="col-md-6">
-                                        <label for="Retail_Price" class="form-label">Category</label>
-                                        <input type="text" class="form-control" name="Category" min=0 step=0.001 required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="Brand" class="form-label">Brand</label>
-                                        <input type="text" class="form-control" name="Brand" required>
-                                    </div>
-
-                                    <div class="col-md-6">
-                                        <label for="Image" class="form-label">Image</label>
-                                        <input type="text" class="form-control" name="Image" required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="Stock" class="form-label">Stock</label>
-                                        <input type="number" class="form-control" name="Stock"  min=0 required>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="adminPass" class="form-label">Admin Password</label>
-                                        <input type="password" class="form-control" name="AdminPass" required>
-                                    </div>
-
-                                    <div class="col-12">
-                                        <button type="submit" class="btn btn-dark" name="Add">Submit</button>
-                                    </div>
-                                </form>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-                    </div>
+        <div class="container mt-5  p-2 text-dark bg-transparent" >
+            <div class="row align-items-center">
+                <div class="col">
+                <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#newItemModal">
+                        New item
+                    </button>
                 </div>
+                <div class="col">
+               
+                </div>
+                <div class="col">
+                    <form class="d-flex container-sm mx-auto mt-3 mb-3">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </form>
+                </div>
+            </div>
         </div>
 
-        <div class="container mt-5 bg-transparent">
+        <div class="container mt-2 bg-transparent ">
       
-            <table class="table table-striped table-hover table-success">
+            <table class="table table-striped table-hover table-success ">
                 <thead>
                     <tr>
                         <th scope="col">Image</th>
@@ -170,19 +117,22 @@
                                     ?>
 
                                         <!-- Button trigger modal -->
-                                        <button type="button" class="badge btn btn-secondary" onclick="getDetails( <?php  echo $id;?>)">Edit</button>
+                                        <button type="button" class="badge btn btn-primary" onclick="getDetails( <?php  echo $id;?>)">Edit</button>
                                   
                                                                                                  
                                     </td>
 
                                     <td>
-                                            <form action="UpdateStock.php" method="post">
+                                         <!-- Button trigger modal -->
+                                         <button type="button" class="badge btn btn-danger" onclick="deleteInfo( <?php  echo $id;?>)">Delete</button>
+
+                                            <!-- <form action="UpdateStock.php" method="post">
                                                     <div class="input-group mb-3" style="width:100%;">                                                                               
                                                         <input type="number" style="display:none;" value="<?php echo $inventory_row["item_ID"]?>" name="Item_ID" >
                                                         <input type="number" style="display:none;" value="<?php echo $inventoryID?>" name="inventory_ID" >
                                                         <button class="badge btn btn-danger text-light " name="deleteStock" type="submit" id="button-addon2" >Delete</button>
                                                     </div>
-                                                </form>
+                                                </form> -->
                                                 <!-- <button type="submit" class="btn btn-danger" name="Delete">
                                                     <a class="text-light"href="delete.php?delete_item_id=<?php echo $inventory_row["item_ID"]?>&inventoryID=<?php echo $branchID ?>">DELETE</a>
                                                 </button> -->
@@ -245,6 +195,23 @@
             
         };
 
+        function deleteInfo(itemId){
+            $('#deleteModal').modal('show');
+           
+
+            $.post("update.php",{itemId:itemId},function(data,status){
+                var json=JSON.parse(data);
+                $("#Item_ID").val(json.item_ID);
+                $("#Inventory_ID").val(json.inventory_ID);
+                // alert("Data: " + data );
+              
+            });
+            
+        };
+
+
+
+
     </script>
 
 
@@ -268,6 +235,25 @@
             </div>
             <div class="modal-body">
                 You have Entered a wrong password
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="passErrLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passErrLabel">Update Successful</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                the database is updated
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -367,18 +353,7 @@
                             <label for="adminPass" class="form-label">Admin Password</label>
                             <input type="password" class="form-control" name="AdminPass" required>
                         </div>
-
-                        <div class="col-12">
-                        <button class="btn btn-primary text-light " name="addStock" type="submit" id="button-addon2" >Increase Stock</button>
-                        
-                        </div>
-
-                        <div class="col-12">
-                        <button class="btn btn-danger text-light " name="decreaseStock" type="submit" id="button-addon2" >Decrease Stock</button>                                          
-                        </div>
-                                                    
-                                                       
-                                                   
+                                                                                  
                     </form>
                 </div>
 
@@ -387,7 +362,95 @@
                 </div>
             </div>
         </div>
-    </div>          
+    </div>     
+
+    <!-- delete Stock Modal ##################################-->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel">Delete Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    
+                    <form class="row g-3" action="UpdateStock.php" method="post">
+
+                        <div class="col-md-12">
+                            <label for="adminPass" class="form-label">Admin Password</label>
+                            <input type="password" class="form-control" name="AdminPass" required>
+                        </div>
+
+                        <div class="col-12">
+                        <button type="submit" class="btn btn-danger col-12" name="Delete">DELETE</button>                                   
+                        </div>                           
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>                                               
+                </div>
+            </div>
+        </div>
+    </div>
+ <!-- New Item Modal ##################################-->
+ <div class="modal fade" id="newItemModal" tabindex="-1" aria-labelledby="newItemModalLabel"  aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="newItemModalLabel">New Item Form</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="row g-3 pb-4" action="addItem.php" method="post">
+                                    <div class="col-12">
+                                        <label for="ItemName" class="form-label">Item name</label>
+                                        <input type="text" class="form-control" name="ItemName" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="Retail_Price" class="form-label">Retail Price</label>
+                                        <input type="number" class="form-control" name="RetailPrice" min=0 required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="Wholesale_Price" class="form-label">Wholesale Price</label>
+                                        <input type="number" class="form-control" name="WholesalePrice"  min=0 required>
+                                    </div>
+                                    
+                                    <div class="col-md-6">
+                                        <label for="Retail_Price" class="form-label">Category</label>
+                                        <input type="text" class="form-control" name="Category" min=0 step=0.001 required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="Brand" class="form-label">Brand</label>
+                                        <input type="text" class="form-control" name="Brand" required>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="Image" class="form-label">Image</label>
+                                        <input type="text" class="form-control" name="Image" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="Stock" class="form-label">Stock</label>
+                                        <input type="number" class="form-control" name="Stock"  min=0 required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="adminPass" class="form-label">Admin Password</label>
+                                        <input type="password" class="form-control" name="AdminPass" required>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-dark" name="Add">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>          
                             
 
   </body>
