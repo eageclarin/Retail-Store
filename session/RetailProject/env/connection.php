@@ -56,7 +56,7 @@
 ?>
 
 <script>
-    var duration = 5;
+    var duration = 3000;
     setInterval(updateTimer, 1000);
 
     function updateTimer() {

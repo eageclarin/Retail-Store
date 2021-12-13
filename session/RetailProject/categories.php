@@ -1,8 +1,7 @@
 <?php
-    require 'env/connection.php';
-    session_start();
+    include_once 'env/connection.php';
     $chosenBranch = $name = $id = "";
-	$chosenCateg = $chosenBrand = "All";
+	$chosenCateg = $chosenBrand = $categ = "All";
 	$sort = "ASC";
 	$order = "Name";
 
@@ -15,6 +14,7 @@
     
     if(isset($_SESSION['categ'])) {
 		$chosenCateg = $_SESSION['categ'];
+        $categ = $chosenCateg;
 	} if (isset($_SESSION['sort'])) {
 		$sort = $_SESSION['sort'];
 	} if (isset($_SESSION['order'])){
@@ -28,7 +28,11 @@
     if (!empty($_GET['categ'])) {
         $chosenCateg = $_GET['categ'];
         $_SESSION['categ'] = $chosenCateg;
+        $categ = $chosenCateg;
+    } if ($chosenCateg == "PastaNoodles") {
+        $categ = "Pasta & Noodles";
     }
+
     if (!empty($_GET['sort']) && !empty($_GET['order'])) {
         $order = $_GET['order'];
         $sort = $_GET['sort'];
@@ -59,7 +63,7 @@
                 INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
                 INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
                 INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-                WHERE i.item_Category = '$chosenCateg'
+                WHERE i.item_Category = '$categ'
                     AND bii.item_Stock > 0
                     AND b.branch_ID = '$chosenBranch'
                 ";
@@ -71,7 +75,7 @@
                 INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
                 WHERE bii.item_Stock > 0
                     AND b.branch_ID = '$chosenBranch'
-                    OR i.item_Category = '$chosenCateg'
+                    OR i.item_Category = '$categ'
                 ";
     }
     
@@ -79,9 +83,9 @@
     $countC = mysqli_num_rows($resCateg);
     if ($countC > 0) {
         $rowC = mysqli_fetch_assoc($resCateg);
-        $desc = "There is <b>a total of ".$rowC['items']." ".$chosenCateg." item/s</b>.";
+        $desc = "There is <b>a total of ".$rowC['items']." ".$categ." item/s</b>.";
     } else {
-        $desc = "There is no ".$chosenCateg." item/s";
+        $desc = "There is no ".$categ." item/s";
     }
 	
     //action add to cart
@@ -132,10 +136,6 @@
             </li>
             </ul>
 
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-            <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-            </form>
-
             <?php
                     if (empty($_SESSION['username'])) { //Checks if customer is logged in
                         ?>
@@ -180,8 +180,8 @@
             <div class="col-md-7">
                 <h1><a class="link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <?php
-                        if ($chosenCateg == "All") { echo $chosenCateg." Categories";}
-                        else {echo $chosenCateg;}
+                        if ($categ == "All") { echo $categ." Categories";}
+                        else {echo $categ;}
                     ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 300px;">
