@@ -1,3 +1,6 @@
+-- create database if not exists
+CREATE DATABASE IF NOT EXISTS CMSC127RetailProject;
+
 -- table for item
 CREATE TABLE `Item` (
 	`item_ID` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -16,6 +19,7 @@ CREATE TABLE `Customer` (
 	`cust_Password` varchar(255) NULL,
 	`cust_FName` varchar(25) NULL,
 	`cust_LName` varchar(25) NULL,
+	`cust_Contact` varchar(10) NOT NULL,
 	`cust_Email` varchar(50) NULL,
 	`cust_ABrgy` varchar(25) NULL,
 	`cust_ACity` varchar(25) NULL,
@@ -23,13 +27,6 @@ CREATE TABLE `Customer` (
 	`cust_APostal` int NULL
 );
 
--- table for customer contact
-CREATE TABLE `Customer_Contact` (
-	`cust_ID` int NOT NULL ,
-	`contact` int(12) NOT NULL,
-	PRIMARY KEY(cust_ID,contact),
-	FOREIGN KEY(cust_ID) REFERENCES Customer(cust_ID) ON UPDATE CASCADE
-);
 
 -- table for cart
 CREATE TABLE `Cart` (
@@ -99,7 +96,7 @@ CREATE TABLE `BI_has_I` (
 `item_ID` int NOT NULL,
 	`item_Stock` int NOT NULL,
 	PRIMARY KEY (inventory_ID, item_ID),
-FOREIGN KEY(inventory_ID) REFERENCES branchInventory(inventory_ID) ON UPDATE CASCADE,
+	FOREIGN KEY(inventory_ID) REFERENCES branchInventory(inventory_ID) ON UPDATE CASCADE,
 	FOREIGN KEY(item_ID) REFERENCES Item(item_ID) ON UPDATE CASCADE
 );
 
@@ -160,6 +157,15 @@ VALUES
     ('elymer3','admin3p@ss'),
     ('maam4','admin4p@ss')
 ;
+
+UPDATE `Admin` SET 
+	`admin_Password` = MD5('admin1p@ss') WHERE `Admin`.`admin_ID` = 1;
+UPDATE `Admin` SET 
+	`admin_Password` = MD5('admin2p@ss') WHERE `Admin`.`admin_ID` = 2;
+UPDATE `Admin` SET 
+	`admin_Password` = MD5('admin3p@ss') WHERE `Admin`.`admin_ID` = 3;
+UPDATE `Admin` SET 
+	`admin_Password` = MD5('admin4p@ss') WHERE `Admin`.`admin_ID` = 4;
 
 -- insert admin contact
 INSERT INTO `Admin_Contact` (`admin_ID`,`contact`)

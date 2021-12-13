@@ -2,17 +2,20 @@
     include_once 'env/connection.php';
     $item = $branch = $categ = "";
 
-    if (isset($_GET['itemID']) && isset($_GET['branch']) && isset($_GET['categ'])) {
-        $item = $_GET['itemID'];
-        $branch = $_GET['branch'];
-        $categ = $_GET['categ'];
+    if (isset($_SESSION['itemID'])) {
+        $item = $_SESSION['itemID'];
+    }
+    if (isset($_SESSION['branch']) || isset($_SESSION['categ'])) {
+        $branch = $_SESSION['branch'];
+        $categ = $_SESSION['categ'];
     }
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="utf-8">
+<title> Log In </title>
+<meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -24,7 +27,7 @@
     <div class="container-sm p-5 my-5 text-gray" style="max-width:50%;">
         <div class="jummbotron">
             <h3 style="color:#343434"> Log In </h3>
-            <form action="login.php?itemID=<?php echo $item ?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>" method="post"> 
+            <form action="login.php" method="post"> 
                 Username: <input type="text"  class="form-control" name="username" required></br>
                 Password: <input type="password"  class="form-control" name="password"  required></br>
                 <input type="submit" value="Log In" name="login" class="form-control" style="width:150px;">
@@ -43,7 +46,7 @@
             $username = $_POST['username'];
             $password = $_POST['password'];
 
-            // $password = md5($password);         #hash
+            $password = md5($password);         #hash
 
             #Check if admin or customer ------------------------------------------------------------------------------
             $admin_query = "SELECT * FROM admin WHERE admin_Username = '$username' AND admin_Password='$password';"; #check if in admin table
@@ -55,9 +58,11 @@
                     $_SESSION['admin'] = $admin_row['admin_ID'];                #store in $_SESSION for referencing later
                     $_SESSION['admin_User'] = $admin_row['admin_Username'];
                     mysqli_close($conn);
+                    $_SESSION['confirm_err']=0;
                     header("Location: admin/adminHome.php");                    #redirect to adminHome.php
                     exit;
-                }                    
+                }
+                                  
             }
 
             $sql = "SELECT * FROM customer;";                                    #check if in customer table
@@ -69,11 +74,11 @@
                 while ($row = mysqli_fetch_assoc($result)) {
                     if ($row['cust_Username']==$username && $row['cust_Password']==$password) {
                         $exists = true;
-                        $customerID = $row['cust_ID'];      
-                        //$_SESSION['CustomerUName'] = $row['cust_Username'];
+                        $_SESSION['userID'] = $row['cust_ID'];      
+                        $_SESSION['username'] = $row['cust_Username'];
                         mysqli_close($conn);
 
-                        header("Location: main.php?action=add&id=$customerID&item=$item&branch=$branch&categ=$categ");                           #Return to main.php
+                        header("Location: main.php");                           #Return to main.php
                         exit;
                     }
                 }
@@ -88,7 +93,9 @@
 
         #if "Return" is pressed: 
         if (isset($_POST['return'])) {
+            unset($_SESSION);
             header('location: main.php');
+            exit;
         }
 
         mysqli_close($conn);

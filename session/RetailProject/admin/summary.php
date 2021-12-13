@@ -7,21 +7,142 @@ include_once '../env/adminAuth.php';
 
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="./components/admin.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
-    <title>Admin</title>
-</head>
-<body>
-    <div class="body">
-        <?php include "./components/header.html"?>
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+    <title>Hello, world!</title>
+  </head>
+  <body>
         <?php include "./components/nav.html"?>
+
+        <div class="container mt-5">
+        <table class="table table-striped table-hover table-success">
+                <thead>
+                    <tr>
+                        <th scope="col">Cart ID</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Items</th>
+                        <th scope="col">Total</th>
+                        <th scope="col">Date</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Packed</th>
+
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $branchID = $_SESSION['branchID'] ;
+                    $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
+                    $orders_result = mysqli_query($conn,$orders_query);
+                    $orders_Check = mysqli_num_rows($orders_result);
+                   
+                        if ($orders_Check>0) {                                                       
+                            while($orders_row = mysqli_fetch_assoc($orders_result)) {
+                               echo"<tr>
+                                    <td>".$orders_row['cart_ID']."</td>
+                                    <td>". $orders_row['cust_FName'] ." ".$orders_row['cust_LName'] ."</td>
+                                    <td>"; ?> <button type="button" class="badge btn btn-secondary" onclick="showDetails(<?php  echo $orders_row['cart_ID'] ;?>)" >Show Items</button></td>
+                                     <?php echo "
+                                    <td>" .  $orders_row['total']."</td>
+                                    <td>". $orders_row['order_Date'] ."</td>
+                                    <td>". $orders_row['cust_ABrgy'] .", ".$orders_row['cust_ACity'] .", ".$orders_row['cust_AProvince'] .", ".$orders_row['cust_APostal'] ."</td>
+                                    </tr>";
+                            }
+                        } 
+
+                     
+
+                        
+                        
+                      
+                        
+                    ?>
+                </tbody>
+            </table>  
+        </div>
+     
        
     </div>
 
-</body>
+    <!-- JavaScript Bundle with Popper -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
+    </script>
+
+    <!-- Jquery -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer">
+    </script>
+
+    <script type="text/javascript">
+        function showDetails(cartID){
+
+            $.post("displayItems.php",{cartID:cartID},function(data,status){
+                var json=JSON.parse(data);
+                // $("#updateItem_ID").val(json.item_ID);
+                // $("#updateItem_Name").val(json.item_Name);
+                // $('#updateRetail_Price').val(json.item_RetailPrice);
+                // $('#updateWholesale_Price').val(json.item_WholesalePrice);
+                // $('#updateCategory').val(json.item_Category);
+                // $('#updateImage').val(json.item_Image);
+                // $('#updateBrand').val(json.item_Brand);
+                // alert("Data: " + data );
+                // alert("json: " + json );
+                // const myJSON = JSON.stringify(json);
+
+                let cleanJSON = json;
+
+                document.getElementById("demo").innerHTML = cleanJSON.map(getItem).join("");
+
+                function getItem(item) {
+                return "<tr><td>"+ item.item_ID + "</td></tr>";
+                }
+                // document.getElementById("demo").innerHTML = myJSON;
+            
+            });
+           
+            $('#showItems').modal('show');
+        };
+    </script>
+    <!-- show items modal ##################################-->
+    <div class="modal fade" id="showItems" tabindex="-1" aria-labelledby="showItemsLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showItemsLabel">Password Incorrect</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover table-success">
+                    <thead>
+                        <tr>
+                            <th scope="col">Item ID</th>
+                            <!-- <th scope="col">Name</th>
+                            <th scope="col">Items</th>
+                            <th scope="col">Total</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Packed</th> -->  
+                        </tr>
+                    </thead>
+                    <tbody id="demo" >
+                      
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+            </div>
+        </div>
+    </div>
+
+  </body>
 </html>
