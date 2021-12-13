@@ -310,7 +310,7 @@
                 <div class="row">
                     <div class="col nav-link text-dark">Categories</div>
                     <div class="col-4"></div>
-                    <div class="col"><a href="categories.php" class="nav-link text-primary">All Categories ></a></div>
+                    <div class="col"><a href="categories.php?categ=All" class="nav-link text-primary">All Categories ></a></div>
                 </div>
                 <div class="col d-flex flex-wrap mt-3 h-20">
                     <ul class="nav col-md-12 mb-3 justify-content-between">

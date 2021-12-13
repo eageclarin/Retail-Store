@@ -2,13 +2,8 @@
     include_once 'env/connection.php';
     $item = $branch = $categ = "";
 
-    if (isset($_SESSION['itemID'])) {
-        $item = $_SESSION['itemID'];
-    }
-    if (isset($_SESSION['branch']) || isset($_SESSION['categ'])) {
-        $branch = $_SESSION['branch'];
-        $categ = $_SESSION['categ'];
-    }
+    session_destroy();
+    session_start();
 ?>
 
 <!DOCTYPE html>

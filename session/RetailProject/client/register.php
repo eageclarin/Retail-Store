@@ -123,7 +123,7 @@
                 VALUES ('$username', '$password', '$firstName', '$lastName','$contact', '$email', '$brgy', '$city', '$province', '$postal');";
                 $sqlInsert = mysqli_query($conn, $insert);
                 if ($sqlInsert) {
-                    header("location:../login.php");
+                    echo "<script> location.replace('../login.php'); </script>";
                 } else {
                     echo mysqli_error($conn);
                 }
@@ -144,7 +144,7 @@
         }
         mysqli_close($conn);
         if (isset($_POST['back'])) {            #if cancel is pressed
-           echo "<script> location.replace('../main.php'); </script>";
+           echo "<script> location.replace('../login.php'); </script>";
         }
     ?>
 

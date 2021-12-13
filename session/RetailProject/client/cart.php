@@ -321,7 +321,7 @@
                             <div class="row align-items-center">
                                 <div class="col-1">
                                     <form action="cart.php?action=delete&id=<?php echo $id ?>&branch=<?php echo $branch ?>&item=<?php echo $itemID ?>" method="post">
-                                        <input type="image" class="img" src="trash.svg" />
+                                        <input type="image" class="img my-auto d-block" src="trash.svg" />
                                     </form>
                                 </div>
 
