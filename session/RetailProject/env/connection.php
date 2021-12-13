@@ -60,7 +60,8 @@
     setInterval(updateTimer, 1000);
 
     function updateTimer() {
-        duration--;
+        if (window.location.href != "http://localhost:8080/CMSC-127/session/RetailProject/client/register.php" && !<?php echo $_SESSION['username'] ?> ) {
+            duration--;
         if (duration<1) {
             sessionStorage.removeItem('username');
             sessionStorage.clear();
@@ -69,6 +70,8 @@
                 window.history.replaceState( null, null, window.location.href );
             }
         } 
+        }
+        
     }
 
     window.addEventListener("mousemove", resetTimer);
