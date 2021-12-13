@@ -74,6 +74,6 @@
     window.addEventListener("mousemove", resetTimer);
 
     function resetTimer() {
-        duration =5;
+        duration =3000;
     }
 </script>

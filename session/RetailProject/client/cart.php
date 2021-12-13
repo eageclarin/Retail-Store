@@ -2,6 +2,7 @@
     require '../env/connection.php';
     session_start();
     $chosenBranch = $brand = $item = $qty = $disable = $name = $id = "";
+    $display = "none"; $opacity=1;
 
     if(isset($_SESSION)) {
         $chosenBranch = $_SESSION['branch'];
@@ -11,6 +12,9 @@
 
     if (!empty($_GET['item'])) {
         $item = $_GET['item'];
+
+        $opacity = 0.2;
+        $display = "block";
     }
 
     if (!empty($_GET['branch'])) {
@@ -23,6 +27,15 @@
         }
 
         $_SESSION['branch'] = $chosenBranch;
+    }
+
+    $sqlUser = "SELECT * FROM Customer WHERE cust_Username = '$name' AND cust_ID = '$id'";
+    $resUser = mysqli_query($conn, $sqlUser);
+    if ($resUser) {
+        $rowUser = mysqli_fetch_assoc($resUser);
+        $wname = $rowUser['cust_FName']." ".$rowUser['cust_LName'];
+        $contact = $rowUser['cust_Contact'];
+        $address = "Brgy. ".$rowUser['cust_ABrgy'].", ".$rowUser['cust_ACity'].", ".$rowUser['cust_AProvince']." ".$rowUser['cust_APostal'];
     }
 
     $sqlTotal = "SELECT total FROM Cart c
@@ -67,7 +80,9 @@
                                                 WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$branch')
                                                 AND item_ID = '$item'";
                         $resDelete = mysqli_query($conn, $sqlDelete);
-
+                        
+                        $display = "none";
+                        $opacity = 1;
                         header("location: cart.php?branch=$branch");
                     }
                 }
@@ -124,13 +139,41 @@
                 } 
             });
         }
+
+        function delPrompt(getItem, getBranch, getID) {
+            location.replace('cart.php?id='+getID+'&branch='+getBranch+'&item='+getItem);
+            document.getElementById("content").style.opacity = "0.2";
+            document.getElementById("delete").style.display="none";
+        }
+        function del(getID, getBranch, getItem) {
+            location.replace('cart.php?action=delete&id='+getID+'&branch='+getBranch+'&item='+getItem);
+        }
+        function back(getBranch) {
+            location.replace('cart.php?branch='+getBranch);
+        }
     </script>
+    <style>
+        #delete {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9;
+            width: 30%;
+            height: 70%;
+        }
+        #content {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
 </head>
     <body>
+        <div id="content" style="opacity: <?php echo $opacity ?>">
         <div class="container-fluid h-100 bg-danger bg-gradient">
             <div class="row h-100 d-flex justify-content-between">
                 <div class="col-7 p-0">
-                    <header class="p-4 mb-0 h-20">
+                    <header class="p-3 m-3 h-20 bg-white" style="border-radius: 15px">
                         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                             <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                                 <img src="../img/logo.jpg" height="50" role="img" />
@@ -159,17 +202,17 @@
                                 <div class="card rounded-3 shadow-sm">
                                 <div class="card-header py-3 d-flex justify-content-between">
                                     <h6 class="my-auto fw-bold">Billing Address</h6>
-                                    <button type="button" class="w-30 h-100 btn btn-sm btn-outline-primary">Edit</button>
+                                    <a href="profile.php"><button type="button" class="w-30 h-100 btn btn-sm btn-outline-primary">Edit</button></a>
                                 </div>
                                 <div class="row card-body d-flex justify-content-between">
                                     <div class="col-2">
-                                        <img src="https://github.com/mdo.png" alt="mdo" width="100" height="100" class="rounded-3">
+                                        <img src="https://github.com/mdo.png" alt="mdo" width="100" height="100" class="rounded-circle">
                                     </div>
                                     <div class="col">
                                         <ul class="list-unstyled mb-2 fs-5">
-                                        <li>Name</li>
-                                        <li>Number</li>
-                                        <li>Address</li>
+                                        <li><?php echo $wname ?></li>
+                                        <li><?php echo $contact ?></li>
+                                        <li><?php echo $address ?></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -186,19 +229,19 @@
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            LBC
+                                            Grab
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            J&T
+                                            Foodpanda
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            Ninja Van
+                                            Angkas
                                         </label>
                                     </div>
                                 </div>
@@ -320,9 +363,7 @@
                         ?>
                             <div class="row align-items-center">
                                 <div class="col-1">
-                                    <form action="cart.php?action=delete&id=<?php echo $id ?>&branch=<?php echo $branch ?>&item=<?php echo $itemID ?>" method="post">
-                                        <input type="image" class="img align-middle d-block" src="trash.svg" />
-                                    </form>
+                                    <button type="image" class="btn" onclick="delPrompt(<?php echo $itemID ?>, <?php echo $chosenBranch ?>, <?php echo $id ?>)" class="img align-middle d-block"><img src="trash.svg"></button>
                                 </div>
 
                                 <div class="col-5">
@@ -373,28 +414,41 @@
                                 }
                             }
                         ?>
-                    </div>
-                        <!-- start right-total -->
-                        <div class="right-total" style="bottom: 10px; right: 10px; position: fixed;">
 
-                        <!-- start total -->
-                        <div class="total">
-                            <div> Total: </div>
-                            <div id="totalPrice">
-                                <?php echo $totalPrice ?>
+                        <div class="row align-items-end border-top mt-4">
+                            <div class="col mt-4">
+                                <h6>Total:</h6>
+                                <h2 id="totalPrice">
+                                    <?php echo $totalPrice ?>
+                                </h2>
+                            </div>
+                            <div class="col-2">
+                                <form action="cart.php?action=order&id=<?php echo $id ?>&branch=<?php echo $branch ?>" method="post">
+                                    <button class="btn btn-sm btn-success"> Order </button>
+                                </form>
                             </div>
                         </div>
-                        <!-- end total -->
-                        <!-- start content-right-pay -->
-                        <div class="content-right-pay" style="height: 10%;">
-                        <form action="cart.php?action=order&id=<?php echo $id ?>&branch=<?php echo $branch ?>" method="post">
-                            <button> Order </button>
-                        </form>
-                        </div> <!-- end  content-right-pay -->
-                        </div>
-                        <!-- end right-total -->
+                    </div>
                 </div>
             </div>
-        </div> 
+        </div>
+        </div>
+
+        <div id="delete" style="display: <?php echo $display ?>">
+            <div class="modal modal-alert position-static d-block bg-transparent d-block py-5" tabindex="-1" role="dialog" id="modalChoice">
+            <div class="modal-dialog bg-transparent" role="document">
+                <div class="modal-content rounded-4 shadow">
+                <div class="modal-body p-4 text-center">
+                    <h5 class="mb-0">Delete this item?</h5>
+                    <p class="mb-0">You can always add this to cart again.</p>
+                </div>
+                <div class="modal-footer flex-nowrap p-0">
+                    <button type="button" onclick="del(<?php echo $id ?>,<?php echo $chosenBranch ?>,<?php echo $item ?>)" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"><strong>Yes, delete</strong></button>
+                    <button type="button" onclick="back(<?php echo $chosenBranch ?>)" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">No, sorry</button>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
     </body>
 </html>
