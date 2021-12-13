@@ -1,8 +1,7 @@
 <?php
-    require 'env/connection.php';
-    session_start();
+    include_once 'env/connection.php';
     $chosenBranch = $chosenBrand = $name = $id = "";
-	$chosenCateg = "All";
+	$chosenCateg = $categ = "All";
 	$sort = "ASC";
 	$order = "Name";
 
@@ -15,6 +14,7 @@
     
     if(isset($_SESSION['categ'])) {
 		$chosenCateg = $_SESSION['categ'];
+        $categ = $chosenCateg;
 	} if (isset($_SESSION['sort'])) {
 		$sort = $_SESSION['sort'];
 	} if (isset($_SESSION['order'])){
@@ -28,6 +28,9 @@
     if (!empty($_GET['categ'])) {
         $chosenCateg = $_GET['categ'];
         $_SESSION['categ'] = $chosenCateg;
+        $categ = $chosenCateg;
+    } if ($chosenCateg == "PastaNoodles") {
+        $categ = "Pasta & Noodles";
     }
     if (!empty($_GET['sort']) && !empty($_GET['order'])) {
         $order = $_GET['order'];
@@ -204,7 +207,7 @@
                     <li>
                         <h5>
                         <a class="nav-link link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Category: <?php echo $chosenCateg; ?>
+                            Category: <?php echo $categ; ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 220px;">
                             <li><a class="dropdown-item" href="brand.php?categ=All">All</a></li>

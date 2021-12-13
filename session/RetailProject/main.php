@@ -330,7 +330,7 @@
                             </a>
                         </li>
                         <li style="width:23%">
-                            <a href="main.php?action=categ&categ=PastaNoodles" class="card shadow bg-danger" style="border-radius: 15px; text-decoration: none">
+                            <a href="main.php?action=categ&categ=Pasta+%26+Noodles" class="card shadow bg-danger" style="border-radius: 15px; text-decoration: none">
                                 <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="img/main/categ3.jpg" alt="Card image cap">
                                 <div class="card-body">
                                     <p class="card-text text-light" style="font-size: 11px">Pasta&Noodles</p>
