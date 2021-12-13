@@ -1,158 +1,63 @@
 <?php
+    include_once '../env/connection.php';
+    include_once '../env/adminAuth.php';
 
-    include '../env/connection.php';
-    include '../env/adminAuth.php';
+if (isset($_POST['updateItem'])) {
 
-    $id=0;
-    $item_Name ="";
-    $item_RetailPrice = 0.00;
-    $item_WholesalePrice =0.00;
-    $item_Category = "";
-    $item_Image = "";
-    $item_Brand = "";
+    $password = md5($_POST['AdminPass']);
+    $admin_confirmation_query = "SELECT admin_Username FROM admin where admin_Password='$password';";
+    $admin_confirmation_result = mysqli_query($conn,$admin_confirmation_query);
+    $admin_confirmation_Check = mysqli_num_rows($admin_confirmation_result);
+    $admin_confirmation_user="";
+    if($admin_confirmation_Check>0){
+        while($admin_confirmation_row = mysqli_fetch_assoc( $admin_confirmation_result)) {
+            
+            $admin_confirmation_user = $admin_confirmation_row['admin_Username'];
+     
+        }       
+    }
 
+    if($admin_confirmation_user== $_SESSION['admin_User'] ){
+        $id =  $_POST['updateItem_ID'];
+        $itemName =$_POST['updateItem_Name'];
+        $RetailPrice = $_POST['updateRetail_Price'];
+        $WholesalePrice = $_POST['updateWholesale_Price'];
+        $Category = $_POST['updateCategory'];
+        $Brand=$_POST['updateBrand'];
+        $Image=$_POST['updateImage'];
     
-        if (isset($_GET['edit_item_id'])) {
-            $_SESSION['item_id'] = $_GET['edit_item_id'];
-
-                    $inventoryID=$_SESSION['inventoryID'];
-                    $id =  $_SESSION['item_id'];
-                    $item_query ="SELECT *FROM item  NATURAL JOIN bi_has_i WHERE item_ID = $id AND inventory_ID = $inventoryID ";
-                    $item_result = mysqli_query($conn,$item_query);
-                    $item_Check = mysqli_num_rows($item_result);
-            
-                    if ($item_Check>0){
-                        while ($item_row = mysqli_fetch_assoc($item_result)){
-                            $item_Name = $item_row["item_Name"];
-                            $item_RetailPrice = $item_row["item_RetailPrice"];
-                            $item_WholesalePrice = $item_row["item_WholesalePrice"];
-                            $item_Category = $item_row["item_Category"];
-                            $item_Image = $item_row["item_Image"];
-                            $item_Brand = $item_row["item_Brand"];
-                        }
-                    }else{
-                        header('location: inventory.php');
-                    }
-
-             
-               
-            
-            
-            
-            
-            
     
+    
+        $update_query = "UPDATE item SET item_Name='$itemName',
+        item_RetailPrice = $RetailPrice ,item_WholesalePrice =$WholesalePrice, item_Category='$Category', 
+        item_Brand ='$Brand', 
+        item_Image='$Image' 
+        WHERE item_ID = $id";
+    
+    
+    
+    
+    
+        $update_result = mysqli_query($conn,$update_query);
+    
+        if($update_result){
+            header('location: inventory.php');
+        }else{
+            die(mysqli_error($conn));
         }
-  
-
     
-  
 
+
+
+    }else{
+        $_SESSION['confirm_err']=1;
+        header('location: inventory.php');
+    }                    
+
+}
+else{
+    header("Location: ./inventory.php"); 
+}
 
 ?>
 
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-    <title>Hello, world!</title>
-  </head>
-  <body>
- 
-    <?php include "./components/nav.html"?>
-
-    <div class="form" >
-       
-        <div class="form-con shadow">
-            <h4>Edit Item Form</h4>
-            <hr>
-            <form class="row g-3" action="editItem.php" method="post">
-                <div class="col-12">
-                    <label for="Item_Name" class="form-label">Item name</label>
-                    <input type="text" class="form-control" name="Item_Name" 
-                    value="<?php echo $item_Name?>"
-                    >
-                    
-                </div>
-                <div class="col-md-6">
-                    <label for="Retail_Price" class="form-label">Retail Price</label>
-                    <input type="number" class="form-control" name="Retail_Price" min=0  step="0.01" value="<?php echo $item_RetailPrice?>">
-                </div>
-                <div class="col-md-6">
-                    <label for="Wholesale_Price" class="form-label">Wholesale Price</label>
-                    <input type="number" class="form-control" name="Wholesale_Price"  min=0  step="0.01" value="<?php echo $item_WholesalePrice?>">
-                </div>
-                
-                <div class="col-md-6">
-                    <label for="Retail_Price" class="form-label">Category</label>
-                    <input type="text" class="form-control" name="Category" value="<?php echo $item_Category?>">
-                </div>
-                <div class="col-md-6">
-                    <label for="Brand" class="form-label">Brand</label>
-                    <input type="text" class="form-control" name="Brand" value="<?php echo $item_Brand?>">
-                </div>
-
-                <div class="col-md-6">
-                    <label for="Image" class="form-label">Image</label>
-                    <input type="text" class="form-control" name="Image" value="<?php echo $item_Image?>">
-                </div>
-  
-
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary" name="update" >UPDATE</button>
-                </div>
-            </form>
-        </div>
-    </div>
-    </div>
-    <?php
-
-            if (isset($_POST['update'])) {
-               
-                $id =  $_SESSION['item_id'];
-                $itemName =$_POST['Item_Name'];
-                $RetailPrice = $_POST['Retail_Price'];
-                $WholesalePrice = $_POST['Wholesale_Price'];
-                $Category = $_POST['Category'];
-                $Brand=$_POST['Brand'];
-                $Image=$_POST['Image'];
-
-            
-
-            $update_query = "UPDATE item SET item_Name='$itemName',
-            item_RetailPrice = $RetailPrice ,item_WholesalePrice =$WholesalePrice, item_Category='$Category', 
-            item_Brand ='$Brand', 
-            item_Image='$Image' 
-            WHERE item_ID = $id";
-
-       
-
-            
-
-            $update_result = mysqli_query($conn,$update_query);
-
-            if($update_result){
-                header('location: inventory.php');
-            }else{
-                die(mysqli_error($conn));
-            }
-
-        
-
-            }
-
-            mysqli_close($conn);
-
-    ?>
-  
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-
-
-</body>
-</html>
