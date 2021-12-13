@@ -121,13 +121,12 @@
 
                 $insert = "INSERT INTO customer (cust_Username, cust_Password, cust_FName, cust_LName, cust_Contact, cust_Email, cust_ABrgy, cust_ACity, cust_AProvince, cust_APostal)
                 VALUES ('$username', '$password', '$firstName', '$lastName','$contact', '$email', '$brgy', '$city', '$province', '$postal');";
-                mysqli_query($conn, $insert);
-                $id = mysqli_insert_id($conn);
-                //$_SESSION['cust_ID'] = $id;
-                //$_SESSION['cust_Username']=$username;
-                //echo $_SESSION['CustomerFName'];
-                //header("location:../main.php");
-                echo "<script> location.replace('../main.php'); </script>";
+                $sqlInsert = mysqli_query($conn, $insert);
+                if ($sqlInsert) {
+                    header("location:../login.php");
+                } else {
+                    echo mysqli_error($conn);
+                }
             } else {                            #else, notify user
                 while ($row = mysqli_fetch_assoc($result)) {
                     if ($row['cust_Username']==$username && $row['cust_Email']==$email) {

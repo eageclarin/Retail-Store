@@ -37,7 +37,7 @@
                     <input type="submit" value="Return" name="return" class="form-control" style="width:150px;">
                 </div>
             </form>
-            Don't have an account yet? <a href='client/register.php?itemID=<?php echo $item?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>'>Register here</a>
+            Don't have an account yet? <a href='client/register.php'>Register here</a>
         </div>
     </div>
 

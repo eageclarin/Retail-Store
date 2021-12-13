@@ -19,7 +19,7 @@ $(document).ready(function () {
         },
         contact: {
           required: true,
-          rangelength: [10, 12],
+          rangelength: [11, 12],
           number: true
         },
         password: {

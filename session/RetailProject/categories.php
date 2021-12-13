@@ -53,7 +53,8 @@
     
     /* for categpry descriptions */
     //search item in table
-    $sqlCateg = "SELECT COUNT(i.item_ID) AS items FROM Item i
+    if ($chosenCateg != "All") {
+        $sqlCateg = "SELECT COUNT(i.item_ID) AS items FROM Item i
                 INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
                 INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
                 INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
@@ -62,6 +63,18 @@
                     AND bii.item_Stock > 0
                     AND b.branch_ID = '$chosenBranch'
                 ";
+    } else if ($chosenCateg == "All") {
+        $sqlCateg = "SELECT COUNT(i.item_ID) AS items FROM Item i
+                INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
+                INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
+                INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
+                INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
+                WHERE bii.item_Stock > 0
+                    AND b.branch_ID = '$chosenBranch'
+                    OR i.item_Category = '$chosenCateg'
+                ";
+    }
+    
 	$resCateg = mysqli_query($conn, $sqlCateg);
     $countC = mysqli_num_rows($resCateg);
     if ($countC > 0) {
