@@ -345,11 +345,9 @@
             </div>
             <div class="shadow p-4 mb-4 bg-white" style="border-radius: 15px">
                 <p class="text-center"> About Us <br>
-                shdjkadhjkdhkdjahdjkahdkajdhakjdhajkdahdjkashdkjsd
-                shdjkadhjkdhkdjahdjkahdkajdhakjdhajkdahdjkashdkjsd
-                shdjkadhjkdhkdjahdjkahdkajdhakjdhajkdahdjkashdkjsd
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, necessitatibus rerum quia enim explicabo, quaerat error atque ut corporis consectetur, deserunt temporibus id nemo dolores delectus? Libero odio aspernatur distinctio.
                 <br><br> Contact Us <br>
-                Facebook: krusty krab <br>
+                Facebook: CMSC 127 <br>
                 Twitter: cmsc_127 <br>
                 Email: cmsc127@gmail.com <br>
                 Contact No.: 091234567890
