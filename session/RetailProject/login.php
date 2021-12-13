@@ -74,6 +74,7 @@
                         $exists = true;
                         $_SESSION['userID'] = $row['cust_ID'];      
                         $_SESSION['username'] = $row['cust_Username'];
+                        unset($_SESSION['login']);
                         mysqli_close($conn);
 
                         header("Location: main.php");                           #Return to main.php
@@ -92,7 +93,13 @@
         #if "Return" is pressed: 
         if (isset($_POST['return'])) {
             unset($_SESSION);
-            header('location: main.php');
+            unset($_SESSION['username']);
+            if (session_destroy()) {
+                # code...
+                header('location: main.php');
+            }
+            
+            
             exit;
         }
 
