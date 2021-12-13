@@ -58,6 +58,7 @@
                     $_SESSION['admin'] = $admin_row['admin_ID'];                #store in $_SESSION for referencing later
                     $_SESSION['admin_User'] = $admin_row['admin_Username'];
                     mysqli_close($conn);
+                    $_SESSION['confirm_err']=0;
                     header("Location: admin/adminHome.php");                    #redirect to adminHome.php
                     exit;
                 }                    
