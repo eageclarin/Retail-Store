@@ -2,12 +2,27 @@
 
 include_once '../env/connection.php';
 include_once '../env/adminAuth.php';
+$user = $_SESSION['admin_User'] ;
+$branchID_query = "SELECT *FROM branch NATURAL JOIN (b_has_bi) NATURAL JOIN branchinventory NATURAL JOIN a_manages_b NATURAL JOIN admin WHERE admin.admin_Username= '$user' ;"; #check if in admin table
+$branchID_result = mysqli_query($conn,$branchID_query);
+$branchID_Check = mysqli_num_rows($branchID_result); #should be same with eigram
 
+if ($branchID_Check>0) {                                               #username and password in admin table
+    while($branchID_row = mysqli_fetch_assoc($branchID_result)) {
+        $_SESSION['branchID'] = $branchID_row['branch_ID'];                #store in $_SESSION for referencing later
+        $_SESSION['inventoryID'] = $branchID_row['inventory_ID']; 
+       
+    }                    
+}
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
+     <!-- ajax -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- jquery -->
+        <script src="jquery-3.5.1.min.js"></script>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
