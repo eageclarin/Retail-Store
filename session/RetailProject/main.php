@@ -90,6 +90,49 @@
             width: 100%;
             height: 100%;
         }
+        
+        .overlayText {
+            position: relative;
+            width: 100%;
+            transition: .5s ease;
+        }
+        .overlay {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            width: 100%;
+            opacity: 0;
+            transition: .5s ease;
+            background-color: rgba(255,255,255,0.90);
+            border-radius: 15px;
+        }
+        .overlayText:hover .overlay {
+            opacity: 1;
+            transition: .5s ease;
+        }
+        .textt {
+            color: black;
+            font-size: 20px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+
+        .card {
+            transition: .5s ease;
+        }
+        .card:hover {
+            transform: scale(1.1);
+            box-shadow: 0 10px 20px rgba(0,0,0,.75), 0 4px 8px rgba(0,0,0,0.75);
+            transition: .5s ease;
+        }
     </style>
     <title> Main </title>
 </head>
@@ -219,22 +262,42 @@
                     <ul class="nav col-md-12 justify-content-between">
                         <li style="width:23%">
                             <a href="main.php?action=brand&brand=Purefoods" class="text-center text-dark h-100">
-                                <img src="img/main/brand1.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
+                                <div class="overlayText">
+                                    <img src="img/main/brand1.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
+                                    <div class="overlay">
+                                        <div class="textt"> Purefoods </div>
+                                    </div>
+                                </div>
                             </a>
                         </li>
                         <li style="width:23%">
                             <a href="main.php?action=brand&brand=Century" class="text-center text-dark h-100">
-                                <img src="img/main/brand2.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
-                            </a>
+                                <div class="overlayText">    
+                                    <img src="img/main/brand2.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
+                                        <div class="overlay">
+                                            <div class="textt"> Century </div>
+                                        </div>
+                                    </a>
+                                </div>
                         </li>
                         <li style="width:23%">
                             <a href="main.php?action=brand&brand=Datu+Puti" class="text-center text-dark h-100">
-                                <img src="img/main/brand3.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
+                                <div class="overlayText">     
+                                    <img src="img/main/brand3.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
+                                    <div class="overlay">
+                                        <div class="textt"> Datu Puti </div>
+                                    </div>
+                                </div>
                             </a>
                         </li>
                         <li style="width:23%">
-                            <a href="main.php?action=brand&brand=Lorins" class="text-center text-dark h-100">
-                                <img src="img/main/brand4.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
+                            <a href="main.php?action=brand&brand=All" class="text-center text-dark h-100">
+                                <div class="overlayText"> 
+                                    <img src="img/main/brand4.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
+                                    <div class="overlay">
+                                        <div class="textt"> All Brands </div>
+                                    </div>
+                                </div>
                             </a>
                         </li>
                     </ul>
@@ -247,16 +310,16 @@
                 <div class="row">
                     <div class="col nav-link text-dark">Categories</div>
                     <div class="col-4"></div>
-                    <div class="col"><a href="categories.php" class="nav-link text-primary">All Categories ></a></div>
+                    <div class="col"><a href="categories.php?categ=All" class="nav-link text-primary">All Categories ></a></div>
                 </div>
                 <div class="col d-flex flex-wrap mt-3 h-20">
                     <ul class="nav col-md-12 mb-3 justify-content-between">
                         <li style="width:23%">
                             <a href="main.php?action=categ&categ=Canned Goods" class="card shadow bg-primary" style="border-radius: 15px; text-decoration: none">
-                                <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="img/main/categ1.jpg" alt="Card image cap">
-                                <div class="card-body">
-                                    <p class="card-text text-light" style="font-size: 11px">Canned Goods</p>
-                                </div>
+                                    <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="img/main/categ1.jpg" alt="Card image cap">
+                                    <div class="card-body">
+                                        <p class="card-text text-light" style="font-size: 11px">Canned Goods</p>
+                                    </div>
                             </a>
                         </li>
                         <li style="width:23%">

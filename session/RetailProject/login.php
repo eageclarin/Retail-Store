@@ -2,13 +2,8 @@
     include_once 'env/connection.php';
     $item = $branch = $categ = "";
 
-    if (isset($_SESSION['itemID'])) {
-        $item = $_SESSION['itemID'];
-    }
-    if (isset($_SESSION['branch']) || isset($_SESSION['categ'])) {
-        $branch = $_SESSION['branch'];
-        $categ = $_SESSION['categ'];
-    }
+    session_destroy();
+    session_start();
 ?>
 
 <!DOCTYPE html>
@@ -37,7 +32,7 @@
                     <input type="submit" value="Return" name="return" class="form-control" style="width:150px;">
                 </div>
             </form>
-            Don't have an account yet? <a href='client/register.php?itemID=<?php echo $item?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>'>Register here</a>
+            Don't have an account yet? <a href='client/register.php'>Register here</a>
         </div>
     </div>
 
@@ -58,6 +53,7 @@
                     $_SESSION['admin'] = $admin_row['admin_ID'];                #store in $_SESSION for referencing later
                     $_SESSION['admin_User'] = $admin_row['admin_Username'];
                     mysqli_close($conn);
+                    $_SESSION['confirm_err']=0;
                     header("Location: admin/adminHome.php");                    #redirect to adminHome.php
                     exit;
                 }                    

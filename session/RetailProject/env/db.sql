@@ -19,7 +19,7 @@ CREATE TABLE `Customer` (
 	`cust_Password` varchar(255) NULL,
 	`cust_FName` varchar(25) NULL,
 	`cust_LName` varchar(25) NULL,
-	`cust_Contact` varchar(10) NOT NULL,
+	`cust_Contact` varchar(11) NOT NULL,
 	`cust_Email` varchar(50) NULL,
 	`cust_ABrgy` varchar(25) NULL,
 	`cust_ACity` varchar(25) NULL,

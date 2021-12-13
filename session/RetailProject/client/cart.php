@@ -128,7 +128,7 @@
 </head>
     <body>
         <div class="container-fluid h-100 bg-danger bg-gradient">
-            <div class="row d-flex justify-content-between">
+            <div class="row h-100 d-flex justify-content-between">
                 <div class="col-7 p-0">
                     <header class="p-4 mb-0 h-20">
                         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -152,7 +152,7 @@
                         </div>
                     </header>
 
-                    <div class="container-fluid">
+                    <div class="container-fluid h-80">
                         <h4 class="row p-2 fw-bold text-light"> Checkout Details </h4>
                         <div class="row mb-3 text-start">
                             <div class="col">
@@ -176,7 +176,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-3 text-start">
+                        <div class="row mb-1 text-start">
                             <div class="col">
                                 <div class="card rounded-3 shadow-sm">
                                 <div class="card-header py-3">
@@ -232,9 +232,10 @@
                                 </div>
                             </div>
                         </div>
+                        
                     </div>
                 </div>
-                <div class="col m-3 bg-white" style="border-radius: 15px">
+                <div class="col m-3 bg-white h-90" style="border-radius: 15px">
                     <header class="p-3 mt-2">
                         <div class="d-flex flex-wrap align-items-center justify-content-between">
                             <?php
@@ -248,7 +249,7 @@
                                     } else {
                                         ?>
                                         <div class="nav col-12 col-lg-auto mb-2 mb-md-0">
-                                            <a class="nav-link link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <a class="link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                 Branch:
                                                 <?php 
                                                     switch($branch) {
@@ -279,122 +280,100 @@
                         </div>
                     </header> 
 
-                    <!-- start content-right-cart -->
-                    <div class="right-cart" width="100%">
-                        <!-- start cart -->
-                        <div id="cart">
-                            <!-- start cart header -->
-                            <table style="font-family: montserrat b;width: 100%;">
-                                    <tr>
-                                    <td style="width: 10%;"> </td>
-                                    <td style="width: 30%;"> Name </td>
-                                    <td style="width: 30%;"> Qty </td>
-                                    <td style="width: 30%;"> Total </td>
-                                    </tr>
-                                </table>
-                                <!-- end cart header -->
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-1"> </div>
+                            <div class="col-5"> Product </div>
+                            <div class="col-2"> </div>
+                            <div class="col-2"> Qty </div>
+                            <div class="col-2"> Total </div>
+                        </div>
 
-                                <?php
-                                    $sqlCart = "SELECT * FROM Ca_contains_I cai
-                                                INNER JOIN Cu_orders_Ca cca ON (cai.cart_ID = cca.cart_ID)
-                                                INNER JOIN Item i ON (cai.item_ID = i.item_ID)
-                                                WHERE cca.customer_ID='$id' AND cca.branch_ID='$branch'
-                                                AND cca.status=0
-                                                ORDER BY cai.item_ID ASC";
-                                    $resCart = mysqli_query($conn, $sqlCart);
-                                ?>
+                        <?php
+                            $sqlCart = "SELECT * FROM Ca_contains_I cai
+                                            INNER JOIN Cu_orders_Ca cca ON (cai.cart_ID = cca.cart_ID)
+                                            INNER JOIN Item i ON (cai.item_ID = i.item_ID)
+                                            WHERE cca.customer_ID='$id' AND cca.branch_ID='$branch'
+                                            AND cca.status=0
+                                            ORDER BY cai.item_ID ASC";
+                            $resCart = mysqli_query($conn, $sqlCart);
 
-                                <!-- start cart-contents -->
-                                <div class="cart-contents">
-                                    <table width="100%">
-                                <?php 
-                                    if ($resCart) {
-                                        while(($rowCart = mysqli_fetch_assoc($resCart))) {
-                                            $itemID = $rowCart['item_ID'];
-                                            $itemName = $rowCart['item_Name'];
-                                            $itemQty = $rowCart['quantity'];
-                                            $itemTotal = $rowCart['total'];
-                                            $cartID = $rowCart['cart_ID'];
+                            if ($resCart) {
+                                while(($rowCart = mysqli_fetch_assoc($resCart))) {
+                                    $itemID = $rowCart['item_ID'];
+                                    $itemName = $rowCart['item_Name'];
+                                    $itemQty = $rowCart['quantity'];
+                                    $itemTotal = $rowCart['total'];
+                                    $cartID = $rowCart['cart_ID'];
 
-                                            $sqlStock = "SELECT item_Stock FROM BI_has_I bii
-                                                                INNER JOIN B_has_BI bbi ON (bii.inventory_ID = bbi.inventory_ID)
-                                                                WHERE bii.item_ID = $itemID";
-                                            $resStock = mysqli_query($conn, $sqlStock);
-                                            $rowStock = mysqli_fetch_assoc($resStock);
+                                    $sqlStock = "SELECT item_Stock FROM BI_has_I bii
+                                                    INNER JOIN B_has_BI bbi ON (bii.inventory_ID = bbi.inventory_ID)
+                                                    WHERE bii.item_ID = $itemID";
+                                    $resStock = mysqli_query($conn, $sqlStock);
+                                    $rowStock = mysqli_fetch_assoc($resStock);
 
-                                            if ($rowStock['item_Stock'] <= 0) {
-                                                $disable = "disabled";
-                                            } else {
-                                                $disable = "";
-                                            }
-                                ?>
-                                    <tr>
-                                        <!-- start order delete -->
-                                        <td style="width: 10%">
-                                            <form action="cart.php?action=delete&id=<?php echo $id ?>&branch=<?php echo $branch ?>&item=<?php echo $itemID ?>" method="post">
-                                                <input type="image" class="img" src="../img/icon-delete.png" />
-                                            </form>
-                                        </td>
-                                        <!-- end order delete -->
-
-                                        <!-- start order name -->
-                                        <td width="30%">
-                                            <?php echo $itemName ?>
-                                        </td>
-                                        <!-- end order name -->
-
-                                        <!-- start order qty -->
-                                        <td width="30%">
-                                            <form action="" method="post">
-                                                <select <?php echo $disable ?> name="qty" class="select" onchange="changeQty('<?php echo $id ?>', '<?php echo $itemID ?>', this.value, '<?php echo $branch ?>');">
-                                        <?php
-                                                echo '<option value="'.$itemQty.'" selected>'.$itemQty.' </option>';
-                                        ?>
-                                                    <option value="1"> 1 </option>
-                                                    <option value="2"> 2 </option>
-                                                    <option value="3"> 3 </option>
-                                                    <option value="4"> 4 </option>
-                                                    <option value="5"> 5 </option>
-                                                    <option value="6"> 6 </option>
-                                                    <option value="7"> 7 </option>
-                                                    <option value="8"> 8 </option>
-                                                    <option value="9"> 9 </option>
-                                                    <option value="10"> 10 </option>
-                                                    <option value="11"> 11 </option>
-                                                    <option value="12"> 12 </option>
-                                                    <option value="13"> 13 </option>
-                                                    <option value="14"> 14 </option>
-                                                    <option value="15"> 15 </option>
-                                                    <option value="16"> 16 </option>
-                                                    <option value="17"> 17 </option>
-                                                    <option value="18"> 18 </option>
-                                                    <option value="19"> 19 </option>
-                                                    <option value="20"> 20 </option>
-                                                </select>
-                                            </form> 
-                                        </td>
-                                        <!-- end order qty -->
-
-                                        <!-- start total each -->
-                                        <td width="30%">
-                                            <p id="totalEach-<?php echo $itemID ?>"> <?php echo $itemTotal ?> </p>
-                                        </td>
-                                        <!-- end order total each -->
-
-                                    </tr>
-                                        
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                    </table>
+                                    if ($rowStock['item_Stock'] <= 0) {
+                                        $disable = "disabled";
+                                    } else {
+                                        $disable = "";
+                                    }
+                        ?>
+                            <div class="row align-items-center">
+                                <div class="col-1">
+                                    <form action="cart.php?action=delete&id=<?php echo $id ?>&branch=<?php echo $branch ?>&item=<?php echo $itemID ?>" method="post">
+                                        <input type="image" class="img my-auto d-block" src="trash.svg" />
+                                    </form>
                                 </div>
-                                <!-- end cart contents -->
 
-                            </div> <!-- end cart -->
+                                <div class="col-5">
+                                    <?php echo $itemName ?>
+                                </div>
 
-                        </div> <!-- end content right cart -->
-                        
+                                <div class="col-2">
+                                    0.00g
+                                </div>
+
+                                <div class="col-2">
+                                    <form action="" method="post">
+                                        <select <?php echo $disable ?> name="qty" class="select" onchange="changeQty('<?php echo $id ?>', '<?php echo $itemID ?>', this.value, '<?php echo $branch ?>');">
+                                        <?php
+                                            echo '<option value="'.$itemQty.'" selected>'.$itemQty.' </option>';
+                                        ?>
+                                            <option value="1"> 1 </option>
+                                            <option value="2"> 2 </option>
+                                            <option value="3"> 3 </option>
+                                            <option value="4"> 4 </option>
+                                            <option value="5"> 5 </option>
+                                            <option value="6"> 6 </option>
+                                            <option value="7"> 7 </option>
+                                            <option value="8"> 8 </option>
+                                            <option value="9"> 9 </option>
+                                            <option value="10"> 10 </option>
+                                            <option value="11"> 11 </option>
+                                            <option value="12"> 12 </option>
+                                            <option value="13"> 13 </option>
+                                            <option value="14"> 14 </option>
+                                            <option value="15"> 15 </option>
+                                            <option value="16"> 16 </option>
+                                            <option value="17"> 17 </option>
+                                            <option value="18"> 18 </option>
+                                            <option value="19"> 19 </option>
+                                            <option value="20"> 20 </option>
+                                        </select>
+                                    </form> 
+                                </div>
+
+                                <div class="col-2">
+                                    <span class="align-middle" id="totalEach-<?php echo $itemID ?>"> <?php echo $itemTotal ?> </span>
+                                </div>
+
+                            </div>
+                                        
+                        <?php
+                                }
+                            }
+                        ?>
+                    </div>
                         <!-- start right-total -->
                         <div class="right-total" style="bottom: 10px; right: 10px; position: fixed;">
 

@@ -53,7 +53,8 @@
     
     /* for brand descriptions */
     //search item in table
-    $sqlBrand = "SELECT COUNT(i.item_ID) AS items FROM Item i
+    if ($chosenBrand != "All") {
+        $sqlBrand = "SELECT COUNT(i.item_ID) AS items FROM Item i
                 INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
                 INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
                 INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
@@ -62,6 +63,18 @@
                     AND bii.item_Stock > 0
                     AND b.branch_ID = '$chosenBranch'
                 ";
+    } else if ($chosenBrand == "All") {
+        $sqlBrand = "SELECT COUNT(i.item_ID) AS items FROM Item i
+                INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
+                INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
+                INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
+                INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
+                WHERE bii.item_Stock > 0
+                    AND b.branch_ID = '$chosenBranch'
+                    OR i.item_Brand = '$chosenBrand'
+                ";
+    }
+    
 	$resBrand = mysqli_query($conn, $sqlBrand);
     $countB = mysqli_num_rows($resBrand);
     if ($countB > 0) {

@@ -5,7 +5,6 @@ include_once '../env/adminAuth.php';
 
 ?>
 
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
