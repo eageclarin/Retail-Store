@@ -8,6 +8,10 @@ include_once '../env/adminAuth.php';
 <!DOCTYPE html>
 <html lang="en">
   <head>
+     <!-- ajax -->
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <!-- jquery -->
+        <script src="jquery-3.5.1.min.js"></script>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
