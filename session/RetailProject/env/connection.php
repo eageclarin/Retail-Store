@@ -54,3 +54,26 @@
 
 	
 ?>
+
+<script>
+    var duration = 300;
+    setInterval(updateTimer, 1000);
+
+    function updateTimer() {
+        duration--;
+        if (duration<1) {
+            sessionStorage.removeItem('username');
+            sessionStorage.clear();
+            window.location="login.php";
+            if ( window.history.replaceState ) {
+                window.history.replaceState( null, null, window.location.href );
+            }
+        } 
+    }
+
+    window.addEventListener("mousemove", resetTimer);
+
+    function resetTimer() {
+        duration =300;
+    }
+</script>
