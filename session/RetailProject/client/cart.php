@@ -1,6 +1,5 @@
 <?php
     require '../env/connection.php';
-    session_start();
     $chosenBranch = $brand = $item = $qty = $disable = $name = $id = "";
     $display = "none"; $opacity=1;
 
@@ -57,7 +56,7 @@
                                 INNER JOIN Cu_orders_Ca cca ON (cai.cart_ID = cca.cart_ID)
                                 INNER JOIN Item i ON (cai.item_ID = i.item_ID)
                                 WHERE cca.customer_ID='$id' AND cca.branch_ID='$branch'
-                                    AND cai.item_ID='$item'";
+                                    AND cai.item_ID='$item' AND cca.status=0";
                 $resSearch = mysqli_query($conn, $sqlSearch);
                 $countSearch = mysqli_num_rows($resSearch);
 
@@ -142,8 +141,6 @@
 
         function delPrompt(getItem, getBranch, getID) {
             location.replace('cart.php?id='+getID+'&branch='+getBranch+'&item='+getItem);
-            document.getElementById("content").style.opacity = "0.2";
-            document.getElementById("delete").style.display="none";
         }
         function del(getID, getBranch, getItem) {
             location.replace('cart.php?action=delete&id='+getID+'&branch='+getBranch+'&item='+getItem);
@@ -444,7 +441,7 @@
                 </div>
                 <div class="modal-footer flex-nowrap p-0">
                     <button type="button" onclick="del(<?php echo $id ?>,<?php echo $chosenBranch ?>,<?php echo $item ?>)" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"><strong>Yes, delete</strong></button>
-                    <button type="button" onclick="back(<?php echo $chosenBranch ?>)" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">No, sorry</button>
+                    <button type="button" onclick="back(<?php echo $chosenBranch ?>)" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">No, mb mb</button>
                 </div>
                 </div>
             </div>

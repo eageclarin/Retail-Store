@@ -17,7 +17,7 @@
                         INNER JOIN Cu_orders_Ca cca ON (cai.cart_ID = cca.cart_ID)
                         INNER JOIN Item i ON (cai.item_ID = i.item_ID)
                         WHERE cca.customer_ID='$id' AND cca.branch_ID='$branch'
-                            AND cai.item_ID='$item'";
+                            AND cai.item_ID='$item' AND cca.status=0";
                 $resSearch = mysqli_query($conn, $sqlSearch);
                 $countSearch = mysqli_num_rows($resSearch);
 
@@ -28,19 +28,23 @@
 
 					$itemTotalP = $itemQty * $itemPrice;
 					$sqlUpdate = "UPDATE Ca_contains_I SET quantity='$itemQty', total='$itemTotalP'
-                                    WHERE item_ID='$item'";
+                                    WHERE item_ID='$item'
+                                    AND cart_ID = (SELECT cart_ID FROM Cu_orders_Ca cca
+                                                    WHERE cca.customer_ID = $id
+                                                    AND cca.branch_ID = $branch
+                                                    AND cca.status=0)";
 					$resUpdate = mysqli_query($conn, $sqlUpdate);
 
                     //update total in cart
                     $sqlUCart = "UPDATE Cart SET total=(
                         SELECT SUM(total) FROM Ca_contains_I
-                            WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca
-                                                WHERE customer_ID = '$id'
-                                                AND branch_ID = '$branch')
+                            WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca cca
+                                                WHERE cca.customer_ID = '$id'
+                                                AND cca.branch_ID = '$branch' AND cca.status=0)
                         )
-                    WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca
-                                                WHERE customer_ID = '$id'
-                                                AND branch_ID = '$branch');";
+                    WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca cca
+                                                WHERE cca.customer_ID = '$id'
+                                                AND cca.branch_ID = '$branch' AND cca.status=0);";
                     $resUCart = mysqli_query($conn, $sqlUCart);
 
                     if ($itemQty > $oldQty) {
@@ -69,7 +73,7 @@
                 //update total in cart
                 $sqlTotal = "SELECT total FROM Cart c
                             INNER JOIN Cu_orders_Ca cca ON (c.cart_ID = cca.cart_ID)
-                            WHERE cca.customer_ID = $id AND cca.branch_ID = $branch";
+                            WHERE cca.customer_ID = $id AND cca.branch_ID = $branch AND cca.status=0";
                 $resTotal = mysqli_query($conn, $sqlTotal);
                 $countTotal = mysqli_num_rows($resTotal);
     
