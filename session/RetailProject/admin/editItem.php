@@ -40,6 +40,7 @@ if (isset($_POST['onclickUpdate'])) {
         $update_result = mysqli_query($conn,$update_query);
     
         if($update_result){
+            $_SESSION['confirm_err']=2;
             header('location: inventory.php');
         }else{
             die(mysqli_error($conn));

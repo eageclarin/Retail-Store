@@ -167,7 +167,7 @@
 
 
         function getDetails(id){
-             alert("id: " + id );
+           
             $.post("update.php",{updateId:id},function(data,status){
                 var json=JSON.parse(data);
                 $("#update_ID").val(json.item_ID);
@@ -198,6 +198,7 @@
         };
 
         function deleteInfo(itemId){
+          
             $('#deleteModal').modal('show');
            
 
@@ -226,6 +227,12 @@
         </script>';
         $_SESSION['confirm_err']=0;
     }
+    if($_SESSION['confirm_err']==2){
+        echo '<script>
+        setTimeout(function(){  $(\'#successModal\').modal("show"); }, 500);
+        </script>';
+        $_SESSION['confirm_err']=0;
+    }
     ?>
     <!-- password Error Modal -->
     <div class="modal fade" id="passErr" tabindex="-1" aria-labelledby="passErrLabel" aria-hidden="true">
@@ -235,7 +242,7 @@
                 <h5 class="modal-title" id="passErrLabel">Password Incorrect</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-center">
                 You have Entered a wrong password
             </div>
             <div class="modal-footer">
@@ -254,8 +261,8 @@
                 <h5 class="modal-title" id="passErrLabel">Update Successful</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                the database is updated
+            <div class="modal-body text-center">
+                The database was successfully updated
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -342,7 +349,7 @@
                     
                     <form class="row g-3" action="UpdateStock.php" method="post">
 
-                        <input type="hidden" id="delItem_ID" name="delItem_ID" >
+                        
 
                         <div class="col-md-6">
                             <label for="itemStock" class="form-label">Quantity</label>
@@ -387,20 +394,22 @@
 
                 <div class="modal-body">
                     
-                    <form class="row g-3" action="UpdateStock.php" method="post">
+                    <form class="row g-3" action="deleteStock.php" method="post">   
                                                           
-                    <input type="hidden" id="delItem_ID" name="delItem_ID" >
+                        <input type="hidden" id="delItem_ID" name="delItem_ID" >
 
-                    <input type="hidden" id="delInventory_ID" name="delInventory_ID">
+                        <input type="hidden" id="delInventory_ID" name="delInventory_ID">
 
                         <div class="col-md-12">
-                            <label for="adminPass" class="form-label">Admin Password</label>
-                            <input type="password" class="form-control" name="AdminPass" required>
+                            <label for="deleteAdminPass" class="form-label">Admin Password</label>
+                            <input type="password" class="form-control" name="deleteAdminPass" required>
+                        </div>
+                        
+                        <div class="col-12">
+                        <button class="btn btn-danger text-light " name="deleteItem" type="submit" >Delete</button>                                          
                         </div>
 
-                        <div class="col-12">
-                        <button type="submit" class="btn btn-danger col-12" name="Delete">DELETE</button>                                   
-                        </div>                           
+                                           
                     </form>
                 </div>
 
