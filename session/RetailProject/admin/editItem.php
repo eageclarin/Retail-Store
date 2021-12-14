@@ -2,7 +2,7 @@
     include_once '../env/connection.php';
     include_once '../env/adminAuth.php';
 
-if (isset($_POST['updateItem'])) {
+if (isset($_POST['update_Item'])) {
 
     $password = md5($_POST['AdminPass']);
     $admin_confirmation_query = "SELECT admin_Username FROM admin where admin_Password='$password';";
@@ -57,7 +57,7 @@ if (isset($_POST['updateItem'])) {
 }
 else{
     header("Location: ./inventory.php"); 
-}
+};
 
 ?>
 

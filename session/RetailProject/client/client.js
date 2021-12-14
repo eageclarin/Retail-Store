@@ -19,7 +19,7 @@ $(document).ready(function () {
         },
         contact: {
           required: true,
-          rangelength: [10, 12],
+          rangelength: [11, 12],
           number: true
         },
         password: {
@@ -51,7 +51,7 @@ $(document).ready(function () {
         },
         contact: {
           required: 'Please enter Contact.',
-          rangelength: 'Contact should be 10 digit number.'
+          rangelength: 'Enter a valid number.',
         },
         password: {
           required: 'Please enter Password.',

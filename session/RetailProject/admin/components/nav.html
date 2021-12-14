@@ -18,7 +18,7 @@
                       <input  class="dropdown-item"type='submit' value='Logout' name='logout'>
                       </form>
                   </li>
-                  <li><a class="dropdown-item" href="#">Update Profile</a></li>
+                  <li><a class="dropdown-item" href="javascript:updateProfile()">Update Profile</a></li>
                   </ul>
               </li>
               <li class="nav-item">
@@ -39,3 +39,76 @@
       </div>
   </div>
 </nav>
+
+<script type="text/javascript">
+    function updateProfile(){
+      $('#updatePModal').modal('show');
+     
+
+      // $.post("update.php",{itemId:itemId},function(data,status){
+      //     var json=JSON.parse(data);
+      //     $("#Item_ID").val(json.item_ID);
+      //     $("#Inventory_ID").val(json.inventory_ID);
+      //     // alert("Data: " + data );
+        
+      // });
+      
+  };
+
+</script>
+
+ <!-- delete Stock Modal ##################################-->
+ <div class="modal fade" id="updatePModal" tabindex="-1" aria-labelledby="updatePModalLabel"  aria-hidden="true">
+  <div class="modal-dialog">
+      <div class="modal-content">
+          <div class="modal-header">
+              <h5 class="modal-title" id="updatePModalLabel">Update Profile</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+              
+              <form class="row g-3"  action="editItem.php" method="post">
+                
+
+                <input type="hidden" class="form-control" id="updateItem_ID" name="updateItem_ID">
+
+                                                    
+                <div class="col-md-12">
+                    <label for="updateRetail_Price" class="form-label">New Username</label>
+                    <input type="text" class="form-control" id="updateCategory" name="updateCategory">
+                </div>
+
+                <div class="col-md-12">
+                  <label for="updateRetail_Price" class="form-label">New Contact Number</label>
+                  <input type="text" class="form-control" id="updateCategory" name="updateCategory">
+                </div>
+
+                <div class="col-md-6">
+                  <label for="updateRetail_Price" class="form-label">Old Password</label>
+                  <input type="text" class="form-control" id="updateCategory" name="updateCategory">
+              </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="password" >New Password: </label>
+                    <input type="password" class="form-control" id="password" name="password"  required>
+                    <span id="toggle" onclick="toggle('password')"><i class="fa fa-eye"></i> </span>
+              </div>
+
+    
+
+                                                    
+                                            
+                                            
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary" name="updateProfile" >UPDATE</button>
+                </div>
+            </form>
+          </div>
+
+          <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>                                               
+          </div>
+      </div>
+  </div>
+</div>

@@ -1,21 +1,13 @@
 <?php
     include_once 'env/connection.php';
     $item = $branch = $categ = "";
-
-    if (isset($_SESSION['itemID'])) {
-        $item = $_SESSION['itemID'];
-    }
-    if (isset($_SESSION['branch']) || isset($_SESSION['categ'])) {
-        $branch = $_SESSION['branch'];
-        $categ = $_SESSION['categ'];
-    }
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
 <title> Log In </title>
-<meta charset="utf-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
@@ -37,7 +29,7 @@
                     <input type="submit" value="Return" name="return" class="form-control" style="width:150px;">
                 </div>
             </form>
-            Don't have an account yet? <a href='client/register.php?itemID=<?php echo $item?>&branch=<?php echo $branch ?>&categ=<?php echo $categ ?>'>Register here</a>
+            Don't have an account yet? <a href='client/register.php'>Register here</a>
         </div>
     </div>
 
@@ -61,8 +53,7 @@
                     $_SESSION['confirm_err']=0;
                     header("Location: admin/adminHome.php");                    #redirect to adminHome.php
                     exit;
-                }
-                                  
+                }                    
             }
 
             $sql = "SELECT * FROM customer;";                                    #check if in customer table
@@ -85,7 +76,9 @@
             }                
             
             if ($exists == false) {                                             #If customer is unregistered
-                echo "Wrong username or password";
+                echo '<div class="container-sm p-1 my-1 bg-danger text-white" style="max-width:50%;">
+                Wrong username or password.
+                </div>';
                 unset($_SESSION);
                 exit;
             }    

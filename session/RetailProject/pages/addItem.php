@@ -1,7 +1,6 @@
 <?php
-    require '../env/connection.php';
-    session_start();
-    $id = $item = "";
+    include_once '../env/connection.php';
+    $id = $item = $for = "";
     $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = $branch = 1;
 
     if(isset($_SESSION)) {
@@ -12,6 +11,8 @@
     
     if (isset($_GET['itemID'])) {
         $item = $_GET['itemID'];
+    } if (isset($_GET['for'])) {
+        $for = $_GET['for'];
     }
     
     /* FOR ADD TO CART ITEM */
@@ -101,9 +102,16 @@
                                         WHERE inventory_ID = (SELECT inventory_ID FROM B_has_BI WHERE branch_ID = '$chosenBranch')
                                         AND item_ID = '$item'";
                         $resDelete = mysqli_query($conn, $sqlDelete);
+
+                        if ($for == "brand") {
+                            header("location: ../brand.php?updated");
+                        } else if ($for == "categ") {
+                            header("location: ../categories.php?updated");
+                        }
+                    } else {
+                        echo "ERROR: Could not be able to execute $sqlAdd." . mysqli_error($conn);
                     }		
         
-                    header("location: ../brand.php?updated");
                 } else { //if not in cart yet, insert
                     //insert into ca_contains_i then update total in cart and update stock
                     $sqlCartID = mysqli_query($conn, "SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id' AND branch_ID = '$chosenBranch' AND `status`=0");
@@ -128,7 +136,11 @@
                                         AND item_ID = '$item'";
                         $resDelete = mysqli_query($conn, $sqlDelete);
 
-                        header("location: ../brand.php?inserted");
+                        if ($for == "brand") {
+                            header("location: ../brand.php?inserted");
+                        } else if ($for == "categ") {
+                            header("location: ../categories.php?inserted");
+                        }
                     } else {
                         echo "ERROR: Could not be able to execute $sqlAdd." . mysqli_error($conn);
                     }

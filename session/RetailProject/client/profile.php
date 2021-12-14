@@ -146,6 +146,7 @@
 <?php 
 
 if (isset($_POST['cust_update'])) {           #if update button pressed
+    $olduser = $username;
     $username = mysqli_real_escape_string($conn,$_POST['username']);
     $firstName = mysqli_real_escape_string($conn,$_POST['firstName']);
     $lastName = mysqli_real_escape_string($conn,$_POST['lastName']);
@@ -156,14 +157,31 @@ if (isset($_POST['cust_update'])) {           #if update button pressed
     $province = mysqli_real_escape_string($conn,$_POST['province']);
     $postal = mysqli_real_escape_string($conn,$_POST['postal']);
 
+     #check if username or email exists
+     if ($olduser!=$username) {
+         $check_query = "SELECT * FROM customer where cust_Username = '$username' LIMIT 1;";
+         $result = mysqli_query($conn, $check_query);
+        $resultCheck = mysqli_num_rows($result);
+     } else {
+         $resultCheck = 0;
+     }
+     
 
-    $insert = "UPDATE customer SET cust_Username='$username', cust_FName='$firstName', cust_LName='$lastName',cust_Contact=$contact, cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
-    $update_result = mysqli_query($conn, $insert);
+     if ($resultCheck==0) {
+        $insert = "UPDATE customer SET cust_Username='$username', cust_FName='$firstName', cust_LName='$lastName',cust_Contact=$contact, cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
+        $update_result = mysqli_query($conn, $insert);
         if ($update_result) {
+            $_SESSION['username'] = $username;
             echo "<script> location.replace('../main.php'); </script>";
         } else {
             die(mysqli_error($conn));
         }
+
+     } else {
+         echo "username already exists";
+     }
+
+    
 
 }
 

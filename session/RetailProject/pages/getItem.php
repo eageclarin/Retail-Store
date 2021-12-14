@@ -2,7 +2,7 @@
     include_once '../env/connection.php';
 	/* FOR FILTER */
     //variables
-	$branch = $item = $id = "";
+	$branch = $item = $id = $for = "";
 	$brand = $categ = "All";
 	$sort = "ASC"; $order = "Name";
 
@@ -39,6 +39,7 @@
 	}
 
 	if (!empty($_GET['for'])) {
+		$for = $_GET['for'];
 		switch($_GET['for']) {
 			case "brand":
 				if ($brand != "All") {
@@ -187,7 +188,7 @@
 					$itemWeight = "0.00g";
 	?>
 				<li style="width:18%">
-					<form action="addItem.php?itemID=<?php echo $itemID ?>" method="post" target="_top">
+					<form action="addItem.php?itemID=<?php echo $itemID ?>&for=<?php echo $for ?>" method="post" target="_top">
 					<a href="" class="card shadow bg-light" style="border-radius: 15px; text-decoration: none">
                         <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="../img/main/brand.jpg" alt="Card image cap">
                         <div class="container card-body">
@@ -203,7 +204,7 @@
 							</div>
                         </div>
 					</a>
-					<form>
+					</form>
 				</li>
 	<?php
 					$i++; //number of items in row

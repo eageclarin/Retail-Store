@@ -1,8 +1,7 @@
 <?php
-    require 'env/connection.php';
-    session_start();
+    include_once 'env/connection.php';
     $chosenBranch = $chosenBrand = $name = $id = "";
-	$chosenCateg = "All";
+	$chosenCateg = $categ = "All";
 	$sort = "ASC";
 	$order = "Name";
 
@@ -15,6 +14,7 @@
     
     if(isset($_SESSION['categ'])) {
 		$chosenCateg = $_SESSION['categ'];
+        $categ = $chosenCateg;
 	} if (isset($_SESSION['sort'])) {
 		$sort = $_SESSION['sort'];
 	} if (isset($_SESSION['order'])){
@@ -28,6 +28,9 @@
     if (!empty($_GET['categ'])) {
         $chosenCateg = $_GET['categ'];
         $_SESSION['categ'] = $chosenCateg;
+        $categ = $chosenCateg;
+    } if ($chosenCateg == "PastaNoodles") {
+        $categ = "Pasta & Noodles";
     }
     if (!empty($_GET['sort']) && !empty($_GET['order'])) {
         $order = $_GET['order'];
@@ -53,7 +56,8 @@
     
     /* for brand descriptions */
     //search item in table
-    $sqlBrand = "SELECT COUNT(i.item_ID) AS items FROM Item i
+    if ($chosenBrand != "All") {
+        $sqlBrand = "SELECT COUNT(i.item_ID) AS items FROM Item i
                 INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
                 INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
                 INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
@@ -62,6 +66,18 @@
                     AND bii.item_Stock > 0
                     AND b.branch_ID = '$chosenBranch'
                 ";
+    } else if ($chosenBrand == "All") {
+        $sqlBrand = "SELECT COUNT(i.item_ID) AS items FROM Item i
+                INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
+                INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
+                INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
+                INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
+                WHERE bii.item_Stock > 0
+                    AND b.branch_ID = '$chosenBranch'
+                    OR i.item_Brand = '$chosenBrand'
+                ";
+    }
+    
 	$resBrand = mysqli_query($conn, $sqlBrand);
     $countB = mysqli_num_rows($resBrand);
     if ($countB > 0) {
@@ -87,7 +103,7 @@
     <link rel="stylesheet" href="main.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <title> Main </title>
+    <title> Brand </title>
 </head>
 <body style="background-color:#E6E9F0;" class="w-100 h-100">
     <header class="shadow p-3 mb-0 border-bottom bg-white h-20">
@@ -118,10 +134,6 @@
                 </ul>
             </li>
             </ul>
-
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-            <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-            </form>
 
             <?php
                     if (empty($_SESSION['username'])) { //Checks if customer is logged in
@@ -191,7 +203,7 @@
                     <li>
                         <h5>
                         <a class="nav-link link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Category: <?php echo $chosenCateg; ?>
+                            Category: <?php echo $categ; ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 220px;">
                             <li><a class="dropdown-item" href="brand.php?categ=All">All</a></li>

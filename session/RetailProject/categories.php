@@ -1,8 +1,7 @@
 <?php
-    require 'env/connection.php';
-    session_start();
-    $chosenBranch = $chosenBrand = $name = $id = "";
-	$chosenCateg = "All";
+    include_once 'env/connection.php';
+    $chosenBranch = $name = $id = "";
+	$chosenCateg = $chosenBrand = $categ = "All";
 	$sort = "ASC";
 	$order = "Name";
 
@@ -15,6 +14,7 @@
     
     if(isset($_SESSION['categ'])) {
 		$chosenCateg = $_SESSION['categ'];
+        $categ = $chosenCateg;
 	} if (isset($_SESSION['sort'])) {
 		$sort = $_SESSION['sort'];
 	} if (isset($_SESSION['order'])){
@@ -28,7 +28,11 @@
     if (!empty($_GET['categ'])) {
         $chosenCateg = $_GET['categ'];
         $_SESSION['categ'] = $chosenCateg;
+        $categ = $chosenCateg;
+    } if ($chosenCateg == "PastaNoodles") {
+        $categ = "Pasta & Noodles";
     }
+
     if (!empty($_GET['sort']) && !empty($_GET['order'])) {
         $order = $_GET['order'];
         $sort = $_GET['sort'];
@@ -53,22 +57,35 @@
     
     /* for categpry descriptions */
     //search item in table
-    $sqlCateg = "SELECT COUNT(i.item_ID) AS items FROM Item i
+    if ($chosenCateg != "All") {
+        $sqlCateg = "SELECT COUNT(i.item_ID) AS items FROM Item i
                 INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
                 INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
                 INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
                 INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-                WHERE i.item_Category = '$chosenCateg'
+                WHERE i.item_Category = '$categ'
                     AND bii.item_Stock > 0
                     AND b.branch_ID = '$chosenBranch'
                 ";
+    } else if ($chosenCateg == "All") {
+        $sqlCateg = "SELECT COUNT(i.item_ID) AS items FROM Item i
+                INNER JOIN BI_has_I bii ON (i.item_ID = bii.item_ID)
+                INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
+                INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
+                INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
+                WHERE bii.item_Stock > 0
+                    AND b.branch_ID = '$chosenBranch'
+                    OR i.item_Category = '$categ'
+                ";
+    }
+    
 	$resCateg = mysqli_query($conn, $sqlCateg);
     $countC = mysqli_num_rows($resCateg);
     if ($countC > 0) {
         $rowC = mysqli_fetch_assoc($resCateg);
-        $desc = "There is <b>a total of ".$rowC['items']." ".$chosenCateg." item/s</b>.";
+        $desc = "There is <b>a total of ".$rowC['items']." ".$categ." item/s</b>.";
     } else {
-        $desc = "There is no ".$chosenCateg." item/s";
+        $desc = "There is no ".$categ." item/s";
     }
 	
     //action add to cart
@@ -87,7 +104,7 @@
     <link rel="stylesheet" href="main.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <title> Main </title>
+    <title> Categories </title>
 </head>
 <body style="background-color:#E6E9F0;" class="w-100 h-100">
     <header class="shadow p-3 mb-0 border-bottom bg-white h-20">
@@ -118,10 +135,6 @@
                 </ul>
             </li>
             </ul>
-
-            <form class="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3">
-            <input type="search" class="form-control form-control-dark" placeholder="Search..." aria-label="Search">
-            </form>
 
             <?php
                     if (empty($_SESSION['username'])) { //Checks if customer is logged in
@@ -167,8 +180,8 @@
             <div class="col-md-7">
                 <h1><a class="link-dark text-decoration-none dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <?php
-                        if ($chosenCateg == "All") { echo $chosenCateg." Categories";}
-                        else {echo $chosenCateg;}
+                        if ($categ == "All") { echo $categ." Categories";}
+                        else {echo $categ;}
                     ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 300px;">
