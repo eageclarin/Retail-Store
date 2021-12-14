@@ -1,9 +1,10 @@
 <?php
     include_once '../env/connection.php';
     include_once '../env/adminAuth.php';
+    
+if (isset($_POST['onclickUpdate'])) {
 
-if (isset($_POST['update_Item'])) {
-
+   
     $password = md5($_POST['AdminPass']);
     $admin_confirmation_query = "SELECT admin_Username FROM admin where admin_Password='$password';";
     $admin_confirmation_result = mysqli_query($conn,$admin_confirmation_query);
@@ -14,17 +15,18 @@ if (isset($_POST['update_Item'])) {
             
             $admin_confirmation_user = $admin_confirmation_row['admin_Username'];
      
-        }       
-    }
+        }
+             
+    };
 
     if($admin_confirmation_user== $_SESSION['admin_User'] ){
-        $id =  $_POST['updateItem_ID'];
-        $itemName =$_POST['updateItem_Name'];
-        $RetailPrice = $_POST['updateRetail_Price'];
-        $WholesalePrice = $_POST['updateWholesale_Price'];
-        $Category = $_POST['updateCategory'];
-        $Brand=$_POST['updateBrand'];
-        $Image=$_POST['updateImage'];
+        echo $id =  $_POST['updateItem_ID'];
+        echo $itemName =$_POST['updateItem_Name'];
+        echo $RetailPrice = $_POST['updateRetail_Price'];
+        echo $WholesalePrice = $_POST['updateWholesale_Price'];
+        echo $Category = $_POST['update_Category'];
+        echo $Brand=$_POST['updateBrand'];
+        echo $Image=$_POST['updateImage'];
     
     
     
@@ -33,10 +35,7 @@ if (isset($_POST['update_Item'])) {
         item_Brand ='$Brand', 
         item_Image='$Image' 
         WHERE item_ID = $id";
-    
-    
-    
-    
+
     
         $update_result = mysqli_query($conn,$update_query);
     
@@ -45,6 +44,7 @@ if (isset($_POST['update_Item'])) {
         }else{
             die(mysqli_error($conn));
         }
+      
     
 
 
@@ -54,10 +54,12 @@ if (isset($_POST['update_Item'])) {
         header('location: inventory.php');
     }                    
 
-}
-else{
-    header("Location: ./inventory.php"); 
-};
+    }
+    else{
+        header("Location: ./inventory.php"); 
+    };
+
+
 
 ?>
 

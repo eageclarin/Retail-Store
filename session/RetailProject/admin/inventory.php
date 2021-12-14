@@ -170,7 +170,7 @@
              alert("id: " + id );
             $.post("update.php",{updateId:id},function(data,status){
                 var json=JSON.parse(data);
-                $("#updateItem_ID").val(json.item_ID);
+                $("#update_ID").val(json.item_ID);
                 $("#updateItem_Name").val(json.item_Name);
                 $('#updateRetail_Price').val(json.item_RetailPrice);
                 $('#updateWholesale_Price').val(json.item_WholesalePrice);
@@ -281,7 +281,7 @@
                             <input type="text" class="form-control" id="updateItem_Name" name="updateItem_Name">
                         </div>
 
-                        <input type="hidden" class="form-control" id="updateItem_ID" name="updateItem_ID">
+                        <input type="hidden" class="form-control" id="update_ID" name="updateItem_ID">
 
                         <div class="col-md-6">
                             <label for="updateRetail_Price" class="form-label">Retail Price</label>
@@ -295,7 +295,7 @@
                                                                     
                         <div class="col-md-6">
                             <label for="update_Category" class="form-label">Category</label>
-                            <input type="text" class="form-control" id="update_Category" name="updateCategory">
+                            <input type="text" class="form-control" id="update_Category" name="update_Category">
                         </div>
 
                         <div class="col-md-6">
@@ -317,7 +317,7 @@
                                                     
                                                     
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary" name="update_Item" >UPDATE</button>
+                            <button type="submit" class="btn btn-primary" name="onclickUpdate" >UPDATE</button>
                         </div>
                     </form>
                 </div>
@@ -341,7 +341,9 @@
                 <div class="modal-body">
                     
                     <form class="row g-3" action="UpdateStock.php" method="post">
-                                                    
+
+                        <input type="hidden" id="delItem_ID" name="delItem_ID" >
+
                         <div class="col-md-6">
                             <label for="itemStock" class="form-label">Quantity</label>
                             <input type="number" class="form-control "   id="itemStock" name="itemStock" min=1 value=0 required>
