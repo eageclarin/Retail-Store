@@ -181,8 +181,9 @@ VALUES
     (1,1),
     (1,2),
     (1,3),
-    (2,2),
-    (3,3)
+    (2,1),
+    (3,2),
+	(4,3)
 ;
 
 -- insert branch has branch inventory

@@ -3,7 +3,7 @@
 include_once '../env/connection.php';
 include_once '../env/adminAuth.php';
 $user = $_SESSION['admin_User'] ;
-$branchID_query = "SELECT *FROM branch NATURAL JOIN (b_has_bi) NATURAL JOIN branchinventory NATURAL JOIN a_manages_b NATURAL JOIN admin WHERE admin.admin_Username= '$user' ;"; #check if in admin table
+$branchID_query = "SELECT * FROM branch NATURAL JOIN (b_has_bi) NATURAL JOIN branchinventory NATURAL JOIN a_manages_b NATURAL JOIN admin WHERE admin.admin_Username= '$user' ;"; #check if in admin table
 $branchID_result = mysqli_query($conn,$branchID_query);
 $branchID_Check = mysqli_num_rows($branchID_result); #should be same with eigram
 
@@ -30,7 +30,7 @@ if ($branchID_Check>0) {                                               #username
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Admin Home</title>
   </head>
   <body>
  
@@ -91,14 +91,14 @@ if ($branchID_Check>0) {                                               #username
                 <h1 > Total Sales<h1>
                 <?php
                         $branchID = $_SESSION['branchID'] ;
-                        $orders_query = "SELECT sum(total) FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
+                        $orders_query = "SELECT sum(total) AS sales FROM customer NATURAL join cu_orders_ca  NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
                         $orders_result = mysqli_query($conn,$orders_query);
                         $orders_Check = mysqli_num_rows($orders_result);
                       
                             if ($orders_Check>0) {                                                       
                                 while($orders_row = mysqli_fetch_assoc($orders_result)) {
                                   ?>  
-                                  <p class="display-4 "><?php echo $orders_row['sum(total)']  ?>  </p> 
+                                  <p class="display-4 "><?php echo $orders_row['sales']  ?>  </p> 
 
 
                                 
@@ -117,7 +117,7 @@ if ($branchID_Check>0) {                                               #username
 
             </div>
             <div class="col">   
-                <h1>Total Order</h1>
+                <h1>Total Orders</h1>
                 <?php
                         $branchID = $_SESSION['branchID'] ;
                         $orders_query = "SELECT COUNT(cart_ID) FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
