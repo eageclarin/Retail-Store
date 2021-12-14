@@ -20,13 +20,13 @@ if (isset($_POST['onclickUpdate'])) {
     };
 
     if($admin_confirmation_user== $_SESSION['admin_User'] ){
-        echo $id =  $_POST['updateItem_ID'];
-        echo $itemName =$_POST['updateItem_Name'];
-        echo $RetailPrice = $_POST['updateRetail_Price'];
-        echo $WholesalePrice = $_POST['updateWholesale_Price'];
-        echo $Category = $_POST['update_Category'];
-        echo $Brand=$_POST['updateBrand'];
-        echo $Image=$_POST['updateImage'];
+         $id =  $_POST['updateItem_ID'];
+         $itemName =$_POST['updateItem_Name'];
+         $RetailPrice = $_POST['updateRetail_Price'];
+         $WholesalePrice = $_POST['updateWholesale_Price'];
+         $Category = $_POST['update_Category'];
+         $Brand=$_POST['updateBrand'];
+         $Image=$_POST['updateImage'];
     
     
     

@@ -18,7 +18,7 @@
                       <input  class="dropdown-item"type='submit' value='Logout' name='logout'>
                       </form>
                   </li>
-                  <li><a class="dropdown-item" href="javascript:updateProfile(<?php  >)">Update Profile</a></li>
+                  <li><button class="dropdown-item" onclick="updateProfile()">Update Profile</button></li>
                   </ul>
               </li>
               <li class="nav-item">
@@ -39,20 +39,26 @@
       </div>
   </div>
 </nav>
-
+<script src="md5.js"></script>
 <script type="text/javascript">
-    function updateProfile(user){
-       alert("Data: " + user );
-      // $('#userUpdateModal').modal('show');
+    function updateProfile(){
+        let username = "<?php echo"$user"?>";
+
+      
+      $('#userUpdateModal').modal('show');
      
 
-      // $.post("update.php",{itemId:itemId},function(data,status){
-      //     var json=JSON.parse(data);
-      //     $("#Item_ID").val(json.item_ID);
-      //     $("#Inventory_ID").val(json.inventory_ID);
-      //     // alert("Data: " + data );
+      $.post("update.php",{adminUser:username},function(data,status){
+          
+          let json=JSON.parse(data);
+
+          $("#userUpdate_ID").val(json.admin_ID);
+          $("#userUpdate_UserName").val(json.admin_Username);
+          $("#userUpdate_contact").val(json.contact);
+          $("#userUpdate_pass").val(json.admin_Password);
+        //   alert("Data: " + pass );
         
-      // });
+      });
       
   };
 
@@ -69,25 +75,30 @@
 
           <div class="modal-body">
               
-              <form class="row g-3"  action="editItem.php" method="post">
+              <form class="row g-3"  action="updateProfile.php" method="post">
                 
 
-                <input type="hidden" class="form-control" id="updateItem_ID" name="updateItem_ID">
+                <input type="hidden" class="form-control" id="userUpdate_ID" name="userUpdate_ID">
 
                                                     
                 <div class="col-md-12">
-                    <label for="updateRetail_Price" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="updateCategory" name="updateCategory">
-                </div>
-
-                <div class="col-md-12">
-                  <label for="updateRetail_Price" class="form-label">Contact Number</label>
-                  <input type="text" class="form-control" id="updateCategory" name="updateCategory">
+                    <label for="userUpdate_UserName" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="userUpdate_UserName" name="userUpdate_UserName">
                 </div>
 
                 <div class="col-md-6">
-                    <label class="form-label" for="password" >Password: </label>
-                    <input type="password" class="form-control" id="password" name="password"  required>
+                  <label for="userUpdate_contact" class="form-label">Contact Number</label>
+                  <input type="text" class="form-control" id="userUpdate_contact" name="userUpdate_contact" placeholder="ex. 09056447337" >
+                </div>
+
+                <div class="col-md-6">
+                    <label class="form-label" for="userUpdate_pass" >Password: </label>
+                    <input type="password" class="form-control" id="userUpdate_pass" name="userUpdate_pass"  required>
+                    <!-- <span id="toggle" onclick="toggle('password')"><i class="fa fa-eye"></i> </span> -->
+              </div>
+              <div class="col-md-6">
+                    <label class="form-label" for="userOld_pass" >Enter Old Password to confirm: </label>
+                    <input type="password" class="form-control"  name="userOld_pass"  required>
                     <!-- <span id="toggle" onclick="toggle('password')"><i class="fa fa-eye"></i> </span> -->
               </div>
 

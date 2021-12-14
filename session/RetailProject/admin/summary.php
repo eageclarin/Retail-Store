@@ -16,9 +16,10 @@ include_once '../env/adminAuth.php';
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <title>Admin | Summary</title>
+    <script src="../env/idle.js"></script>
   </head>
   <body>
-        <?php include "./components/nav.html"?>
+        <?php include "./components/nav.php"?>
 
         <div class="container mt-5">
         <table class="table table-striped table-hover table-success">
@@ -105,7 +106,7 @@ include_once '../env/adminAuth.php';
     </script>
     <!-- show items modal ##################################-->
     <div class="modal fade" id="showItems" tabindex="-1" aria-labelledby="showItemsLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="showItemsLabel">Cart Items</h5>

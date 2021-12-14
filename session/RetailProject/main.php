@@ -134,6 +134,7 @@
         }
     </style>
     <title> Main </title>
+    <script src="env/idle.js"></script>
 </head>
 <body style="background-color:#E6E9F0;" class="w-100 h-100">
     <div id="chooseBranch" style="display: <?php echo $display ?>">

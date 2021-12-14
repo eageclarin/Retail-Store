@@ -45,11 +45,11 @@
 
         <title>Admin | Inventory</title>
         
-<script src="../env/idle.js"></script>
+        <script src="../env/idle.js"></script>
     </head>
     
     <body>
-        <?php include "./components/nav.html"?>
+        <?php include "./components/nav.php"?>
 
         <div class="container mt-5">
                 <h1>Inventory</h1>    
