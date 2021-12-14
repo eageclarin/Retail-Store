@@ -8,7 +8,7 @@ function updateTimer() {
     if (duration<1) {
         sessionStorage.removeItem('username');
         sessionStorage.clear();
-        window.location="../login.php";
+        window.location="http://localhost/CMSC-127/session/RetailProject/login.php";
         if ( window.history.replaceState ) {
             window.history.replaceState( null, null, window.location.href );
         }
