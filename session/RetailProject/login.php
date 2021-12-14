@@ -1,8 +1,6 @@
 <?php
     include_once 'env/connection.php';
     $item = $branch = $categ = "";
-
-    session_destroy();
 ?>
 
 <!DOCTYPE html>
