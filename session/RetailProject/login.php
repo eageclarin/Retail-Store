@@ -2,7 +2,7 @@
     include_once 'env/connection.php';
     $item = $branch = $categ = "";
 
-    session_destroy();
+    //session_destroy();
 ?>
 
 <!DOCTYPE html>
@@ -78,7 +78,9 @@
             }                
             
             if ($exists == false) {                                             #If customer is unregistered
-                echo "Wrong username or password";
+                echo '<div class="container-sm p-1 my-1 bg-danger text-white" style="max-width:50%;">
+                Wrong username or password.
+                </div>';
                 unset($_SESSION);
                 exit;
             }    
