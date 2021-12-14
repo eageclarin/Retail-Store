@@ -128,9 +128,9 @@
                     ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 220px;">
-                    <li><a class="dropdown-item" href="main.php?branch=1">Paoay</a></li>
-                    <li><a class="dropdown-item" href="main.php?branch=2">Vicas</a></li>
-                    <li><a class="dropdown-item" href="main.php?branch=3">Cordon</a></li>
+                    <li><a class="dropdown-item" href="brand.php?branch=1">Paoay</a></li>
+                    <li><a class="dropdown-item" href="brand.php?branch=2">Vicas</a></li>
+                    <li><a class="dropdown-item" href="brand.php?branch=3">Cordon</a></li>
                 </ul>
             </li>
             </ul>
