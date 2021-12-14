@@ -3,7 +3,6 @@
     $item = $branch = $categ = "";
 
     session_destroy();
-    session_start();
 ?>
 
 <!DOCTYPE html>
@@ -70,7 +69,6 @@
                         $exists = true;
                         $_SESSION['userID'] = $row['cust_ID'];      
                         $_SESSION['username'] = $row['cust_Username'];
-                        unset($_SESSION['login']);
                         mysqli_close($conn);
 
                         header("Location: main.php");                           #Return to main.php
@@ -80,9 +78,7 @@
             }                
             
             if ($exists == false) {                                             #If customer is unregistered
-                echo '<div class="container-sm p-1 my-1 bg-danger text-white" style="max-width:50%;">
-                Wrong username or password.
-                </div>';
+                echo "Wrong username or password";
                 unset($_SESSION);
                 exit;
             }    
@@ -91,13 +87,7 @@
         #if "Return" is pressed: 
         if (isset($_POST['return'])) {
             unset($_SESSION);
-            unset($_SESSION['username']);
-            if (session_destroy()) {
-                # code...
-                header('location: main.php');
-            }
-            
-            
+            header('location: main.php');
             exit;
         }
 
