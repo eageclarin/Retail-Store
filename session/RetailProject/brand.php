@@ -104,7 +104,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <title> Brand </title>
+    <script src="env/idle.js"></script>
 </head>
+
 <body style="background-color:#E6E9F0;" class="w-100 h-100">
     <header class="shadow p-3 mb-0 border-bottom bg-white h-20">
         <div class="container-fluid d-grid gap-3 align-items-center">
@@ -128,9 +130,9 @@
                     ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 220px;">
-                    <li><a class="dropdown-item" href="brand.php?branch=1">Paoay</a></li>
-                    <li><a class="dropdown-item" href="brand.php?branch=2">Vicas</a></li>
-                    <li><a class="dropdown-item" href="brand.php?branch=3">Cordon</a></li>
+                    <li><a class="dropdown-item" href="main.php?branch=1">Paoay</a></li>
+                    <li><a class="dropdown-item" href="main.php?branch=2">Vicas</a></li>
+                    <li><a class="dropdown-item" href="main.php?branch=3">Cordon</a></li>
                 </ul>
             </li>
             </ul>
@@ -159,7 +161,6 @@
                             </a>
                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                                 <li><a class="dropdown-item" href="#">Edit Account</a></li>
-                                <li><a class="dropdown-item" href="client/report.php">Order History</a></li>
                                 <li><a class="dropdown-item" href="main.php?action=logout">Log out</a></li>
                             </ul>
                         </div>

@@ -45,7 +45,7 @@
         // header('location: adminHome.php');
         $response['status']=200;
         $response['message']="Invalid or data not found";
-    }
+    };
 
 ?>
 

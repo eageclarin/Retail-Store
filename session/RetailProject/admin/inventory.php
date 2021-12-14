@@ -44,6 +44,8 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
         <title>Admin | Inventory</title>
+        
+        <script src="../env/idle.js"></script>
     </head>
     
     <body>
@@ -165,14 +167,14 @@
 
 
         function getDetails(id){
-
+           
             $.post("update.php",{updateId:id},function(data,status){
                 var json=JSON.parse(data);
-                $("#updateItem_ID").val(json.item_ID);
+                $("#update_ID").val(json.item_ID);
                 $("#updateItem_Name").val(json.item_Name);
                 $('#updateRetail_Price').val(json.item_RetailPrice);
                 $('#updateWholesale_Price').val(json.item_WholesalePrice);
-                $('#updateCategory').val(json.item_Category);
+                $('#update_Category').val(json.item_Category);
                 $('#updateImage').val(json.item_Image);
                 $('#updateBrand').val(json.item_Brand);
                 // alert("Data: " + data );
@@ -196,13 +198,14 @@
         };
 
         function deleteInfo(itemId){
+          
             $('#deleteModal').modal('show');
            
 
             $.post("update.php",{itemId:itemId},function(data,status){
                 var json=JSON.parse(data);
-                $("#Item_ID").val(json.item_ID);
-                $("#Inventory_ID").val(json.inventory_ID);
+                $("#delItem_ID").val(json.item_ID);
+                $("#delInventory_ID").val(json.inventory_ID);
                 // alert("Data: " + data );
               
             });
@@ -224,6 +227,12 @@
         </script>';
         $_SESSION['confirm_err']=0;
     }
+    if($_SESSION['confirm_err']==2){
+        echo '<script>
+        setTimeout(function(){  $(\'#successModal\').modal("show"); }, 500);
+        </script>';
+        $_SESSION['confirm_err']=0;
+    }
     ?>
     <!-- password Error Modal -->
     <div class="modal fade" id="passErr" tabindex="-1" aria-labelledby="passErrLabel" aria-hidden="true">
@@ -233,7 +242,7 @@
                 <h5 class="modal-title" id="passErrLabel">Password Incorrect</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <div class="modal-body text-center">
                 You have Entered a wrong password
             </div>
             <div class="modal-footer">
@@ -252,8 +261,8 @@
                 <h5 class="modal-title" id="passErrLabel">Update Successful</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                the database is updated
+            <div class="modal-body text-center">
+                The database was successfully updated
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -279,7 +288,7 @@
                             <input type="text" class="form-control" id="updateItem_Name" name="updateItem_Name">
                         </div>
 
-                        <input type="hidden" class="form-control" id="updateItem_ID" name="updateItem_ID">
+                        <input type="hidden" class="form-control" id="update_ID" name="updateItem_ID">
 
                         <div class="col-md-6">
                             <label for="updateRetail_Price" class="form-label">Retail Price</label>
@@ -292,8 +301,8 @@
                         </div>
                                                                     
                         <div class="col-md-6">
-                            <label for="updateRetail_Price" class="form-label">Category</label>
-                            <input type="text" class="form-control" id="updateCategory" name="updateCategory">
+                            <label for="update_Category" class="form-label">Category</label>
+                            <input type="text" class="form-control" id="update_Category" name="update_Category">
                         </div>
 
                         <div class="col-md-6">
@@ -315,7 +324,7 @@
                                                     
                                                     
                         <div class="col-12">
-                            <button type="submit" class="btn btn-primary" name="updateItem" >UPDATE</button>
+                            <button type="submit" class="btn btn-primary" name="onclickUpdate" >UPDATE</button>
                         </div>
                     </form>
                 </div>
@@ -339,7 +348,9 @@
                 <div class="modal-body">
                     
                     <form class="row g-3" action="UpdateStock.php" method="post">
-                                                    
+
+                        
+
                         <div class="col-md-6">
                             <label for="itemStock" class="form-label">Quantity</label>
                             <input type="number" class="form-control "   id="itemStock" name="itemStock" min=1 value=0 required>
@@ -383,16 +394,22 @@
 
                 <div class="modal-body">
                     
-                    <form class="row g-3" action="UpdateStock.php" method="post">
+                    <form class="row g-3" action="deleteStock.php" method="post">   
+                                                          
+                        <input type="hidden" id="delItem_ID" name="delItem_ID" >
+
+                        <input type="hidden" id="delInventory_ID" name="delInventory_ID">
 
                         <div class="col-md-12">
-                            <label for="adminPass" class="form-label">Admin Password</label>
-                            <input type="password" class="form-control" name="AdminPass" required>
+                            <label for="deleteAdminPass" class="form-label">Admin Password</label>
+                            <input type="password" class="form-control" name="deleteAdminPass" required>
+                        </div>
+                        
+                        <div class="col-12">
+                        <button class="btn btn-danger text-light " name="deleteItem" type="submit" >Delete</button>                                          
                         </div>
 
-                        <div class="col-12">
-                        <button type="submit" class="btn btn-danger col-12" name="Delete">DELETE</button>                                   
-                        </div>                           
+                                           
                     </form>
                 </div>
 

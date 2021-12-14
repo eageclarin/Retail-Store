@@ -134,6 +134,7 @@
         }
     </style>
     <title> Main </title>
+    <script src="env/idle.js"></script>
 </head>
 <body style="background-color:#E6E9F0;" class="w-100 h-100">
     <div id="chooseBranch" style="display: <?php echo $display ?>">
@@ -211,7 +212,7 @@
                             </a>
                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                                 <li><a class="dropdown-item" href="client/profile.php">Edit Account</a></li>
-                                <li><a class="dropdown-item" href="client/report.php">Order History</a></li>
+                                <li><a class="dropdown-item" href="client/report.php">Orders</a></li>
                                 <li><a class="dropdown-item" href="main.php?action=logout">Log out</a></li>
                                 
                             </ul>

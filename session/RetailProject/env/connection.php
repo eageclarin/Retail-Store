@@ -51,32 +51,6 @@
     } else {
         $_SESSION['timestamp'] = time(); //set new timestamp
     }**/
-
-	
+    
+  
 ?>
-
-<script>
-    var duration = 3000;
-    setInterval(updateTimer, 1000);
-
-    function updateTimer() {
-        if (window.location.href != "http://localhost:8080/CMSC-127/session/RetailProject/client/register.php" && !<?php echo $_SESSION['username'] ?> ) {
-            duration--;
-        if (duration<1) {
-            sessionStorage.removeItem('username');
-            sessionStorage.clear();
-            window.location="login.php";
-            if ( window.history.replaceState ) {
-                window.history.replaceState( null, null, window.location.href );
-            }
-        } 
-        }
-        
-    }
-
-    window.addEventListener("mousemove", resetTimer);
-
-    function resetTimer() {
-        duration =3000;
-    }
-</script>

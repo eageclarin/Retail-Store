@@ -2,6 +2,8 @@
 
 include_once '../env/connection.php';
 include_once '../env/adminAuth.php';
+
+
 $user = $_SESSION['admin_User'] ;
 $branchID_query = "SELECT * FROM branch NATURAL JOIN (b_has_bi) NATURAL JOIN branchinventory NATURAL JOIN a_manages_b NATURAL JOIN admin WHERE admin.admin_Username= '$user' ;"; #check if in admin table
 $branchID_result = mysqli_query($conn,$branchID_query);
@@ -31,10 +33,11 @@ if ($branchID_Check>0) {                                               #username
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <title>Admin Home</title>
+    <script src="../env/idle.js"></script>
   </head>
   <body>
  
-    <?php include "./components/nav.html"?>
+  <?php include "./components/nav.html"?>
     
     <div class="container-fluid     mt-4 pt-4 pb-4 ps-4 pe-4">
         <div class="row align-items-start">

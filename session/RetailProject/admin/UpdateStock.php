@@ -4,6 +4,7 @@
 
     
 
+
     if(isset($_POST['decreaseStock'])) {
 
         $password = md5($_POST['AdminPass']);
@@ -31,7 +32,7 @@
             $decStock_result = mysqli_query($conn,$decStock_query);
 
             if($decStock_result){
-
+                $_SESSION['confirm_err']=2;
                 header('location: inventory.php');
             }else{
                 die(mysqli_error($conn));
@@ -47,26 +48,11 @@
 
     }else{
         header('location: inventory.php');
-    }
+    };
     
     
 
-    if(isset($_POST['deleteStock'])) {
-
-        $id =$_POST['Item_ID'];
-        $inventoryID=$_POST['inventory_ID'];
-
-        $delete_query = "DELETE from BI_has_I where item_ID=$id AND inventory_ID=$inventoryID";
-   
-        $delete_result = mysqli_query($conn,$delete_query);
-    
-        if($delete_result){
-            header('location: inventory.php');
-        }else{
-            die(mysqli_error($conn));
-        }
-
-    }
+ 
         
     if(isset($_POST['addStock'])) {
 
@@ -94,6 +80,7 @@
             $AddStock_result = mysqli_query($conn,$addStock_query);
 
             if($AddStock_result){
+                $_SESSION['confirm_err']=2;
                 header('location: inventory.php');
             }else{
                 die(mysqli_error($conn));
@@ -106,7 +93,7 @@
    
     }else{
         header('location: inventory.php');
-    }   
+    };   
 
 
 
