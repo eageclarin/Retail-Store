@@ -1,5 +1,5 @@
 <?php
-    include_once 'env/connection.php';
+    include_once 'env/userconnection.php';
     $chosenCateg = "All"; $name = "Guest"; $id = $item = $opacity = 0; $display = "";
     $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = $branch = 1;
 
@@ -134,7 +134,7 @@
         }
     </style>
     <title> Main </title>
-    <script src="env/idle.js"></script>
+   
 </head>
 <body style="background-color:#E6E9F0;" class="w-100 h-100">
     <div id="chooseBranch" style="display: <?php echo $display ?>">

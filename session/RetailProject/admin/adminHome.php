@@ -37,7 +37,7 @@ if ($branchID_Check>0) {                                               #username
   </head>
   <body>
  
-  <?php include "./components/nav.html"?>
+  <?php include "./components/nav.php"?>
     
     <div class="container-fluid     mt-4 pt-4 pb-4 ps-4 pe-4">
         <div class="row align-items-start">
@@ -100,14 +100,19 @@ if ($branchID_Check>0) {                                               #username
                       
                             if ($orders_Check>0) {                                                       
                                 while($orders_row = mysqli_fetch_assoc($orders_result)) {
+                                  if($orders_row['sales'] !=null){
+
+                                  
                                   ?>  
                                   <p class="display-4 "><?php echo $orders_row['sales']  ?>  </p> 
-
-
-                                
+                                  <?php
+                                }else{
+                                  ?>  
+                                  <p class="display-4 ">0</p> 
                                   <?php
                                 }
-                            } 
+                                }
+                            }
 
                         
 

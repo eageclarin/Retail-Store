@@ -49,7 +49,7 @@
     </head>
     
     <body>
-        <?php include "./components/nav.html"?>
+        <?php include "./components/nav.php"?>
 
         <div class="container mt-5">
                 <h1>Inventory</h1>    

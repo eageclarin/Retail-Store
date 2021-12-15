@@ -19,7 +19,7 @@ include_once '../env/adminAuth.php';
     <script src="../env/idle.js"></script>
   </head>
   <body>
-        <?php include "./components/nav.html"?>
+        <?php include "./components/nav.php"?>
 
         <div class="container mt-5">
         <table class="table table-striped table-hover table-success">
@@ -106,7 +106,7 @@ include_once '../env/adminAuth.php';
     </script>
     <!-- show items modal ##################################-->
     <div class="modal fade" id="showItems" tabindex="-1" aria-labelledby="showItemsLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="showItemsLabel">Cart Items</h5>

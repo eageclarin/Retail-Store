@@ -1,5 +1,5 @@
 <?php
-    include_once 'env/connection.php';
+    include_once 'env/userconnection.php';
     $chosenBranch = $chosenBrand = $name = $id = "";
 	$chosenCateg = $categ = "All";
 	$sort = "ASC";
@@ -130,9 +130,9 @@
                     ?>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 220px;">
-                    <li><a class="dropdown-item" href="brand.php?branch=1">Paoay</a></li>
-                    <li><a class="dropdown-item" href="brand.php?branch=2">Vicas</a></li>
-                    <li><a class="dropdown-item" href="brand.php?branch=3">Cordon</a></li>
+                    <li><a class="dropdown-item" href="main.php?branch=1">Paoay</a></li>
+                    <li><a class="dropdown-item" href="main.php?branch=2">Vicas</a></li>
+                    <li><a class="dropdown-item" href="main.php?branch=3">Cordon</a></li>
                 </ul>
             </li>
             </ul>
@@ -161,7 +161,6 @@
                             </a>
                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                                 <li><a class="dropdown-item" href="#">Edit Account</a></li>
-                                <li><a class="dropdown-item" href="client/report.php">Order History</a></li>
                                 <li><a class="dropdown-item" href="main.php?action=logout">Log out</a></li>
                             </ul>
                         </div>
