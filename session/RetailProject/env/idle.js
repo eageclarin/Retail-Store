@@ -1,26 +1,28 @@
-var duration = 1000;
+var duration = 60*10;
 setInterval(updateTimer, 1000);
-var jsvar = '<?= $_SESSION[\'username\'] ?>';
-console.log(jsvar);
+
+let nameName  = document.getElementById("helper").getAttribute("data-name");
+
 function updateTimer() {
-    if (window.location.href != "http://localhost:8080/CMSC_P3/session/RetailProject/client/register.php" &&  jsvar  ) {
-        duration-=100;
+    if (window.location.href != "http://localhost:8080/CMSC-127/session/RetailProject/client/register.php" &&  nameName != null) {
+        duration--;
         if (duration<1) {
-            sessionStorage.removeItem(jsvar);
-            sessionStorage.clear();
-            
-            window.location="http://localhost/CMSC_P3/session/RetailProject/env/idle.php";
+
+            window.location="http://localhost/CMSC-127/session/RetailProject/env/idle.php";
             if ( window.history.replaceState ) {
                 window.history.replaceState( null, null, window.location.href );
             }
         }; 
     };
     console.log(duration);
+    console.log(nameName);
     
 };
 
 window.addEventListener("mousemove", resetTimer);
 
 function resetTimer() {
-    duration =1000;
+     duration = 60*10;
 };
+
+
