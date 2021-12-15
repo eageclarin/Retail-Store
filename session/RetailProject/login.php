@@ -87,6 +87,8 @@
         #if "Return" is pressed: 
         if (isset($_POST['return'])) {
             unset($_SESSION);
+            unset($_SESSION['username']);
+            session_destroy();
             header('location: main.php');
             exit;
         }
