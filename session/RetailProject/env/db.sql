@@ -187,7 +187,7 @@ INSERT INTO `Branch_Contact` (`branch_ID`,`contact`)
 VALUES
     (1,4401234),
     (2,4415678),
-    (3,4429876),
+    (3,4429876)
 	-- (4,4889876)
 ;
 
