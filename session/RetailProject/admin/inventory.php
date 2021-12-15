@@ -16,21 +16,14 @@
            
         }                    
     }
-    
 
-  
-
-   
-
-        
-    
-    
     
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
     <head>
+        
          <!-- ajax -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <!-- jquery -->
@@ -45,7 +38,7 @@
 
         <title>Admin | Inventory</title>
         
-      
+        <script id="helper" data-name="<?php echo $_SESSION['admin_User'];?>" src="../env/idle.js"></script> 
     </head>
     
     <body>
@@ -476,7 +469,7 @@
                         </div>
                     </div>
                 </div>          
-                            
+                           
 
   </body>
 </html>
