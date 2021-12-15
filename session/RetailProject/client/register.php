@@ -1,5 +1,5 @@
 <?php
-    include_once '../env/userconnection.php';
+    require '../env/userConnection.php';
     $item = $branch = $categ = "";
 
     if (isset($_GET['itemID'])) {

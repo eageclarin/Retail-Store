@@ -56,11 +56,10 @@
 ?>
 
 <script>
-    var duration = 1000;
+    var duration = 60*10;
     setInterval(updateTimer, 1000);
-    
     function updateTimer() {
-        if (window.location.href != "http://localhost:8080/CMSC-127/session/RetailProject/client/register.php" &&  !<?php  echo $_SESSION['username'] ?> ) {
+        if (window.location.href != "http://localhost:8080/CMSC-127/session/RetailProject/client/register.php" && <?php echo isset($_SESSION['username']);?>) {
             duration-=100;
         if (duration<1) {
             sessionStorage.removeItem('username');
@@ -71,12 +70,13 @@
             }
         } 
         }
+    console.log(duration);
         
     }
 
     window.addEventListener("mousemove", resetTimer);
 
     function resetTimer() {
-        duration =1000;
+        duration =60*10;
     }
 </script>
