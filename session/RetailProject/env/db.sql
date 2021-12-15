@@ -214,7 +214,8 @@ INSERT INTO `Admin_Contact` (`admin_ID`,`contact`)
 VALUES
     (1,0998779154),
     (2,0988765432),
-    (3,0567483920)
+    (3,0567483920),
+	(4,0935483920)
 ;
 
 -- insert branch managers
