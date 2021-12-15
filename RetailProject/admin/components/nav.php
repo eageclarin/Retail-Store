@@ -15,7 +15,7 @@
                   <ul class="dropdown-menu" aria-labelledby="dropdown07XL">
                   <li>
                       <form action="adminHome.php" method="post">
-                      <input  class="dropdown-item"type='submit' value='Logout' name='logout'>
+                      <input  class="dropdown-item" type='submit' value='Logout' name='logout'>
                       </form>
                   </li>
                   <li><button class="dropdown-item" onclick="updateProfile()">Update Profile</button></li>

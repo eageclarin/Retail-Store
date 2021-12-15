@@ -1,5 +1,5 @@
 <?php
-    include_once 'env/connection.php';
+    include_once 'env/userconnection.php';
     $chosenBranch = $chosenBrand = $name = $id = "";
 	$chosenCateg = $categ = "All";
 	$sort = "ASC";

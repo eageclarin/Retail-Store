@@ -1,5 +1,5 @@
 <?php
-    require '../env/connection.php';
+    require '../env/userconnection.php';
     // require 'http://localhost/CMSC_P3/session/RetailProject/env/UserAuth.php';
     $chosenBranch = $brand = $item = $qty = $disable = $name = $id = "";
     $display = "none"; $opacity=1;
@@ -165,7 +165,7 @@
             height: 100%;
         }
     </style>
-    <script src="../env/idle.js"></script>
+  
 </head>
     <body>
         <div id="content" style="opacity: <?php echo $opacity ?>">

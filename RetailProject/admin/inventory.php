@@ -45,7 +45,7 @@
 
         <title>Admin | Inventory</title>
         
-        <script src="../env/idle.js"></script>
+      
     </head>
     
     <body>

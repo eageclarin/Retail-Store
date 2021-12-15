@@ -9,7 +9,7 @@ function updateTimer() {
             sessionStorage.removeItem(jsvar);
             sessionStorage.clear();
             
-            window.location="http://localhost/CMSC_P3/session/RetailProject/login.php";
+            window.location="http://localhost/CMSC_P3/session/RetailProject/env/idle.php";
             if ( window.history.replaceState ) {
                 window.history.replaceState( null, null, window.location.href );
             }
