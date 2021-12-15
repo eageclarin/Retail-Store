@@ -1,5 +1,5 @@
 <?php
-    include_once '../env/userconnection.php';
+    include_once '../env/userConnection.php';
     
     $id = $_SESSION['userID'];
     //query customer details

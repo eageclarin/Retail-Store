@@ -1,5 +1,5 @@
 <?php
-    include_once 'env/userconnection.php';
+    include_once 'env/userConnection.php';
     $chosenCateg = "All"; $name = "Guest"; $id = $item = $opacity = 0; $display = "";
     $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = $branch = 1;
 

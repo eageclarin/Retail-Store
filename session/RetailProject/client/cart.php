@@ -1,5 +1,5 @@
 <?php
-    require '../env/userconnection.php';
+    require '../env/userConnection.php';
     // require 'http://localhost/CMSC_P3/session/RetailProject/env/UserAuth.php';
     $chosenBranch = $brand = $item = $qty = $disable = $name = $id = "";
     $display = "none"; $opacity=1;
