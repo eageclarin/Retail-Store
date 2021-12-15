@@ -1,5 +1,5 @@
 <?php
-	include_once '../env/userconnection.php';
+	include_once '../env/userConnection.php';
 
 	$id = $item = $qty = $branch = "";
 	if (isset($_GET['id']) && isset($_GET['item']) && isset($_GET['qty']) && isset($_GET['branch'])) {
