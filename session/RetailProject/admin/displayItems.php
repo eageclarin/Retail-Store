@@ -26,6 +26,30 @@
         $response['message']="Invalid or data not found";
     };
 
+    if (isset($_POST['adminID'])){
+
+        
+        
+        $id=$_POST['adminID'];
+        $query ="SELECT * FROM admin natural join admin_contact where admin.admin_ID=$id;" ;
+        $result = mysqli_query($conn,$query);
+        $response=array();
+       
+            while ($item_row = mysqli_fetch_assoc($result)){
+                // $response = $item_row;
+                array_push($response,$item_row);
+             
+            };
+        echo json_encode($response);
+
+    }else{
+        
+        // header('location: adminHome.php');
+        $response['status']=200;
+        $response['message']="Invalid or data not found";
+    };
+
+
 
 ?>
 

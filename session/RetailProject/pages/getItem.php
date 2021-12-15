@@ -191,7 +191,7 @@
 				<li style="width:18%">
 					<form action="addItem.php?itemID=<?php echo $itemID ?>&for=<?php echo $for ?>" method="post" target="_top">
 					<a href="" class="card shadow bg-light" style="border-radius: 15px; text-decoration: none">
-                        <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src='<?php echo $itemImg?>' alt=<?php echo $itemImg?> >
+                        <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="../img/main/brand.jpg" alt="Card image cap">
                         <div class="container card-body">
 							<div class="row">
 								<div class="col-md-8">

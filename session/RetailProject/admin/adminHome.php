@@ -41,9 +41,98 @@ if ($branchID_Check>0) {                                               #username
     
     <div class="container-fluid     mt-4 pt-4 pb-4 ps-4 pe-4">
         <div class="row align-items-start">
-          <div class="col ">
+        <div class="col  bg-dark p-2 text-dark bg-opacity-10 rounded">
+          <div class="col  bg-transparent ms-2 me-2 p-2 text-dark  rounded">
+          <h1 class="text-center">General Manager<h1>
+          <table class="table table-striped table-hover fs-6  fw-normal">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Contact</th>
+                      
             
+
+                        
+                    </tr>
+                </thead>
+                <tbody>
+            <?php
+                
+                       
+                        
+                         $query = "SELECT * FROM admin natural join admin_contact where admin.admin_ID=1;"; 
+                         $result = mysqli_query($conn,$query);
+                         $Check = mysqli_num_rows($result);
+                      
+                            if ( $Check>0) {                                                       
+                                while($row = mysqli_fetch_assoc($result)) {
+                                  echo"<tr>
+                                  <td>".$row['admin_Username']."</td>
+                                  <td>". $row['contact'] ." </td>
+                      
+                                  </tr>";
+                          
+                                }
+                            } 
+
+                        
+
+                            
+                            
+                          
+                            
+                        ?>
+                         </tbody>
+            </table>  
           </div>
+            <h1 class="text-center">Branch Managers<h1>
+
+            <table class="table table-striped table-hover fs-6  fw-normal">
+                <thead>
+                    <tr>
+                        <th scope="col">Branch Name</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Manager</th>
+                      
+            
+
+                        
+                    </tr>
+                </thead>
+                <tbody>
+            <?php
+                
+                       
+                        
+                         $query = "SELECT * FROM branch natural join a_manages_b natural join admin where admin.admin_ID>1;"; 
+                         $result = mysqli_query($conn,$query);
+                         $Check = mysqli_num_rows($result);
+                      
+                            if ( $Check>0) {                                                       
+                                while($row = mysqli_fetch_assoc($result)) {
+                                  echo"<tr>
+                                  <td>".$row['branch_Name']."</td>
+                                  <td>". $row['branch_Address'] ." </td>
+                                  <td>"; ?> <button type="button" class="badge btn btn-secondary" onclick="showManager(<?php  echo $row['admin_ID'] ;?>)" >See Info</button></td>
+                                  <?php echo "</td>
+                                                          
+                                  </tr>";
+                          
+                                }
+                            } 
+
+                        
+
+                            
+                            
+                          
+                            
+                        ?>
+                         </tbody>
+            </table>  
+
+          </div>
+
           <div class="col  bg-danger ms-2 me-2 p-2 text-dark bg-opacity-50 rounded">
             <h1 class="text-center">Low on Stocks<h1>
 
@@ -156,9 +245,56 @@ if ($branchID_Check>0) {                                               #username
           </div>
       </div>
     </div>
+
+    <script type="text/javascript">
+        function showManager(adminID){
+
+            $.post("displayItems.php",{adminID:adminID},function(data,status){
+                var json=JSON.parse(data);
+                document.getElementById("branchInfo").innerHTML = json.map(getInfo).join("");
+                function getInfo(info) {
+                return "<tr><td>"+ info.admin_Username + "</td><td>"+ info.contact + "</td></tr>";
+                }
+                // document.getElementById("demo").innerHTML = myJSON;
+                  //  alert("Data: " + data );
+            });
+           
+            $('#showInfo').modal('show');
+        };
+    </script>
   
   
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+     <!-- show items modal ##################################-->
+     <div class="modal fade" id="showInfo" tabindex="-1" aria-labelledby="showInfoLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showInfoLabel">Branch Managers Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-hover ">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Contact</th>
+                        </tr>
+                    </thead>
+                    <tbody id="branchInfo" >
+                      
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+            </div>
+        </div>
+    </div>
 
 
   </body>
