@@ -1,5 +1,5 @@
 <?php
-    include_once '../env/userConnection.php';
+   require '../env/userConnection.php';
 ?>
 
 <!DOCTYPE html>

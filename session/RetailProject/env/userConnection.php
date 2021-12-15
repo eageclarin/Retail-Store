@@ -60,7 +60,7 @@
     setInterval(updateTimer, 1000);
     function updateTimer() {
         if (window.location.href != "http://localhost:8080/CMSC-127/session/RetailProject/client/register.php" && <?php echo isset($_SESSION['username']);?>) {
-            duration--;
+            duration-=100;
         if (duration<1) {
             sessionStorage.removeItem('username');
             sessionStorage.clear();
@@ -70,6 +70,7 @@
             }
         } 
         }
+    console.log(duration);
         
     }
 
