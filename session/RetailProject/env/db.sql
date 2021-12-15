@@ -378,3 +378,8 @@ VALUES
 	(3,40,50),
 	(3,46,50)
 ;
+INSERT INTO `customer` (`cust_Username`, `cust_Password`, `cust_FName`, `cust_LName`, `cust_Contact`, `cust_Email`, `cust_ABrgy`, `cust_ACity`, `cust_AProvince`, `cust_APostal`)
+VALUES 
+('customer1', 'customer1', 'Customer1', 'Surname1','09123456789', 'customer@email.com', '111', 'Baguio City', 'Benguet', '1234');
+UPDATE `customer` SET 
+	`cust_Password` = MD5('customer1') WHERE `customer`.`cust_ID` = 1;
