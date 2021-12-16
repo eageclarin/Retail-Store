@@ -30,21 +30,15 @@
     var duration = 60*10;
     setInterval(updateTimer, 1000);
     let aria = <?php echo isset($_SESSION['username']);?> + "";
+    let result = window.location.origin; 
     function updateTimer() {
         if (window.location.pathname != "/CMSC-127/session/RetailProject/client/register.php" && aria !='0') {
             duration--;
         if (duration<1) {
-            sessionStorage.removeItem('username');
-            sessionStorage.clear();
-            window.location="login.php";
-            if ( window.history.replaceState ) {
-                window.history.replaceState( null, null, window.location.href );
-            }
+            window.location=result.concat("/CMSC-127/session/RetailProject/env/idle.php");
         } 
         }
-    console.log(duration);
-    console.log(aria);
-    console.log(window.location.pathname);
+
     }
 
     window.addEventListener("mousemove", resetTimer);
