@@ -40,7 +40,12 @@ include_once '../env/adminAuth.php';
                 <tbody>
                     <?php
                     $branchID = $_SESSION['branchID'] ;
-                    $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
+                    if($_SESSION['admin']==1){ 
+                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart ; ";
+                    }else{
+                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
+                    }
+                    $status = array("Cancelled", "Ordered", "Delivered");
                     $orders_result = mysqli_query($conn,$orders_query);
                     $orders_Check = mysqli_num_rows($orders_result);
                    
@@ -54,8 +59,8 @@ include_once '../env/adminAuth.php';
                                     <td>" .  $orders_row['total']."</td>
                                     <td>". $orders_row['order_Date'] ."</td>
                                     <td>". $orders_row['cust_ABrgy'] .", ".$orders_row['cust_ACity'] .", ".$orders_row['cust_AProvince'] .", ".$orders_row['cust_APostal'] ."</td>
-                                    <td> </td>
-                                    <td>"?> <button type="button" class="btn btn-secondary" >Action</button> <?php "</td>
+                                    <td> " . $status[ $orders_row['status']]."</td>
+                                    <td>"?> <button type="button" class="badge btn btn-primary" onclick="updateStatus( <?php  echo $orders_row['cart_ID'];?>)">Update</button> <?php "</td>
                                     </tr>";
                             }
                         } 
@@ -88,21 +93,34 @@ include_once '../env/adminAuth.php';
 
             $.post("displayItems.php",{cartID:cartID},function(data,status){
                 var json=JSON.parse(data);
-
-
                 let cleanJSON = json;
-
                 document.getElementById("demo").innerHTML = cleanJSON.map(getItem).join("");
-
                 function getItem(item) {
                 return "<tr><td>"+ item.item_ID + "</td><td>"+ item.item_Name + "</td><td>"+ item.item_RetailPrice + "</td><td>"+ item.quantity + "</td></tr>";
                 }
-                // document.getElementById("demo").innerHTML = myJSON;
-            
+                // document.getElementById("demo").innerHTML = myJSON;            
             });
            
             $('#showItems').modal('show');
         };
+
+        function updateStatus(cartID){
+            alert("Data: " + cartID);
+          $('#updateOrderModal').modal('show');
+         
+
+        //   $.post("update.php",{itemId:itemId},function(data,status){
+        //       var json=JSON.parse(data);
+        //       $("#delItem_ID").val(json.item_ID);
+        //       $("#delInventory_ID").val(json.inventory_ID);
+        //       // alert("Data: " + data );
+            
+        //   });
+          
+      };
+
+
+
     </script>
     <!-- show items modal ##################################-->
     <div class="modal fade" id="showItems" tabindex="-1" aria-labelledby="showItemsLabel" aria-hidden="true">
@@ -136,6 +154,43 @@ include_once '../env/adminAuth.php';
             </div>
         </div>
     </div>
+
+    <!-- delete Stock Modal ##################################-->
+    <div class="modal fade" id="updateOrderModal" tabindex="-1" aria-labelledby="updateOrderModalLabel"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateOrderModalLabel">Delete Item</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+
+                <div class="modal-body">
+                    
+                    <form class="row g-3" action="deleteStock.php" method="post">   
+                                                          
+                        <input type="hidden" id="delItem_ID" name="delItem_ID" >
+
+                        <input type="hidden" id="delInventory_ID" name="delInventory_ID">
+
+                        <div class="col-md-12">
+                            <label for="deleteAdminPass" class="form-label">Admin Password</label>
+                            <input type="password" class="form-control" name="deleteAdminPass" required>
+                        </div>
+                        
+                        <div class="col-12">
+                        <button class="btn btn-danger text-light " name="deleteItem" type="submit" >Delete</button>                                          
+                        </div>
+
+                                           
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>                                               
+                </div>
+            </div>
+        </div>
+    </div>   
 
   </body>
 </html>

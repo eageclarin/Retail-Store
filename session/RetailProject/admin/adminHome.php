@@ -43,7 +43,7 @@ if ($branchID_Check>0) {                                               #username
         <div class="row align-items-start">
         <div class="col  bg-dark p-2 text-dark bg-opacity-10 rounded">
           <div class="col  bg-transparent ms-2 me-2 p-2 text-dark  rounded">
-          <h1 class="text-center">General Manager<h1>
+          <h1 class="text-center">General Manager</h1>
           <table class="table table-striped table-hover fs-6  fw-normal">
                 <thead>
                     <tr>
@@ -85,13 +85,29 @@ if ($branchID_Check>0) {                                               #username
                          </tbody>
             </table>  
           </div>
-            <h1 class="text-center">Branch Managers<h1>
+            <h1 class="text-center">Branch Managers</h1>
+
+            <?php 
+
+            if($_SESSION['admin']==1){  ?>
+            <div class="fs-6">
+            <h5 > <span class="btn badge btn-dark" onclick="managerForm()" >Add Manager</span></h5 >
+            </div>
+           
+
+              
+            <?php 
+
+            }
+            
+            ?>
 
             <table class="table table-striped table-hover fs-6  fw-normal">
                 <thead>
                     <tr>
                         <th scope="col">Branch Name</th>
                         <th scope="col">Address</th>
+                        <th scope="col">Contact</th>
                         <th scope="col">Manager</th>
                       
             
@@ -104,7 +120,7 @@ if ($branchID_Check>0) {                                               #username
                 
                        
                         
-                         $query = "SELECT * FROM branch natural join a_manages_b natural join admin where admin.admin_ID>1;"; 
+                         $query = "SELECT * FROM branch natural join a_manages_b natural join branch_contact natural join admin where admin.admin_ID>1;"; 
                          $result = mysqli_query($conn,$query);
                          $Check = mysqli_num_rows($result);
                       
@@ -113,6 +129,7 @@ if ($branchID_Check>0) {                                               #username
                                   echo"<tr>
                                   <td>".$row['branch_Name']."</td>
                                   <td>". $row['branch_Address'] ." </td>
+                                  <td>". $row['contact'] ." </td>
                                   <td>"; ?> <button type="button" class="badge btn btn-secondary" onclick="showManager(<?php  echo $row['admin_ID'] ;?>)" >See Info</button></td>
                                   <?php echo "</td>
                                                           
@@ -261,6 +278,11 @@ if ($branchID_Check>0) {                                               #username
            
             $('#showInfo').modal('show');
         };
+
+        function managerForm(){
+            $('#newManager').modal('show');
+
+        };
     </script>
   
   
@@ -296,6 +318,60 @@ if ($branchID_Check>0) {                                               #username
         </div>
     </div>
 
+ <!-- New Item Modal ##################################-->
+ <div class="modal fade" id="newManager" tabindex="-1" aria-labelledby="newManagerModalLabel"  aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="newManagerModalLabel">New Branch Manager Form</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form class="row g-3 pb-4" action="addItem.php" method="post">
+                                    <div class="col-12">
+                                        <label for="ItemName" class="form-label">Branch Name</label>
+                                        <input type="text" class="form-control" name="ItemName" required>
+                                    </div>
 
+                                    <div class="col-md-12">
+                                        <label for="Retail_Price" class="form-label">Branch Address</label>
+                                        <input type="text" class="form-control" name="Category"required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="Brand" class="form-label">Branch Contact</label>
+                                        <input type="text" class="form-control" name="Brand" required>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="ItemName" class="form-label">Admin Username</label>
+                                        <input type="text" class="form-control" name="ItemName" required>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <label for="Retail_Price" class="form-label">Admin Password</label>
+                                        <input type="text" class="form-control" name="Category"required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="Brand" class="form-label">Admin Contact</label>
+                                        <input type="text" class="form-control" name="Brand" required>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <label for="adminPass" class="form-label text-dark">Enter Password to Confirm Action</label>
+                                        <input type="password" class="form-control" name="AdminPass" required>
+                                    </div>
+
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-dark" name="Add">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>          
   </body>
 </html>
