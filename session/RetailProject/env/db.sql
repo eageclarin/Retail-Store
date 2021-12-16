@@ -141,7 +141,7 @@ VALUES
 	('Corned Beef with Curry','340g',194.0,192.25,'Canned Goods','../img/cg/l-cornedbeefcurry.png','Libbys'),
 	('Select Quality Corned Beef with Onions','340g',194.0,192.25,'Canned Goods','../img/cg/l-cornedbeefonions.png','Libbys'),
 	('Select Quality Corned Beef with Smoke Flavor','340g',194.0,192.25,'Canned Goods','../img/cg/l-cornedbeefsmoke.png','Libbys'),
-    ('Soy Sauce Big','1L',50.75,48.00,'Condiments','../img/cond/dp-soysauce.png','Datu Puti'),
+    ('Soy Sauce Litro','1L',50.75,48.00,'Condiments','../img/cond/dp-soysauce.png','Datu Puti'),
 	('Soy Sauce Tipid','380ml',20,19.00,'Condiments','../img/cond/dp-soysauce380ml.png','Datu Puti'),
 	('Vinegar','1L',42.00,41.00,'Condiments','../img/cond/dp-vinegar.png','Datu Puti'),
 	('Patis','1L',78.50,78.00,'Condiments','../img/cond/dp-patis.png','Datu Puti'),
