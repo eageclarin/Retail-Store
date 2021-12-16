@@ -188,7 +188,7 @@
 					$itemPrice = $rowFilter['item_RetailPrice']; //item price
 					$itemImg = $rowFilter['item_Image']; //item image
 	?>
-				<li style="width:18%" class="py-2>
+				<li style="width:18%" class="py-2">
 					<form action="addItem.php?itemID=<?php echo $itemID ?>&for=<?php echo $for ?>" method="post" target="_top">
 					<div class="card h-100 shadow bg-light" style="border-radius: 15px; text-decoration: none">
                         <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="<?php echo $itemImg ?>" alt="<?php echo $itemName ?>">
