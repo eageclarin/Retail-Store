@@ -47,6 +47,26 @@
         $response['message']="Invalid or data not found";
     };
 
+    if (isset($_POST['pendingId'])){
+        
+        $id=$_POST['pendingId'];
+        $query ="SELECT * FROM cart where cart_ID=  $id;" ;
+        $result = mysqli_query($conn,$query);
+        $response=array();
+       
+            while ($item_row = mysqli_fetch_assoc($result)){
+                $response = $item_row;
+             
+            };
+        echo json_encode($response);
+
+    }else{
+        
+        // header('location: adminHome.php');
+        $response['status']=200;
+        $response['message']="Invalid or data not found";
+    };
+
     if (isset($_POST['adminUser'])){
         $user = $_POST['adminUser'];
         $query ="SELECT * FROM admin natural join admin_contact where admin.admin_Username='$user' ;" ;

@@ -18,10 +18,13 @@
             }       
         }
         if($admin_confirmation_user== $_SESSION['admin_User'] ){
-            echo$username =  $_POST['userUpdate_UserName'];
-            echo$contact =$_POST['userUpdate_contact'];
-            echo$pass = $_POST['userUpdate_pass'];
-            echo$id = $_POST['userUpdate_ID'];
+            $username =  $_POST['userUpdate_UserName'];
+            $contact =$_POST['userUpdate_contact'];
+            $pass = $_POST['userUpdate_pass'];
+            if(strlen($pass)!=32){
+                $pass=md5($pass); 
+            }
+            $id = $_POST['userUpdate_ID'];
            
 
     
@@ -46,8 +49,9 @@
         
 
     }else{
+        $_SESSION['confirm_err']=1;
         header('location: inventory.php');
-    };
+    }      
 
 
     mysqli_close($conn);
