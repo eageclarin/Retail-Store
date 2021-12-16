@@ -4,14 +4,10 @@ setInterval(updateTimer, 1000);
 let nameName  = document.getElementById("helper").getAttribute("data-name");
 
 function updateTimer() {
-    if (window.location.href != "http://localhost:8080/CMSC-127/session/RetailProject/client/register.php" &&  nameName != null) {
+    if (  nameName != null) {
         duration--;
         if (duration<1) {
-
-            window.location="http://localhost/CMSC-127/session/RetailProject/env/idle.php";
-            if ( window.history.replaceState ) {
-                window.history.replaceState( null, null, window.location.href );
-            }
+            window.location="./idle.php";
         }; 
     };
     console.log(duration);

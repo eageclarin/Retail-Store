@@ -31,7 +31,7 @@
     setInterval(updateTimer, 1000);
     let aria = <?php echo isset($_SESSION['username']);?> + "";
     function updateTimer() {
-        if (window.location.href != "http://localhost:8080/CMSC-127/session/RetailProject/client/register.php" && aria !='0') {
+        if (window.location.pathname != "/CMSC-127/session/RetailProject/client/register.php" && aria !='0') {
             duration--;
         if (duration<1) {
             sessionStorage.removeItem('username');
@@ -44,6 +44,7 @@
         }
     console.log(duration);
     console.log(aria);
+    console.log(window.location.pathname);
     }
 
     window.addEventListener("mousemove", resetTimer);

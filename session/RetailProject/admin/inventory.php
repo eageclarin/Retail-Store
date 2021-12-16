@@ -99,7 +99,7 @@
                             while($inventory_row = mysqli_fetch_assoc($inventory_result)) {
                                 echo "<tr class=\"fs-6\">"?>
 
-                                <td><img src="<?php echo $inventory_row["item_Image"]?>"  style="width: 80%;"></td>
+                                <td><img src="<?php echo $inventory_row["item_Image"]?>"  style="width: 100px; height: 100px;"></img></td>
                                 <?php echo "<td>" . $inventory_row["item_ID"] . "</td>
                                     <td>" . $inventory_row["item_Name"] . "</td>
                                     <td>" . $inventory_row["item_RetailPrice"]. "</td>
