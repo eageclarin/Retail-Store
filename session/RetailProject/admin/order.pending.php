@@ -139,9 +139,58 @@ function showDetails(cartID){
           
       };
 
-
-
     </script>
+      <?php
+    if($_SESSION['confirm_err']==1){
+        echo '<script>
+        setTimeout(function(){  $(\'#passErr\').modal("show"); }, 500);
+        </script>';
+        $_SESSION['confirm_err']=0;
+    }
+    if($_SESSION['confirm_err']==2){
+        echo '<script>
+        setTimeout(function(){  $(\'#successModal\').modal("show"); }, 500);
+        </script>';
+        $_SESSION['confirm_err']=0;
+    }
+    ?>
+    <!-- password Error Modal -->
+    <div class="modal fade" id="passErr" tabindex="-1" aria-labelledby="passErrLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passErrLabel">Password Incorrect</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                You have Entered a wrong password
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="passErrLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passErrLabel">Update Successful</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                The database was successfully updated
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+            </div>
+        </div>
+    </div>
     <!-- show items modal ##################################-->
     <div class="modal fade" id="showItems" tabindex="-1" aria-labelledby="showItemsLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -187,12 +236,12 @@ function showDetails(cartID){
                 <div class="modal-body">
                     
                     <form class="row g-3" action="order.update.php" method="post">   
-                        <input type="text" id="pendingCart_ID" name="pendingCart_ID" > 
+                        <input type="hidden" id="pendingCart_ID" name="pendingCart_ID" > 
 
                         <select class="form-select text-center bg-primary bg-opacity-25" aria-label="Default select example" name="status" required>
                             <option selected>Select Status</option>
-                            <option value="1">Delivered</option>
-                            <option value="2">Cancelled</option>
+                            <option value="2">Delivered</option>
+                            <option value="3">Cancelled</option>
                         </select>
 
                         <div class="col-md-12">
