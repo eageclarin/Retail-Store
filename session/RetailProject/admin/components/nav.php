@@ -44,7 +44,7 @@
               </li>
 
               <li class="nav-item">
-                  <a class="nav-link active" aria-current="page"href="adminHome.php">Financial Report</a>
+                  <a class="nav-link active" aria-current="page"href="financialReport.php">Financial Report</a>
               </li>
 
 
@@ -98,8 +98,8 @@
 
                                                     
                 <div class="col-md-12">
-                    <label for="userUpdate_UserName" class="form-label">Username</label>
-                    <input type="text" class="form-control" id="userUpdate_UserName" name="userUpdate_UserName">
+                    <label for="userUpdate_UserName" class="form-label ">Username</label>
+                    <input type="text" class="form-control " id="userUpdate_UserName" name="userUpdate_UserName" disabled>
                 </div>
 
                 <div class="col-md-6">

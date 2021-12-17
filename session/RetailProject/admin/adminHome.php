@@ -67,7 +67,7 @@ if ($branchID_Check>0) {                                               #username
                             if ( $Check>0) {                                                       
                                 while($row = mysqli_fetch_assoc($result)) {
                                   echo"<tr>
-                                  <td>".$row['admin_Username']."</td>
+                                  <td>".$row['admin_Firstname']. " ". $row['admin_Lastname']."</td>
                                   <td>". $row['contact'] ." </td>
                       
                                   </tr>";
@@ -217,57 +217,7 @@ if ($branchID_Check>0) {                                               #username
 
                   </div>
               </div> 
-
-              
-                      <div class="row align-items-center bg-info p-2 text-dark border border-danger bg-light border-4 mt-3 rounded">
-                            <h1 class="text-center">Low on Stocks<h1>
-
-                            <table class="table table-striped table-hover fs-6  fw-normal">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Item ID</th>
-                                        <th scope="col">Item Name</th>
-                                        <th scope="col">Stock</th>
-                            
-
-                                        
-                                    </tr>
-                                </thead>
-                                <tbody>
-                            <?php
-                                
-                                      
-                                        
-                                $inventoryID=$_SESSION['inventoryID'];
-                                $inventory_query = "SELECT item_ID, item_Name,item_Stock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id =$inventoryID and item_Stock<500 "; 
-                                $inventory_result = mysqli_query($conn,$inventory_query);
-                                $inventory_Check = mysqli_num_rows($inventory_result);
-                              
-                                    if ( $inventory_Check>0) {                                                       
-                                        while($inventory_row = mysqli_fetch_assoc($inventory_result)) {
-                                          echo"<tr>
-                                          <td>".$inventory_row['item_ID']."</td>
-                                          <td>".$inventory_row['item_Name']."</td>
-                                          <td>". $inventory_row['item_Stock'] ." </td>                           
-                                          </tr>";
-                                  
-                                        }
-                                    } 
-
-
-                                        
-
-                                            
-                                            
-                                          
-                                            
-                                        ?>
-                                        </tbody>
-                            </table>  
-
-                          </div>
-
-                          <div class="row align-items-center bg-info p-2 text-dark border border-success bg-light border-4 mt-3 rounded">
+              <div class="row align-items-center bg-info p-2 text-dark border border-success bg-light border-4 mt-3 rounded">
                             <h1 class="text-center">Recent Orders<h1>
 
                             <table class="table table-striped table-hover fs-6  fw-normal">
@@ -318,10 +268,61 @@ if ($branchID_Check>0) {                                               #username
                       
                         
                     ?>
+                    </tbody>
+                </table>  
+
+            </div>
+
+              
+                      <div class="row align-items-center bg-info p-2 text-dark border border-danger bg-light border-4 mt-3 rounded">
+                            <h1 class="text-center">Low on Stocks<h1>
+
+                            <table class="table table-striped table-hover fs-6  fw-normal">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Item ID</th>
+                                        <th scope="col">Item Name</th>
+                                        <th scope="col">Stock</th>
+                            
+
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            <?php
+                                
+                                      
+                                        
+                                $inventoryID=$_SESSION['inventoryID'];
+                                $inventory_query = "SELECT item_ID, item_Name,item_Stock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id =$inventoryID and item_Stock<500 "; 
+                                $inventory_result = mysqli_query($conn,$inventory_query);
+                                $inventory_Check = mysqli_num_rows($inventory_result);
+                              
+                                    if ( $inventory_Check>0) {                                                       
+                                        while($inventory_row = mysqli_fetch_assoc($inventory_result)) {
+                                          echo"<tr>
+                                          <td>".$inventory_row['item_ID']."</td>
+                                          <td>".$inventory_row['item_Name']."</td>
+                                          <td>". $inventory_row['item_Stock'] ." </td>                           
+                                          </tr>";
+                                  
+                                        }
+                                    } 
+
+
+                                        
+
+                                            
+                                            
+                                          
+                                            
+                                        ?>
                                         </tbody>
                             </table>  
 
                           </div>
+
+              
              
           </div>
       </div>
@@ -334,7 +335,7 @@ if ($branchID_Check>0) {                                               #username
                 var json=JSON.parse(data);
                 document.getElementById("branchInfo").innerHTML = json.map(getInfo).join("");
                 function getInfo(info) {
-                return "<tr><td>"+ info.admin_Username + "</td><td>"+ info.contact + "</td></tr>";
+                return "<tr><td>"+ info.admin_Firstname + " " + info.admin_Lastname +  "</td><td>"+ info.contact + "</td></tr>";
                 }
                 // document.getElementById("demo").innerHTML = myJSON;
                   //  alert("Data: " + data );

@@ -32,7 +32,7 @@ CREATE TABLE `Customer` (
 -- table for cart
 CREATE TABLE `Cart` (
 	`cart_ID` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	`total` float(53) NOT NULL
+	`total` decimal(10,2) NOT NULL
 );
 
 -- table for branch
@@ -59,6 +59,8 @@ CREATE TABLE `branchInventory` (
 CREATE TABLE `Admin` (
 	`admin_ID` int NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	`admin_Username` varchar(255) NOT NULL,
+	`admin_Firstname` varchar(255) NOT NULL,
+	`admin_Lastname` varchar(255) NOT NULL,
 	`admin_Password` varchar(255) NOT NULL
 );
 -- table for admin contact
@@ -75,7 +77,7 @@ CREATE TABLE `Cu_orders_Ca` (
 	`customer_ID` int NOT NULL,
 	`branch_ID` int NOT NULL,
 	`order_Date` datetime NOT NULL,
-	`status` bit,
+	`status` TINYINT,
 	FOREIGN KEY (cart_ID) REFERENCES Cart(cart_ID),
 	FOREIGN KEY (customer_ID) REFERENCES Customer(cust_ID)
 );
@@ -85,7 +87,7 @@ CREATE TABLE `Ca_contains_I` (
 	`item_ID` int NOT NULL,
 	`cart_ID` int NOT NULL,
 	`quantity` TINYINT(255) NOT NULL,
-	`total` float NOT NULL,
+	`total` decimal(10,2) NOT NULL,
 	PRIMARY KEY (item_ID, cart_ID),
 	FOREIGN KEY (item_ID) REFERENCES Item(item_ID),
 	FOREIGN KEY (cart_ID) REFERENCES Cart(cart_ID)
@@ -193,12 +195,12 @@ VALUES
 ;
 
 -- insert admin
-INSERT INTO `Admin` (`admin_Username`, `admin_Password`)
+INSERT INTO `Admin` (`admin_Username`, `admin_Firstname`,`admin_Lastname`, `admin_Password`)
 VALUES
-    ('jaemie1','admin1p@ss'),
-    ('eigram2','admin2p@ss'),
-    ('elymer3','admin3p@ss'),
-    ('maam4','admin4p@ss')
+    ('jaemie1','Jaemie','Campo','admin1p@ss'),
+    ('eigram2','Eigram','Eclarin','admin2p@ss'),
+    ('elymer3','Elymer','Reyno','admin3p@ss'),
+    ('maam4','admin4p@ss','jaemie1','admin4p@ss')
 ;
 
 UPDATE `Admin` SET 
