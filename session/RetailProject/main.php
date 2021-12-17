@@ -268,21 +268,21 @@
                             </a>
                         </li>
                         <li style="width:23%">
-                            <a href="main.php?action=brand&brand=Century" class="text-center text-dark h-100">
+                            <a href="main.php?action=brand&brand=C2" class="text-center text-dark h-100">
                                 <div class="overlayText">    
                                     <img src="img/main/brand2.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
                                         <div class="overlay">
-                                            <div class="textt"> Century </div>
+                                            <div class="textt"> C2 </div>
                                         </div>
                                     </a>
                                 </div>
                         </li>
                         <li style="width:23%">
-                            <a href="main.php?action=brand&brand=Datu+Puti" class="text-center text-dark h-100">
+                            <a href="main.php?action=brand&brand=Rebisco" class="text-center text-dark h-100">
                                 <div class="overlayText">     
                                     <img src="img/main/brand3.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
                                     <div class="overlay">
-                                        <div class="textt"> Datu Puti </div>
+                                        <div class="textt"> Rebisco </div>
                                     </div>
                                 </div>
                             </a>
