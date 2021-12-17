@@ -232,22 +232,22 @@
                                     <h6 class="my-0 fw-bold">Shipping</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="form-check">
+                                    <div class="form-check mb-5">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            <img src="../img/cart/grab.png" width="50%">
+                                            <img src="../img/cart/grab.png" width="60%">
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-4">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            <img src="../img/cart/foodpanda.png" width="60%">
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            <img src="../img/cart/foodpanda.png" width="50%">
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                        <label class="form-check-label" for="flexRadioDefault1">
-                                            <img src="../img/cart/angkas.png" width="50%">
+                                            <img src="../img/cart/angkas.png" width="60%">
                                         </label>
                                     </div>
                                 </div>
@@ -259,22 +259,22 @@
                                     <h6 class="my-0 fw-bold">Payment</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="form-check">
+                                    <div class="form-check mb-4">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            Paypal
+                                            <img src="../img/cart/paypal.png" width="60%">
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-4">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            <img src="../img/cart/bpi.png" width="60%">
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            Bank Transfer
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                        <label class="form-check-label" for="flexRadioDefault1">
-                                            GCash
+                                            <img src="../img/cart/gcash.png" width="60%">
                                         </label>
                                     </div>
                                 </div>
