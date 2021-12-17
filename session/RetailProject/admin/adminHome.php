@@ -67,7 +67,7 @@ if ($branchID_Check>0) {                                               #username
                             if ( $Check>0) {                                                       
                                 while($row = mysqli_fetch_assoc($result)) {
                                   echo"<tr>
-                                  <td>".$row['admin_Username']."</td>
+                                  <td>".$row['admin_Firstname']. " ". $row['admin_Lastname']."</td>
                                   <td>". $row['contact'] ." </td>
                       
                                   </tr>";
@@ -150,115 +150,180 @@ if ($branchID_Check>0) {                                               #username
 
           </div>
 
-          <div class="col  bg-danger ms-2 me-2 p-2 text-dark bg-opacity-50 rounded">
-            <h1 class="text-center">Low on Stocks<h1>
-
-            <table class="table table-striped table-hover fs-6  fw-normal">
-                <thead>
-                    <tr>
-                        <th scope="col">Item Name</th>
-                        <th scope="col">Stock</th>
-            
-
-                        
-                    </tr>
-                </thead>
-                <tbody>
-            <?php
-                
-                       
-                         $inventoryID=$_SESSION['inventoryID'];
-                         $inventory_query = "SELECT  item_Name,item_Stock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id =$inventoryID and item_Stock<500 "; 
-                         $inventory_result = mysqli_query($conn,$inventory_query);
-                         $inventory_Check = mysqli_num_rows($inventory_result);
-                      
-                            if ( $inventory_Check>0) {                                                       
-                                while($inventory_row = mysqli_fetch_assoc($inventory_result)) {
-                                  echo"<tr>
-                                  <td>".$inventory_row['item_Name']."</td>
-                                  <td>". $inventory_row['item_Stock'] ." </td>                           
-                                  </tr>";
-                          
-                                }
-                            } 
-
-                        
-
-                            
-                            
-                          
-                            
-                        ?>
-                         </tbody>
-            </table>  
-
-          </div>
-          <div class="col ">
+       
+          <div class="col-9 ms-3">
             <div class="row align-items-center bg-info p-2 text-dark bg-opacity-50  text-center rounded">
 
-            <div class="col   ">
-                <h1 > Total Sales<h1>
-                <?php
-                        $branchID = $_SESSION['branchID'] ;
-                        $orders_query = "SELECT sum(total) AS sales FROM customer NATURAL join cu_orders_ca  NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
-                        $orders_result = mysqli_query($conn,$orders_query);
-                        $orders_Check = mysqli_num_rows($orders_result);
-                      
-                            if ($orders_Check>0) {                                                       
-                                while($orders_row = mysqli_fetch_assoc($orders_result)) {
-                                  if($orders_row['sales'] !=null){
+                  <div class="col   ">
+                      <h1 > Total Sales<h1>
+                      <?php
+                              $branchID = $_SESSION['branchID'] ;
+                              $orders_query = "SELECT sum(total) AS sales FROM customer NATURAL join cu_orders_ca  NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
+                              $orders_result = mysqli_query($conn,$orders_query);
+                              $orders_Check = mysqli_num_rows($orders_result);
+                            
+                                  if ($orders_Check>0) {                                                       
+                                      while($orders_row = mysqli_fetch_assoc($orders_result)) {
+                                        if($orders_row['sales'] !=null){
+
+                                        
+                                        ?>  
+                                        <p class="display-4 "><?php echo $orders_row['sales']  ?>  </p> 
+                                        <?php
+                                      }else{
+                                        ?>  
+                                        <p class="display-4 ">0</p> 
+                                        <?php
+                                      }
+                                      }
+                                  }
+
+                              
 
                                   
-                                  ?>  
-                                  <p class="display-4 "><?php echo $orders_row['sales']  ?>  </p> 
-                                  <?php
-                                }else{
-                                  ?>  
-                                  <p class="display-4 ">0</p> 
-                                  <?php
-                                }
-                                }
-                            }
-
-                        
-
-                            
-                            
-                          
-                            
-                        ?>
-
-
-            </div>
-            <div class="col">   
-                <h1>Total Orders</h1>
-                <?php
-                        $branchID = $_SESSION['branchID'] ;
-                        $orders_query = "SELECT COUNT(cart_ID) FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
-                        $orders_result = mysqli_query($conn,$orders_query);
-                        $orders_Check = mysqli_num_rows($orders_result);
-                      
-                            if ($orders_Check>0) {                                                       
-                                while($orders_row = mysqli_fetch_assoc($orders_result)) {
-                                  ?>  
-                                  <p class="display-4"><?php echo $orders_row['COUNT(cart_ID)']  ?>  </p> 
-
-
+                                  
                                 
-                                  <?php
-                                }
-                            } 
+                                  
+                              ?>
+
+
+                  </div>
+                  <div class="col">   
+                      <h1>Total Orders</h1>
+                      <?php
+                              $branchID = $_SESSION['branchID'] ;
+                              $orders_query = "SELECT COUNT(cart_ID) FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
+                              $orders_result = mysqli_query($conn,$orders_query);
+                              $orders_Check = mysqli_num_rows($orders_result);
+                            
+                                  if ($orders_Check>0) {                                                       
+                                      while($orders_row = mysqli_fetch_assoc($orders_result)) {
+                                        ?>  
+                                        <p class="display-4"><?php echo $orders_row['COUNT(cart_ID)']  ?>  </p> 
+
+
+                                      
+                                        <?php
+                                      }
+                                  } 
+
+                              
+
+                                  
+                                  
+                                
+                                  
+                              ?>
+
+                  </div>
+              </div> 
+              <div class="row align-items-center bg-info p-2 text-dark border border-success bg-light border-4 mt-3 rounded">
+                            <h1 class="text-center">Recent Orders<h1>
+
+                            <table class="table table-striped table-hover fs-6  fw-normal">
+                                <thead>
+                                    <tr>
+                                    <th scope="col">Cart ID</th>
+                                    <th scope="col">Name</th>
+                                    <th scope="col">Items</th>
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Address</th>
+                            
+
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php
+                    $branchID = $_SESSION['branchID'] ;
+                    if($_SESSION['admin']==1){ 
+                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart  Limit 10; ";
+                    }else{
+                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID order by cart_ID DESC limit 10;"; 
+                    }
+                    $status = array("Cancelled", "Ordered", "Delivered");
+                    $orders_result = mysqli_query($conn,$orders_query);
+                    $orders_Check = mysqli_num_rows($orders_result);
+                   
+                        if ($orders_Check>0) {                                                       
+                            while($orders_row = mysqli_fetch_assoc($orders_result)) {
+                               echo"<tr>
+                                    <td>".$orders_row['cart_ID']."</td>
+                                    <td>". $orders_row['cust_FName'] ." ".$orders_row['cust_LName'] ."</td>
+                                    <td>"; ?> <button type="button" class="badge btn btn-secondary" onclick="showDetails(<?php  echo $orders_row['cart_ID'] ;?>)" >Show Items</button></td>
+                                     <?php echo "
+                                    <td>" .  $orders_row['total']."</td>
+                                    <td>". $orders_row['order_Date'] ."</td>
+                                    <td>". $orders_row['cust_ABrgy'] .", ".$orders_row['cust_ACity'] .", ".$orders_row['cust_AProvince'] .", ".$orders_row['cust_APostal'] ."</td>
+                                   
+                                    </tr>";
+                            }
+                        } 
+
+                     
 
                         
-
-                            
-                            
-                          
-                            
-                        ?>
+                        
+                      
+                        
+                    ?>
+                    </tbody>
+                </table>  
 
             </div>
-          </div> 
+
+              
+                      <div class="row align-items-center bg-info p-2 text-dark border border-danger bg-light border-4 mt-3 rounded">
+                            <h1 class="text-center">Low on Stocks<h1>
+
+                            <table class="table table-striped table-hover fs-6  fw-normal">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Item ID</th>
+                                        <th scope="col">Item Name</th>
+                                        <th scope="col">Stock</th>
+                            
+
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                            <?php
+                                
+                                      
+                                        
+                                $inventoryID=$_SESSION['inventoryID'];
+                                $inventory_query = "SELECT item_ID, item_Name,item_Stock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id =$inventoryID and item_Stock<500 "; 
+                                $inventory_result = mysqli_query($conn,$inventory_query);
+                                $inventory_Check = mysqli_num_rows($inventory_result);
+                              
+                                    if ( $inventory_Check>0) {                                                       
+                                        while($inventory_row = mysqli_fetch_assoc($inventory_result)) {
+                                          echo"<tr>
+                                          <td>".$inventory_row['item_ID']."</td>
+                                          <td>".$inventory_row['item_Name']."</td>
+                                          <td>". $inventory_row['item_Stock'] ." </td>                           
+                                          </tr>";
+                                  
+                                        }
+                                    } 
+
+
+                                        
+
+                                            
+                                            
+                                          
+                                            
+                                        ?>
+                                        </tbody>
+                            </table>  
+
+                          </div>
+
+              
+             
           </div>
       </div>
     </div>
@@ -270,7 +335,7 @@ if ($branchID_Check>0) {                                               #username
                 var json=JSON.parse(data);
                 document.getElementById("branchInfo").innerHTML = json.map(getInfo).join("");
                 function getInfo(info) {
-                return "<tr><td>"+ info.admin_Username + "</td><td>"+ info.contact + "</td></tr>";
+                return "<tr><td>"+ info.admin_Firstname + " " + info.admin_Lastname +  "</td><td>"+ info.contact + "</td></tr>";
                 }
                 // document.getElementById("demo").innerHTML = myJSON;
                   //  alert("Data: " + data );
@@ -282,6 +347,22 @@ if ($branchID_Check>0) {                                               #username
         function managerForm(){
             $('#newManager').modal('show');
 
+        };
+
+
+        function showDetails(cartID){
+
+        $.post("displayItems.php",{cartID:cartID},function(data,status){
+            var json=JSON.parse(data);
+            let cleanJSON = json;
+            document.getElementById("demo").innerHTML = cleanJSON.map(getItem).join("");
+            function getItem(item) {
+            return "<tr><td>"+ item.item_ID + "</td><td>"+ item.item_Name + "</td><td>"+ item.item_RetailPrice + "</td><td>"+ item.quantity + "</td></tr>";
+            }
+            // document.getElementById("demo").innerHTML = myJSON;            
+        });
+
+        $('#showItems').modal('show');
         };
     </script>
   
@@ -372,6 +453,40 @@ if ($branchID_Check>0) {                                               #username
                             </div>
                         </div>
                     </div>
-                </div>          
+                </div>   
+                
+                <!-- show items modal ##################################-->
+    <div class="modal fade" id="showItems" tabindex="-1" aria-labelledby="showItemsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="showItemsLabel">Cart Items</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover ">
+                    <thead>
+                        <tr>
+                            <th scope="col">Item ID</th>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Quantity</th>
+  
+                        </tr>
+                    </thead>
+                    <tbody id="demo" >
+                      
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+            </div>
+        </div>
+    </div>
+
   </body>
 </html>

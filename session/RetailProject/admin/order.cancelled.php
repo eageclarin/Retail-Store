@@ -1,23 +1,8 @@
 <?php
 
-    include '../env/connection.php';
-    include '../env/adminAuth.php';
-   
+include_once '../env/connection.php';
+include_once '../env/adminAuth.php';
 
-    $user = $_SESSION['admin_User'] ;
-    $branchID_query = "SELECT *FROM branch NATURAL JOIN (b_has_bi) NATURAL JOIN branchinventory NATURAL JOIN a_manages_b NATURAL JOIN admin WHERE admin.admin_Username= '$user' ;"; #check if in admin table
-    $branchID_result = mysqli_query($conn,$branchID_query);
-    $branchID_Check = mysqli_num_rows($branchID_result); #should be same with eigram
-
-    if ($branchID_Check>0) {                                               #username and password in admin table
-        while($branchID_row = mysqli_fetch_assoc($branchID_result)) {
-            $_SESSION['branchID'] = $branchID_row['branch_ID'];                #store in $_SESSION for referencing later
-            $_SESSION['inventoryID'] = $branchID_row['inventory_ID']; 
-           
-        }                    
-    }
-
-    
 ?>
 
 <!DOCTYPE html>
@@ -40,10 +25,8 @@
   <body>
         <?php include "./components/nav.php"?>
 
-    
-
         <div class="container mt-5">
-            <table class="table table-striped table-hover table-success">
+        <table class="table table-striped table-hover table-success">
                 <thead>
                     <tr>
                         <th scope="col">Cart ID</th>
@@ -64,7 +47,7 @@
                     if($_SESSION['admin']==1){ 
                         $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart ; ";
                     }else{
-                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
+                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=3 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
                     }
                     $status = array("", "Pending", "Delivered","Cancelled");
                     $orders_result = mysqli_query($conn,$orders_query);
@@ -81,7 +64,7 @@
                                     <td>". $orders_row['order_Date'] ."</td>
                                     <td>". $orders_row['cust_ABrgy'] .", ".$orders_row['cust_ACity'] .", ".$orders_row['cust_AProvince'] .", ".$orders_row['cust_APostal'] ."</td>
                                     <td> " . $status[ $orders_row['status']]."</td>
-                                    <td>"?> <button type="button" class="badge btn btn-primary" onclick="orderStatus( <?php  echo $orders_row['cart_ID'];?>)">Update</button> <?php "</td>
+                                    <td>"?> <button type="button" class="badge btn btn-primary" onclick="updateStatus( <?php  echo $orders_row['cart_ID'];?>)">Update</button> <?php "</td>
                                     </tr>";
                             }
                         } 
@@ -98,7 +81,7 @@
         </div>
      
        
-    
+    </div>
 
     <!-- JavaScript Bundle with Popper -->
     
@@ -110,32 +93,33 @@
     </script>
 
     <script type="text/javascript">
+        function showDetails(cartID){
 
-function showDetails(cartID){
-
-        $.post("displayItems.php",{cartID:cartID},function(data,status){
-            var json=JSON.parse(data);
-            let cleanJSON = json;
-            document.getElementById("demo").innerHTML = cleanJSON.map(getItem).join("");
-            function getItem(item) {
-            return "<tr><td>"+ item.item_ID + "</td><td>"+ item.item_Name + "</td><td>"+ item.item_RetailPrice + "</td><td>"+ item.quantity + "</td></tr>";
-            }
-            // document.getElementById("demo").innerHTML = myJSON;            
-        });
-
-        $('#showItems').modal('show');
+            $.post("displayItems.php",{cartID:cartID},function(data,status){
+                var json=JSON.parse(data);
+                let cleanJSON = json;
+                document.getElementById("demo").innerHTML = cleanJSON.map(getItem).join("");
+                function getItem(item) {
+                return "<tr><td>"+ item.item_ID + "</td><td>"+ item.item_Name + "</td><td>"+ item.item_RetailPrice + "</td><td>"+ item.quantity + "</td></tr>";
+                }
+                // document.getElementById("demo").innerHTML = myJSON;            
+            });
+           
+            $('#showItems').modal('show');
         };
 
-        function orderStatus(cartID){
-          
-          $('#pendingActionModal').modal('show');
+        function updateStatus(cartID){
+            alert("Data: " + cartID);
+          $('#updateOrderModal').modal('show');
          
 
-          $.post("update.php",{pendingId:cartID},function(data,status){
-              var json=JSON.parse(data);
-              $("#pendingCart_ID").val(json.cart_ID);
+        //   $.post("update.php",{itemId:itemId},function(data,status){
+        //       var json=JSON.parse(data);
+        //       $("#delItem_ID").val(json.item_ID);
+        //       $("#delInventory_ID").val(json.inventory_ID);
+        //       // alert("Data: " + data );
             
-          });
+        //   });
           
       };
 
@@ -175,8 +159,8 @@ function showDetails(cartID){
         </div>
     </div>
 
-    <!--Order.pending action Modal ##################################-->
-    <div class="modal fade" id="pendingActionModal" tabindex="-1" aria-labelledby="pendingActionModalLabel"  aria-hidden="true">
+    <!-- delete Stock Modal ##################################-->
+    <div class="modal fade" id="updateOrderModal" tabindex="-1" aria-labelledby="updateOrderModalLabel"  aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
@@ -186,22 +170,19 @@ function showDetails(cartID){
 
                 <div class="modal-body">
                     
-                    <form class="row g-3" action="order.update.php" method="post">   
-                        <input type="text" id="pendingCart_ID" name="pendingCart_ID" > 
+                    <form class="row g-3" action="deleteStock.php" method="post">   
+                                                          
+                        <input type="hidden" id="delItem_ID" name="delItem_ID" >
 
-                        <select class="form-select text-center bg-primary bg-opacity-25" aria-label="Default select example" name="status" required>
-                            <option selected>Select Status</option>
-                            <option value="1">Delivered</option>
-                            <option value="2">Cancelled</option>
-                        </select>
+                        <input type="hidden" id="delInventory_ID" name="delInventory_ID">
 
                         <div class="col-md-12">
-                                        <label for="adminPass" class="form-label">Admin Password</label>
-                                        <input type="password" class="form-control" name="AdminPass" required>
+                            <label for="deleteAdminPass" class="form-label">Admin Password</label>
+                            <input type="password" class="form-control" name="deleteAdminPass" required>
                         </div>
                         
                         <div class="col-12">
-                            <button class="btn btn-primary text-light " name="orderUpdate" type="submit" >Update</button>                                          
+                        <button class="btn btn-danger text-light " name="deleteItem" type="submit" >Delete</button>                                          
                         </div>
 
                                            
