@@ -1,0 +1,8 @@
+label.error{
+    color: #ff0000;
+    width: 200px;
+    float: right;
+}
+form-label{
+    float: left;
+}
