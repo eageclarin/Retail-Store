@@ -59,7 +59,7 @@ $(document).ready(function () {
         },
         confirmPassword: {
           required: 'Please enter Confirm Password.',
-          equalTo: 'Confirm Password do not match with Password.',
+          equalTo: 'Passwords does not match.',
         },
         oldPassword: {
           required: 'Please enter old Password.',         
@@ -70,7 +70,7 @@ $(document).ready(function () {
         },
         confirmNPassword: {
           required: 'Please enter Confirm Password.',
-          equalTo: 'Confirm Password do not match with Password.',
+          equalTo: 'Passwords does not match.',
         }
       },
       submitHandler: function (form) {

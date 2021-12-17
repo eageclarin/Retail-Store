@@ -17,85 +17,134 @@
 <html>
 <head>
 <title> Register </title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
-  <script src="client.js"></script>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+    <script src="client.js"></script>
  
+    <style>
+        body {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            background: rgb(196,53,49);
+            background: linear-gradient(144deg, rgba(196,53,49,1) 0%, rgba(218,55,50,1) 26%, rgba(228,123,120,1) 78%);
+        }
+    </style>
 </head>
 
 <body>
     <!-- Registration form -->
-    <div class="container-sm p-5 my-5 bg-dark text-white" style="max-width:50%;">
-        <h2> Register </h2>
-        <form id="form" action="register.php" method="post" class="form-inline"> 
-            <div class="form-group">
-                <div class="mb-1 mt-1">
-                    <label for="username" >Username: </label>
-                    <input type="text" class="form-control" id="username" name="username"  required>
-                </div>
-                <div class="mb-1 mt-1">
-                    <label for="password" >Password: </label>
-                    <input type="password" class="form-control" id="password" name="password"  required>
-                    <span id="toggle" onclick="toggle('password')"><i class="fa fa-eye"></i> </span>
-                </div> 
-                <div class="mb-1 mt-1">
-                    <label for="password" >Confirm Password: </label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"  required>
-                    <span id="toggle" onclick="toggle('confirmPassword')"><i class="fa fa-eye"></i> </span>
-                </div> 
-                <div class="mb-1 mt-1">
-                    <label for="firstName" >First Name: </label>
-                    <input type="text" class="form-control" id="firstName" name="firstName"  required>    
-                </div>
-                <div class="mb-1 mt-1">  
-                    <label for="lastName" >Last Name: </label>
-                    <input type="text" class="form-control" id="lastName" name="lastName"  required>
-                </div>
-                <div class="mb-1 mt-1">
-                    <label for="contact" >Contact Number: </label>
-                    <input type="text" class="form-control" id="contact" name="contact"  required>
-                </div>
-                <div class="mb-1 mt-1">
-                    <label for="email" >Email: </label>
-                    <input type="text" class="form-control" id="email" name="email"  required>
-                </div>
-                <div class="col-xs-3">
-                    <div class="mb-1 mt-1">
-                        <label for="brgy" >Barangay: </label>
-                        <input type="text" class="form-control" id="brgy" name="brgy"  required>
+    <section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row justify-content-center align-items-center h-100">
+        <div class="col-12 col-lg-9 col-xl-7">
+            <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+            <div class="card-body p-4 p-md-5">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <img src="../img/logo.png" width="50%">
+                    </div>
+                    <div class="col-md-6 mb-4">
+                    <h3><p class="text-end">Registration Form</p></h3>
                     </div>
                 </div>
-                <div class="col-xs-3">
-                    <div class="mb-1 mt-1">
-                        <label for="city" >City: </label>
-                        <input type="text" class="form-control" id="city" name="city"  required>
-                    </div>
-                </div>
-                <div class="mb-1 mt-1">
-                    <label for="province" >Province: </label>
-                    <input type="text" class="form-control" id="province" name="province"  required>
-                </div>
-                <div class="mb-1 mt-1">
-                    <label for="postal" >Postal Code: </label>
-                    <input type="text" class="form-control" id="postal" name="postal"  required>
-                </div>
-                <div class="mb-3 mt-3">
-                    <input type="submit" value="Submit" name="register" class="btn btn-primary" style="width:150px"  >   
-                        
-                </div>
-            </div>
-        </form>  
-        <form action="register.php" method="post" class="form-inline">   
-            <input type="submit" value="Cancel" name="back" class="form-control" style="width:150px" > 
-        </form>
-    </div>
-    
+                
+                <form id="form" action="register.php" method="post" class="form-inline">
 
+                <div class="row">
+                    <div class="col-md-12 mb-2">
+                        <input type="text" class="form-control" id="username" name="username"  required>
+                        <label class="form-label" for="username">Username</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <input type="password" class="form-control" id="password" name="password"  required>
+                        <label for="password" class="form-label">Password</label> <span id="toggle" onclick="toggle('password')"><i class="fa fa-eye"></i> </span>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"  required>
+                        <label for="password" class="form-label">Confirm Password</label> <span id="toggle" onclick="toggle('confirmPassword')"><i class="fa fa-eye"></i> </span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="firstName" name="firstName"  required>   
+                            <label class="form-label" for="firstName" >First Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="lastName" name="lastName"  required>
+                            <label class="form-label" for="lastName" >Last Name</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="contact" name="contact"  required>
+                            <label class="form-label" for="contact" >Contact Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="email" name="email" required>
+                            <label class="form-label" for="email" >Email: </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="brgy" name="brgy"  required>
+                            <label class="form-label" for="brgy" >Barangay: </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="city" name="city"  required>
+                            <label class="form-label" for="city" >City: </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="province" name="province"  required>
+                            <label class="form-label" for="province" >Province: </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="postal" name="postal"  required>
+                            <label class="form-label" for="postal" >Postal Code: </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-4 pt-2">
+                    <input type="submit" value="Submit" name="register" class="btn btn-primary" >   
+                </div>
+
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </section>
+    
     <?php 
 
         if (isset($_POST['register'])) {           #if register button pressed
