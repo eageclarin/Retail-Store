@@ -85,13 +85,11 @@
         <label for="password">Password</label>
         </div>
     
-        <button class="w-100 btn btn-lg btn-primary" name="login" type="submit">Sign in</button>
-    </form>
-    <form action="main.php" method="post">   
-        <button type="submit"name="return" class="w-100 btn btn-lg border-primary">Return</button>
+        <button class="w-100 btn btn-lg btn-primary mb-1" name="login" type="submit">Sign in</button>
+        <a href="main.php"> <button type="submit"name="return" class="w-100 btn btn-lg text-primary border-primary">Return</button> </a>
     </form>
         Don't have an account yet? <a href='client/register.php'>Register here</a>
-        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+        <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
     
     </main>
 
@@ -144,15 +142,6 @@
                 unset($_SESSION);
                 exit;
             }    
-        }
-
-        #if "Return" is pressed: 
-        if (isset($_POST['return'])) {
-            unset($_SESSION);
-            unset($_SESSION['username']);
-            session_destroy();
-            header('location: main.php');
-            exit;
         }
 
         mysqli_close($conn);
