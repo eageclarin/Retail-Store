@@ -1,7 +1,10 @@
 label.error{
     color: #ff0000;
-    width: 200px;
+    width: 160px;
     float: right;
+    font-size: 11px;
+    margin-top: 5px;
+    text-align: right;
 }
 form-label{
     float: left;

@@ -86,10 +86,9 @@
         }
         .field-icon {
             float: right;
-            margin-left: -25px;
-            margin-right: 3%;
+            margin-left: 19%;
             margin-top: -25px;
-            position: relative;
+            position: fixed;
             z-index: 2;
         }
     </style>
@@ -196,7 +195,8 @@
                 </div>
 
                 <div class="mt-4 pt-2">
-                    <input type="submit" value="Submit" name="register" class="btn btn-primary" > <?php echo $warning ?> 
+                    <input type="submit" value="Submit" name="register" class="btn btn-primary">
+                    <a href="../login.php"><button type="button" class="btn text-primary border-primary">Cancel</button></a>&nbsp; <span class="text-danger"> <?php echo $warning ?> </span> 
                 </div>
 
                 </form>
