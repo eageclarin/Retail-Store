@@ -34,6 +34,14 @@
             background: rgb(196,53,49);
             background: linear-gradient(144deg, rgba(196,53,49,1) 0%, rgba(218,55,50,1) 26%, rgba(228,123,120,1) 78%);
         }
+        .field-icon {
+            float: right;
+            margin-left: -25px;
+            margin-right: 3%;
+            margin-top: -25px;
+            position: relative;
+            z-index: 2;
+        }
     </style>
 </head>
 
@@ -58,14 +66,16 @@
 
                 <div class="row">
                     <div class="col-md-12 mb-2">
-                        <input type="text" class="form-control" id="username" name="username"  required>
                         <label class="form-label" for="username">Username</label>
+                        <input type="text" class="form-control" id="username" name="username"  required>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-md-6 mb-2">
-                        <input type="password" class="form-control" id="password" name="password"  required>
-                        <label for="password" class="form-label">Password</label> <span id="toggle" onclick="toggle('password')"><i class="fa fa-eye"></i> </span>
+                        <div>
+                            <input type="password" class="form-control" id="password" name="password"  required> <span id="toggle" onclick="toggle('password')" class="fa fa-fw fa-eye field-icon toggle-password"> </span>
+                        </div>
+                        <label for="password" class="form-label">Password</label>
                     </div>
                     <div class="col-md-6 mb-2">
                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"  required>
@@ -134,7 +144,7 @@
                 </div>
 
                 <div class="mt-4 pt-2">
-                    <input type="submit" value="Submit" name="register" class="btn btn-primary" >   
+                    <input type="submit" value="Submit" name="register" class="btn btn-primary" > <?php echo $warning ?> 
                 </div>
 
                 </form>
@@ -180,13 +190,13 @@
             } else {                            #else, notify user
                 while ($row = mysqli_fetch_assoc($result)) {
                     if ($row['cust_Username']==$username && $row['cust_Email']==$email) {
-                        echo "username and email already exist";
+                        $warning = "Username and Email already exist";
                         break;
                     } elseif ($row['cust_Username']==$username) {
-                        echo "username already exist";
+                        $warning = "Username already exist";
                         break;
                     } elseif ($row['cust_Email']==$email) {
-                        echo "email already exist";
+                        $warning = "Email already exist";
                         break;
                     }
                 }
