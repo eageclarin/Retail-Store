@@ -46,7 +46,7 @@
         $row = mysqli_fetch_assoc($resTotal);
         $totalPrice = $row['total'];
     } else {
-        $totalPrice = 0;
+        $totalPrice = 0.00;
     }
 
     if (!empty($_GET['action'])) {
@@ -151,6 +151,13 @@
         }
     </script>
     <style>
+        body {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            background: rgb(196,53,49);
+            background: linear-gradient(144deg, rgba(196,53,49,1) 0%, rgba(218,55,50,1) 26%, rgba(228,123,120,1) 78%);
+        }
         #delete {
             position: fixed;
             top: 50%;
@@ -167,9 +174,9 @@
     </style>
     <script src="../env/idle.js"></script>
 </head>
-    <body style="overflow-y: hidden; height: 100%;max-height: 100%">
+    <body>
         <div id="content" style="opacity: <?php echo $opacity ?>">
-        <div class="container-fluid h-100 bg-danger bg-gradient">
+        <div class="container-fluid">
             <div class="row h-100 d-flex justify-content-between">
                 <div class="col-7 p-0">
                     <header class="p-3 m-3 h-20 bg-white" style="border-radius: 15px">
@@ -228,19 +235,19 @@
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            Grab
+                                            <img src="../img/cart/grab.png" width="50%">
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            Foodpanda
+                                            <img src="../img/cart/foodpanda.png" width="50%">
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            Angkas
+                                            <img src="../img/cart/angkas.png" width="50%">
                                         </label>
                                     </div>
                                 </div>
