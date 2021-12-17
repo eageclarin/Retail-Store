@@ -84,8 +84,6 @@ $(document).ready(function () {
     let password = document.getElementById(userPass);
     let eye = document.getElementById("toggle");
 
-    $("#toggle").toggleClass("fa-eye fa-eye-slash");
-
     if (password.getAttribute("type")=="password") {
         password.setAttribute("type","text");
     } else {

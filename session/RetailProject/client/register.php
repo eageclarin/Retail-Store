@@ -1,6 +1,6 @@
 <?php
     require '../env/userConnection.php';
-    $item = $branch = $categ = "";
+    $item = $branch = $categ = $warning = "";
 
     if (isset($_GET['itemID'])) {
         $item = $_GET['itemID'];
@@ -11,6 +11,55 @@
         $categ = $_GET['categ'];
     }
 
+    if (isset($_POST['register'])) {           #if register button pressed
+        $username = mysqli_real_escape_string($conn,$_POST['username']);
+        $password1 = mysqli_real_escape_string($conn,$_POST['password']);
+        $firstName = mysqli_real_escape_string($conn,$_POST['firstName']);
+        $lastName = mysqli_real_escape_string($conn,$_POST['lastName']);
+        $contact = $_POST['contact'];
+        $email = mysqli_real_escape_string($conn,$_POST['email']);
+        $brgy = mysqli_real_escape_string($conn,$_POST['brgy']);
+        $city = mysqli_real_escape_string($conn,$_POST['city']);
+        $province = mysqli_real_escape_string($conn,$_POST['province']);
+        $postal = mysqli_real_escape_string($conn,$_POST['postal']);
+
+
+        #check if username or email exists
+        $check_query = "SELECT * FROM customer where cust_Username = '$username' OR cust_Email = '$email' LIMIT 1;";
+        $result = mysqli_query($conn, $check_query);
+        $resultCheck = mysqli_num_rows($result);
+
+        
+        if ($resultCheck==0){               #if username or email does not exist, insert new record
+            $password = md5($password1);    #hash
+
+            $insert = "INSERT INTO customer (cust_Username, cust_Password, cust_FName, cust_LName, cust_Contact, cust_Email, cust_ABrgy, cust_ACity, cust_AProvince, cust_APostal)
+            VALUES ('$username', '$password', '$firstName', '$lastName','$contact', '$email', '$brgy', '$city', '$province', '$postal');";
+            $sqlInsert = mysqli_query($conn, $insert);
+            if ($sqlInsert) {
+                echo "<script> location.replace('../login.php'); </script>";
+            } else {
+                echo mysqli_error($conn);
+            }
+        } else {                            #else, notify user
+            while ($row = mysqli_fetch_assoc($result)) {
+                if ($row['cust_Username']==$username && $row['cust_Email']==$email) {
+                    $warning = "Username and Email already exist";
+                    break;
+                } elseif ($row['cust_Username']==$username) {
+                    $warning = "Username already exist";
+                    break;
+                } elseif ($row['cust_Email']==$email) {
+                    $warning = "Email already exist";
+                    break;
+                }
+            }
+        }    
+    }
+
+    if (isset($_POST['back'])) {            #if cancel is pressed
+       echo "<script> location.replace('../login.php'); </script>";
+    }
 ?>
 
 <!DOCTYPE html>
@@ -78,8 +127,10 @@
                         <label for="password" class="form-label">Password</label>
                     </div>
                     <div class="col-md-6 mb-2">
-                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"  required>
-                        <label for="password" class="form-label">Confirm Password</label> <span id="toggle" onclick="toggle('confirmPassword')"><i class="fa fa-eye"></i> </span>
+                        <div>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"  required><span id="toggle" onclick="toggle('confirmPassword')" class="fa fa-fw fa-eye field-icon toggle-password"> </span>
+                        </div>
+                        <label for="password" class="form-label">Confirm Password</label>
                     </div>
                 </div>
 
@@ -154,59 +205,5 @@
         </div>
     </div>
     </section>
-    
-    <?php 
-
-        if (isset($_POST['register'])) {           #if register button pressed
-            $username = mysqli_real_escape_string($conn,$_POST['username']);
-            $password1 = mysqli_real_escape_string($conn,$_POST['password']);
-            $firstName = mysqli_real_escape_string($conn,$_POST['firstName']);
-            $lastName = mysqli_real_escape_string($conn,$_POST['lastName']);
-            $contact = $_POST['contact'];
-            $email = mysqli_real_escape_string($conn,$_POST['email']);
-            $brgy = mysqli_real_escape_string($conn,$_POST['brgy']);
-            $city = mysqli_real_escape_string($conn,$_POST['city']);
-            $province = mysqli_real_escape_string($conn,$_POST['province']);
-            $postal = mysqli_real_escape_string($conn,$_POST['postal']);
-
-
-            #check if username or email exists
-            $check_query = "SELECT * FROM customer where cust_Username = '$username' OR cust_Email = '$email' LIMIT 1;";
-            $result = mysqli_query($conn, $check_query);
-            $resultCheck = mysqli_num_rows($result);
-
-            
-            if ($resultCheck==0){               #if username or email does not exist, insert new record
-                $password = md5($password1);    #hash
-
-                $insert = "INSERT INTO customer (cust_Username, cust_Password, cust_FName, cust_LName, cust_Contact, cust_Email, cust_ABrgy, cust_ACity, cust_AProvince, cust_APostal)
-                VALUES ('$username', '$password', '$firstName', '$lastName','$contact', '$email', '$brgy', '$city', '$province', '$postal');";
-                $sqlInsert = mysqli_query($conn, $insert);
-                if ($sqlInsert) {
-                    echo "<script> location.replace('../login.php'); </script>";
-                } else {
-                    echo mysqli_error($conn);
-                }
-            } else {                            #else, notify user
-                while ($row = mysqli_fetch_assoc($result)) {
-                    if ($row['cust_Username']==$username && $row['cust_Email']==$email) {
-                        $warning = "Username and Email already exist";
-                        break;
-                    } elseif ($row['cust_Username']==$username) {
-                        $warning = "Username already exist";
-                        break;
-                    } elseif ($row['cust_Email']==$email) {
-                        $warning = "Email already exist";
-                        break;
-                    }
-                }
-            }    
-        }
-        mysqli_close($conn);
-        if (isset($_POST['back'])) {            #if cancel is pressed
-           echo "<script> location.replace('../login.php'); </script>";
-        }
-    ?>
-
 </body>
 </html>
