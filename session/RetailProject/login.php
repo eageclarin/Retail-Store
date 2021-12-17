@@ -11,27 +11,89 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="../assets/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        html,body {
+        height: 100%;
+        }
+
+        body {
+        display: flex;
+        align-items: center;
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #E6E9F0;
+        }
+
+        .form-signin {
+        width: 100%;
+        max-width: 330px;
+        padding: 15px;
+        margin: auto;
+        }
+
+        .form-signin .checkbox {
+        font-weight: 400;
+        }
+
+        .form-signin .form-floating:focus-within {
+        z-index: 2;
+        }
+
+        .form-signin input[type="email"] {
+        margin-bottom: -1px;
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+        }
+
+        .form-signin input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        }
+
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
 </head>
 
 
-<body>
-    <!--Login form-->
-    <div class="container-sm p-5 my-5 text-gray" style="max-width:50%;">
-        <div class="jummbotron">
-            <h3 style="color:#343434"> Log In </h3>
-            <form action="login.php" method="post"> 
-                Username: <input type="text"  class="form-control" name="username" required></br>
-                Password: <input type="password"  class="form-control" name="password"  required></br>
-                <input type="submit" value="Log In" name="login" class="form-control" style="width:150px;">
-            </form>    
-            <form action="main.php" method="post" class="form-inline">   
-                <div class="mb-2 mt-2">
-                    <input type="submit" value="Return" name="return" class="form-control" style="width:150px;">
-                </div>
-            </form>
-            Don't have an account yet? <a href='client/register.php'>Register here</a>
+<body class="text-center">
+    <main class="form-signin">
+    <form action="login.php" method="post">
+        <img class="mb-4" src="img/logo2.png" alt="" height="150">
+        <h1 class="h3 mb-3 fw-normal">Log In</h1>
+
+        <div class="form-floating">
+        <input type="text"  class="form-control" id="username" name="username" required>
+        <label for="username">Username</label>
         </div>
-    </div>
+        <div class="form-floating">
+        <input type="password"  class="form-control" name="password" if="password" required>
+        <label for="password">Password</label>
+        </div>
+    
+        <button class="w-100 btn btn-lg btn-primary" name="login" type="submit">Sign in</button>
+    </form>
+    <form action="main.php" method="post">   
+        <button type="submit"name="return" class="w-100 btn btn-lg border-primary">Return</button>
+    </form>
+        Don't have an account yet? <a href='client/register.php'>Register here</a>
+        <p class="mt-5 mb-3 text-muted">&copy; 2017–2021</p>
+    
+    </main>
 
     <?php 
         if (isset($_POST['login'])) {           #if login button is pressed

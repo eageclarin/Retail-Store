@@ -166,7 +166,7 @@
         <div class="container-fluid d-grid gap-3 align-items-center">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
             <a href="" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                <img src="img/logo.jpg" height="50" role="img" />
+                <img src="img/logo.png" height="50" role="img" />
                 <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
             </a>
             &nbsp; &nbsp; &nbsp;
