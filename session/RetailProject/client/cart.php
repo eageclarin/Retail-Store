@@ -103,8 +103,9 @@
 
 <html>
 <head>
-<title> Cart </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title> Cart </title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
@@ -436,16 +437,16 @@
         </div>
 
         <div id="delete" style="display: <?php echo $display ?>">
-            <div class="modal modal-alert position-static d-block bg-transparent d-block py-5" tabindex="-1" role="dialog" id="modalChoice">
+            <div class="modal modal-alert position-static d-block bg-transparent d-block py-5" class="deleteModal" tabindex="-1" role="dialog" id="modalChoice">
             <div class="modal-dialog bg-transparent" role="document">
-                <div class="modal-content rounded-4 shadow">
+                <div class="modal-content rounded-4">
                 <div class="modal-body p-4 text-center">
                     <h5 class="mb-0">Delete this item?</h5>
                     <p class="mb-0">You can always add this to cart again.</p>
                 </div>
-                <div class="modal-footer flex-nowrap p-0">
-                    <button type="button" onclick="del(<?php echo $id ?>,<?php echo $chosenBranch ?>,<?php echo $item ?>)" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"><strong>Yes, delete</strong></button>
-                    <button type="button" onclick="back(<?php echo $chosenBranch ?>)" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">No, mb mb</button>
+                <div class="modal-footer p-2 align-items-center">
+                    <button type="button" onclick="del(<?php echo $id ?>,<?php echo $chosenBranch ?>,<?php echo $item ?>)" class="btn btn-danger text-light w-100"><strong>Yes, delete</strong></button>
+                    <button type="button" onclick="back(<?php echo $chosenBranch ?>)" class="btn btn-outline-success text-success w-100" data-bs-dismiss="modal">No, sorry</button>
                 </div>
                 </div>
             </div>

@@ -108,10 +108,10 @@
 									INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
 									INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
 									INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-									WHERE i.item_Brand = '$brand'
+									WHERE i.item_Category = '$categ'
 										AND bii.item_Stock > 0
 										AND bbi.branch_ID = '$branch'
-										OR i.item_Category = '$categ'
+										OR i.item_Brand = '$brand'
 									ORDER BY i.item_$order $sort
 								";
 						$resFilter = mysqli_query($conn, $sqlFilter);
@@ -121,10 +121,10 @@
 									INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
 									INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
 									INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-									WHERE bii.item_Stock > 0
+									WHERE i.item_Category = '$categ'
+										AND bii.item_Stock > 0
 										AND bbi.branch_ID = '$branch'
 										AND i.item_Brand = '$brand'
-										OR i.item_Category = '$categ'
 									ORDER BY i.item_$order $sort
 								";
 						$resFilter = mysqli_query($conn, $sqlFilter);
@@ -166,7 +166,14 @@
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-	
+	<style>
+		.addCart:hover {
+			background-color: white;
+			border-color: #0d6efd;
+			color: #0d6efd;
+            transition: .5s ease;
+		}
+	</style>
 </head>
 <body style="background-color:transparent">
     <?php
@@ -204,7 +211,7 @@
 							</div>
                         </div>
 						<div class="card-footer pb-3 pt-0 bg-transparent border-0">
-							<input class="btn btn-primary" type="submit" name="add" value="Add to Cart"/>
+							<input class="btn btn-primary addCart" type="submit" name="add" value="Add to Cart"/>
 						</div>
 					</div>
 					</form>
@@ -212,7 +219,7 @@
 	<?php
 					$i++; //number of items in row
 					if($i % 4 == 0) { //5 items per row display
-						echo "</ul><ul class='nav col-md-12 mb-3 justify-content-between'>"; //next row display
+						echo "</ul><ul class='nav col-md-12 mb-3 mt-3 justify-content-between'>"; //next row display
 						$i = 0;
 					}
 

@@ -165,7 +165,7 @@
     <header class="shadow p-3 mb-0 border-bottom bg-white h-20">
         <div class="container-fluid d-grid gap-3 align-items-center">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <a href="" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <img src="img/logo.jpg" height="50" role="img" />
                 <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
             </a>
@@ -212,13 +212,13 @@
                             </a>
                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                                 <li><a class="dropdown-item" href="client/profile.php">Edit Account</a></li>
-                                <li><a class="dropdown-item" href="client/report.php">Orders</a></li>
+                                <li><a class="dropdown-item" href="client/report.php">Order History</a></li>
                                 <li><a class="dropdown-item" href="main.php?action=logout">Log out</a></li>
                                 
                             </ul>
                         </div>
                         &nbsp;&nbsp;&nbsp;
-                        <a href="client/cart.php?branch=<?php echo $chosenBranch ?>" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <a href="client/cart.php?branch=<?php echo $chosenBranch ?>" class="cart d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                         <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
                             <img src="img/cart4.svg" width="32" height="32"/>
                         </a>
@@ -278,11 +278,11 @@
                                 </div>
                         </li>
                         <li style="width:23%">
-                            <a href="main.php?action=brand&brand=Rebisco" class="text-center text-dark h-100">
+                            <a href="main.php?action=brand&brand=Kopiko" class="text-center text-dark h-100">
                                 <div class="overlayText">     
                                     <img src="img/main/brand3.jpg" class="shadow d-block w-100" style="border-radius: 15px;"/>
                                     <div class="overlay">
-                                        <div class="textt"> Rebisco </div>
+                                        <div class="textt"> Kopiko </div>
                                     </div>
                                 </div>
                             </a>
