@@ -156,7 +156,7 @@ VALUES
     ('Black Twinpack','50g',11.25,10.25,'Beverages','../img/bev/k-blacktwinpack.png','Kopiko'),
 	('Brown Twinpack','53g',11.25,10.25,'Beverages','../img/bev/k-browntwinpack.png','Kopiko'),
 	('Creamy Caramelo Twinpack','50g',11.25,10.25,'Beverages','../img/bev/k-creamytwinpack.png','Kopiko'),
-	('Apple Green Tea Solo','230ml x 24pieces',260,259,'Beverages','../img/bev/c2-apple.png','C2'),
+	('Apple Green Tea Solo','230ml x 24pcs',260,259,'Beverages','../img/bev/c2-apple.png','C2'),
 	('Sugar-Free Apple Green Tea','355ml',20.50,19,'Beverages','../img/bev/c2-sugarapple.png','C2'),
 	('Classic Green Tea','335ml',20.50,19,'Beverages','../img/bev/c2-greentea.png','C2'),
 	('Lemon Green Tea','335ml',20.50,19,'Beverages','../img/bev/c2-lemontea.png','C2'),

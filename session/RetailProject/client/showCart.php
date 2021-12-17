@@ -145,36 +145,15 @@
         }
 
         function delPrompt(getItem, getBranch, getID) {
-            location.replace('cart.php?id='+getID+'&branch='+getBranch+'&item='+getItem);
+            window.parent.location.replace('cart.php?id='+getID+'&branch='+getBranch+'&item='+getItem);
         }
         function del(getID, getBranch, getItem) {
-            location.replace('cart.php?action=delete&id='+getID+'&branch='+getBranch+'&item='+getItem);
+            window.parent.ocation.replace('cart.php?action=delete&id='+getID+'&branch='+getBranch+'&item='+getItem);
         }
         function back(getBranch) {
-            location.replace('cart.php?branch='+getBranch);
+            window.parent.location.replace('cart.php?branch='+getBranch);
         }
     </script>
-    <style>
-        #delete {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 9;
-            width: 30%;
-            height: 70%;
-        }
-        #content {
-            width: 100%;
-            height: 100%;
-        }
-        .cart {
-            overflow-y: scroll;
-        }
-        .cart::-webkit-scrollbar {
-            display: none;
-        }
-    </style>
   
 </head>
     <body>
@@ -210,11 +189,11 @@
                                     }
                         ?>
                             <div class="row align-items-center border-bottom">
-                                <div class="col-1">
+                                <div class="col-1 p-0">
                                     <button type="image" class="btn" onclick="delPrompt(<?php echo $itemID ?>, <?php echo $chosenBranch ?>, <?php echo $id ?>)" class="img align-middle d-block"><img src="trash.svg"></button>
                                 </div>
 
-                                <div class="col-4">
+                                <div class="col-4 p-0">
                                     <?php echo $itemName ?>
                                 </div>
 

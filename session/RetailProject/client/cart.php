@@ -1,6 +1,5 @@
 <?php
-    require '../env/userConnection.php';
-    // require 'http://localhost/CMSC_P3/session/RetailProject/env/UserAuth.php';
+    require '../env/connection.php';
     $chosenBranch = $brand = $item = $qty = $disable = $name = $id = "";
     $display = "none"; $opacity=1;
 
@@ -165,10 +164,10 @@
             height: 100%;
         }
     </style>
-  
+    <script src="../env/idle.js"></script>
 </head>
-    <body>
-        <div id="content" class="bg-danger bg-gradient" style="overflow-y: hidden;opacity: <?php echo $opacity ?>; height: 100%">
+    <body style="overflow-y: hidden; height: 100%;max-height: 100%">
+        <div id="content" style="opacity: <?php echo $opacity ?>">
         <div class="container-fluid h-100 bg-danger bg-gradient">
             <div class="row h-100 d-flex justify-content-between">
                 <div class="col-7 p-0">
@@ -313,6 +312,7 @@
                                             </a>
                                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                                                 <li><a class="dropdown-item" href="profile.php">Edit Account</a></li>
+                                                <li><a class="dropdown-item" href="report.php">Order History</a></li>
                                                 <li><a class="dropdown-item" href="../main.php?action=logout">Log out</a></li>
                                             </ul>
                                         </div>
@@ -322,7 +322,7 @@
                         </div>
                     </header> 
 
-                    <div class="container-fluid p-1">
+                    <div class="container-fluid p-3 pb-0">
                         <div class="row">
                             <div class="col-1"> </div>
                             <div class="col-5"> Product </div>
@@ -331,22 +331,101 @@
                             <div class="col-2"> Total </div>
                         </div>
 
-                        <div class="row align-items-center w-200" style="height:75%">
-                            <iframe src="showCart.php?id=<?php echo $id ?>&branch=<?php echo $branch ?>" class="p-0" style="height:100%; width:100%">
-                        </div>
-                    </div>
+                        <div style="overflow-y: scroll; overflow-x: hidden; height: 69%">
+                        <?php
+                            $sqlCart = "SELECT * FROM Ca_contains_I cai
+                                            INNER JOIN Cu_orders_Ca cca ON (cai.cart_ID = cca.cart_ID)
+                                            INNER JOIN Item i ON (cai.item_ID = i.item_ID)
+                                            WHERE cca.customer_ID='$id' AND cca.branch_ID='$branch'
+                                            AND cca.status=0
+                                            ORDER BY cai.item_ID ASC";
+                            $resCart = mysqli_query($conn, $sqlCart);
 
-                    <div class="container-fluid">
-                        <div class="row align-items-end border-top mt-4">
+                            if ($resCart) {
+                                while(($rowCart = mysqli_fetch_assoc($resCart))) {
+                                    $itemID = $rowCart['item_ID'];
+                                    $itemName = $rowCart['item_Name'];
+                                    $itemWeight = $rowCart['item_Weight'];
+                                    $itemQty = $rowCart['quantity'];
+                                    $itemTotal = $rowCart['total'];
+                                    $cartID = $rowCart['cart_ID'];
+
+                                    $sqlStock = "SELECT item_Stock FROM BI_has_I bii
+                                                    INNER JOIN B_has_BI bbi ON (bii.inventory_ID = bbi.inventory_ID)
+                                                    WHERE bii.item_ID = $itemID";
+                                    $resStock = mysqli_query($conn, $sqlStock);
+                                    $rowStock = mysqli_fetch_assoc($resStock);
+
+                                    if ($rowStock['item_Stock'] <= 0) {
+                                        $disable = "disabled";
+                                    } else {
+                                        $disable = "";
+                                    }
+                        ?>
+                            <div class="row align-items-center border-bottom p-0">
+                                <div class="col-1 p-0">
+                                    <button type="image" class="btn" onclick="delPrompt(<?php echo $itemID ?>, <?php echo $chosenBranch ?>, <?php echo $id ?>)" class="img align-middle d-block"><img src="trash.svg"></button>
+                                </div>
+
+                                <div class="col-5">
+                                    <?php echo $itemName ?>
+                                </div>
+
+                                <div class="col-2">
+                                    <?php echo $itemWeight ?>
+                                </div>
+
+                                <div class="col-2">
+                                    <form action="" class="my-auto" method="post">
+                                        <select <?php echo $disable ?> name="qty" class="select" onchange="changeQty('<?php echo $id ?>', '<?php echo $itemID ?>', this.value, '<?php echo $branch ?>');">
+                                        <?php
+                                            echo '<option value="'.$itemQty.'" selected>'.$itemQty.' </option>';
+                                        ?>
+                                            <option value="1"> 1 </option>
+                                            <option value="2"> 2 </option>
+                                            <option value="3"> 3 </option>
+                                            <option value="4"> 4 </option>
+                                            <option value="5"> 5 </option>
+                                            <option value="6"> 6 </option>
+                                            <option value="7"> 7 </option>
+                                            <option value="8"> 8 </option>
+                                            <option value="9"> 9 </option>
+                                            <option value="10"> 10 </option>
+                                            <option value="11"> 11 </option>
+                                            <option value="12"> 12 </option>
+                                            <option value="13"> 13 </option>
+                                            <option value="14"> 14 </option>
+                                            <option value="15"> 15 </option>
+                                            <option value="16"> 16 </option>
+                                            <option value="17"> 17 </option>
+                                            <option value="18"> 18 </option>
+                                            <option value="19"> 19 </option>
+                                            <option value="20"> 20 </option>
+                                        </select>
+                                    </form> 
+                                </div>
+
+                                <div class="col-2">
+                                    <span class="align-middle" id="totalEach-<?php echo $itemID ?>"> <?php echo $itemTotal ?> </span>
+                                </div>
+
+                            </div>
+                                        
+                        <?php
+                                }
+                            }
+                        ?>
+                        </div>
+                        <div class="row align-items-end">
                             <div class="col mt-4">
                                 <h6>Total:</h6>
                                 <h2 id="totalPrice">
                                     <?php echo $totalPrice ?>
                                 </h2>
                             </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 <form action="cart.php?action=order&id=<?php echo $id ?>&branch=<?php echo $branch ?>" method="post">
-                                    <button class="btn btn-sm btn-success"> Order </button>
+                                    <button class="btn btn-lg btn-success w-100 h-100"> Order </button>
                                 </form>
                             </div>
                         </div>
