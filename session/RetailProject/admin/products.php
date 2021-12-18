@@ -45,20 +45,21 @@
         <?php include "./components/nav.php"?>
 
         <div class="container mt-5">
-                <h1>Inventory</h1>    
+                <h1>Products</h1>    
         </div>
 
         <div class="container mt-5  p-2 text-dark bg-transparent" >
             <div class="row align-items-center">
-                <!-- <div class="col">
+            <?php if($_SESSION['admin']==1){  ?>
+                <div class="col">
                 <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#newItemModal">
                         New item
                     </button>
-                </div> -->
+                </div>
+            <?php } ?>
                 <div class="col">
                
                 </div>
-        <?php if($_SESSION['admin']!=1){  ?>
                 <div class="col">
                     <form class="d-flex container-sm mx-auto mt-3 mb-3">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -67,23 +68,32 @@
                 </div>
             </div>
         </div>
-
+       
         <div class="container mt-2 bg-transparent ">
-   
+      
             <table class="table table-striped table-hover table-success ">
                 <thead>
                     <tr>
                         <th scope="col">Image</th>
                         <th scope="col">Item ID</th>
                         <th scope="col">Name</th>
+                        <th scope="col">Weight/Volume</th>
                         <th scope="col">Retail Price</th>
                         <th scope="col">Wholesale Price</th>
                         <th scope="col">Category</th>
                         <th scope="col">Brand</th>
-                        <th scope="col">Stock</th>
+                        <?php 
+
+                        if($_SESSION['admin']==1){  ?>
                         <th scope="col">Edit</th>
                         <th scope="col">Delete</th>
-                        <th scope="col">Add Stock</th>
+                        <?php
+                        }else{  ?>
+
+                        <th scope="col">Action</th>
+                        <?php 
+                        }
+                        ?>
                                 
                     </tr>
                 </thead>
@@ -92,26 +102,28 @@
                     <?php
                         $branchID = $_SESSION['branchID'] ;
                         $inventoryID=$_SESSION['inventoryID'];
-                        $inventory_query = "SELECT item_Image,item_ID, item_Name, item_RetailPrice, item_WholesalePrice, item_Category, item_Brand, item_Stock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id = '$branchID';"; 
-                        $inventory_result = mysqli_query($conn,$inventory_query);
-                        $inventory_Check = mysqli_num_rows($inventory_result);
+                        $query = "SELECT * from item;"; 
+                        $result = mysqli_query($conn,$query);
+                        $Check = mysqli_num_rows($result);
                     
-                        if ($inventory_Check>0) {                                                       
-                            while($inventory_row = mysqli_fetch_assoc($inventory_result)) {
+                        if ($Check>0) {                                                       
+                            while($row = mysqli_fetch_assoc($result)) {
                                 echo "<tr class=\"fs-6\">"?>
 
-                                <td><img src="<?php echo $inventory_row["item_Image"]?>"  style="width: 100px; height: 100px;"></img></td>
-                                <?php echo "<td>" . $inventory_row["item_ID"] . "</td>
-                                    <td>" . $inventory_row["item_Name"] . "</td>
-                                    <td>" . $inventory_row["item_RetailPrice"]. "</td>
-                                    <td>" . $inventory_row["item_WholesalePrice"]. "</td>
-                                    <td>" . $inventory_row["item_Category"]. "</td>
-                                    <td>" . $inventory_row["item_Brand"]."</td>
-                                    <td>" . $inventory_row["item_Stock"]."</td>
-                                    <td>";
-                                    $id =  $inventory_row["item_ID"];
+                                <td><img src="<?php echo $row["item_Image"]?>"  style="width: 100px; height: 100px;"></img></td>
+                                <?php echo "<td>" . $row["item_ID"] . "</td>
+                                    <td>" . $row["item_Name"] . "</td>
+                                    <td>" . $row["item_Weight"]. "</td>
+                                    <td>" . $row["item_RetailPrice"]. "</td>
+                                    <td>" . $row["item_WholesalePrice"]. "</td>
+                                    <td>" . $row["item_Category"]. "</td>
+                                    <td>" . $row["item_Brand"]."</td>
+                                  
+                                   ";
+                                    $id =  $row["item_ID"];
+                                    if($_SESSION['admin']==1){
                                     ?>
-
+                                    <td>
                                         <!-- Button trigger modal -->
                                         <button type="button" class="badge btn btn-primary" onclick="getDetails( <?php  echo $id;?>)">Edit</button>
                                   
@@ -124,20 +136,26 @@
 
                                             <!-- <form action="UpdateStock.php" method="post">
                                                     <div class="input-group mb-3" style="width:100%;">                                                                               
-                                                        <input type="number" style="display:none;" value="<?php echo $inventory_row["item_ID"]?>" name="Item_ID" >
+                                                        <input type="number" style="display:none;" value="<?php echo $row["item_ID"]?>" name="Item_ID" >
                                                         <input type="number" style="display:none;" value="<?php echo $inventoryID?>" name="inventory_ID" >
                                                         <button class="badge btn btn-danger text-light " name="deleteStock" type="submit" id="button-addon2" >Delete</button>
                                                     </div>
                                                 </form> -->
                                                 <!-- <button type="submit" class="btn btn-danger" name="Delete">
-                                                    <a class="text-light"href="delete.php?delete_item_id=<?php echo $inventory_row["item_ID"]?>&inventoryID=<?php echo $branchID ?>">DELETE</a>
+                                                    <a class="text-light"href="delete.php?delete_item_id=<?php echo $row["item_ID"]?>&inventoryID=<?php echo $branchID ?>">DELETE</a>
                                                 </button> -->
                                             </td>
-                                            <td class="text-center">
-                                                <button type="button" class="badge btn btn-secondary" onclick="getInfo( <?php  echo $id ;?>)">Update Stock</button>
-                                            </td >                                                                                                                                                                                       
-                                        </tr>
+                                                                                                                                                                                                                                 
+                                        
                                         <?php
+                                    }else{
+                                        ?>
+                                        <td>
+                                        <button type="button" class="badge btn btn-secondary" onclick="getInfo( <?php  echo $id ;?>)">Order</button>
+                                    </td>
+                                        </tr>
+                                      <?php
+                                    }
                                 }
                             }                        
                         ?>
@@ -145,56 +163,10 @@
             </table>
     
         </div>
-    <?php } else{ ?>
-
-    <?php
-        
-          $branch_query = "SELECT * from branch;"; 
-          $branch_result = mysqli_query($conn,$branch_query);
-          $branch_Check = mysqli_num_rows($branch_result);
-          if ($branch_Check>0) {                                                       
-            while($branch_row = mysqli_fetch_assoc($branch_result)) {
-                $branchID=$branch_row["branch_ID"];
-                $branchName=$branch_row["branch_Name"];
-    ?>
-
-            
-                <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php  echo $branchID ;?>" aria-expanded="false" aria-controls="collapseOne">
-                                   <?php  echo  $branchName ;?> Branch
-                                </button>
-                                </h2>
-                                <div id="collapse<?php  echo $branchID ;?>" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
-                                    <div class="accordion-body bg-dark bg-opacity-10">
-                                        <div class="row justify-content-center ">
-                                            <div class="col-3">
-                                            Branch ID : <?php  echo $branchID ;?>
-                                            </div>
-                                            <div class="col-3">
-                                            Branch Address: <?php  echo $branch_row["branch_Address"]; ;?>
-                                            </div>
-                                            <div class="col-3">
-                                            Low on Stocks: 
-                                            </div>
-                                            <div class="col-3">
-                                            Available Products:
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                        </div>
-                </div>
-            
 
 
-    <?php 
-            }
-        }
 
-    }; 
-    ?>
+
     <!-- JavaScript Bundle with Popper -->
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
@@ -206,13 +178,14 @@
 
     <script type="text/javascript">
 
-
+        //for update products
         function getDetails(id){
            
             $.post("update.php",{updateId:id},function(data,status){
                 var json=JSON.parse(data);
                 $("#update_ID").val(json.item_ID);
                 $("#updateItem_Name").val(json.item_Name);
+                $("#updateItemWeight").val(json.item_Weight);
                 $('#updateRetail_Price').val(json.item_RetailPrice);
                 $('#updateWholesale_Price').val(json.item_WholesalePrice);
                 $('#update_Category').val(json.item_Category);
@@ -224,20 +197,7 @@
             $('#updateItemModal').modal('show');
         };
 
-        function getInfo(itemId){
-            $('#stockModal').modal('show');
-           
-
-            $.post("update.php",{itemId:itemId},function(data,status){
-                var json=JSON.parse(data);
-                $("#Item_ID").val(json.item_ID);
-                $("#Inventory_ID").val(json.inventory_ID);
-                // alert("Data: " + data );
-              
-            });
-            
-        };
-
+        //to delete products
         function deleteInfo(itemId){
           
             $('#deleteModal').modal('show');
@@ -247,6 +207,19 @@
                 var json=JSON.parse(data);
                 $("#delItem_ID").val(json.item_ID);
                 $("#delInventory_ID").val(json.inventory_ID);
+                // alert("Data: " + data );
+              
+            });
+            
+        };
+        //to order products
+        function getInfo(itemId){
+            $('#stockModal').modal('show');
+        //    alert("Data: " + itemId);
+
+            $.post("update.php",{productID:itemId},function(data,status){
+                var json=JSON.parse(data);
+                $("#Item_ID").val(json.item_ID);
                 // alert("Data: " + data );
               
             });
@@ -329,6 +302,11 @@
                             <input type="text" class="form-control" id="updateItem_Name" name="updateItem_Name">
                         </div>
 
+                        <div class="col-6">
+                            <label for="updateItemWeight" class="form-label">Weight/Volume</label>
+                            <input type="text" class="form-control" name="updateItemWeight"id="updateItemWeight"  required>
+                        </div>
+
                         <input type="hidden" class="form-control" id="update_ID" name="updateItem_ID">
 
                         <div class="col-md-6">
@@ -377,8 +355,6 @@
     </div>
 
 
- 
-
     <!-- delete Stock Modal ##################################-->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"  aria-hidden="true">
         <div class="modal-dialog">
@@ -390,7 +366,7 @@
 
                 <div class="modal-body">
                     
-                    <form class="row g-3" action="delete.branch.php" method="post">   
+                    <form class="row g-3" action="deleteStock.php" method="post">   
                                                           
                         <input type="hidden" id="delItem_ID" name="delItem_ID" >
 
@@ -429,6 +405,10 @@
                                         <label for="ItemName" class="form-label">Item name</label>
                                         <input type="text" class="form-control" name="ItemName" required>
                                     </div>
+                                    <div class="col-6">
+                                        <label for="ItemWeight" class="form-label">Weight/Volume</label>
+                                        <input type="text" class="form-control" name="ItemWeight" required>
+                                    </div>
                                     <div class="col-md-6">
                                         <label for="Retail_Price" class="form-label">Retail Price</label>
                                         <input type="number" class="form-control" name="RetailPrice" min=0 required>
@@ -451,10 +431,7 @@
                                         <label for="Image" class="form-label">Image</label>
                                         <input type="text" class="form-control" name="Image" required>
                                     </div>
-                                    <div class="col-md-6">
-                                        <label for="Stock" class="form-label">Stock</label>
-                                        <input type="number" class="form-control" name="Stock"  min=0 required>
-                                    </div>
+             
                                     <div class="col-md-6">
                                         <label for="adminPass" class="form-label">Admin Password</label>
                                         <input type="password" class="form-control" name="AdminPass" required>
@@ -471,55 +448,49 @@
                             </div>
                         </div>
                     </div>
-                </div>        
-                
-                <!-- Update Stock Modal ##################################-->
-                <div class="modal fade" id="stockModal" tabindex="-1" aria-labelledby="stockModalLabel"  aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="stockModalLabel">Update Stock</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-
-                            <div class="modal-body">
-                                
-                                <form class="row g-3" action="UpdateStock.php" method="post">
-
-                                    
-
-                                    <div class="col-md-6">
-                                        <label for="itemStock" class="form-label">Quantity</label>
-                                        <input type="number" class="form-control "   id="itemStock" name="itemStock" min=1 value=0 required>
-                                    </div>
-                                                                
-                                    <input type="hidden" id="Item_ID" name="Item_ID">
-
-                                    <input type="hidden" id="Inventory_ID" name="Inventory_ID">
-
-                                    <div class="col-md-6">
-                                        <label for="adminPass" class="form-label">Admin Password</label>
-                                        <input type="password" class="form-control" name="AdminPass" required>
-                                    </div>
-                                    <div class="col-12">
-                                    <button class="btn btn-primary text-light " name="addStock" type="submit" id="button-addon2" >Increase Stock</button>
-                                    
-                                    </div>
-
-                                    <div class="col-12">
-                                    <button class="btn btn-danger text-light " name="decreaseStock" type="submit" id="button-addon2" >Decrease Stock</button>                                          
-                                    </div>
-                                                                                            
-                                </form>
-                            </div>
-
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>                                               
-                            </div>
-                        </div>
-                    </div>
-                </div>     
+                </div>          
                            
+    <!-- Order Modal ##################################-->
+    <div class="modal fade" id="stockModal" tabindex="-1" aria-labelledby="stockModalLabel"  aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="stockModalLabel">Order Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
+                <div class="modal-body">
+                    
+                    <form class="row g-3" action="products.order.php" method="post">
+
+                        
+
+                        <div class="col-md-6">
+                            <label for="itemStock" class="form-label">Quantity</label>
+                            <input type="number" class="form-control " id="itemStock" name="itemStock" min=1 value=0 required>
+                        </div>
+                                                       
+                        <input type="text" id="Item_ID" name="Item_ID" >
+
+                        <input type="text" id="Inventory_ID" name="Inventory_ID" value=" <?php echo $_SESSION['inventoryID'] ?>" >
+
+                        <div class="col-md-6">
+                            <label for="adminPass" class="form-label">Admin Password</label>
+                            <input type="password" class="form-control" name="AdminPass" required>
+                        </div>
+                        <div class="col-12">
+                        <button class="btn btn-primary text-light " name="orderProduct" type="submit" id="button-addon2" >Order</button>
+                        
+                        </div>
+                                                                                 
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>                                               
+                </div>
+            </div>
+        </div>
+    </div>    
   </body>
 </html>
