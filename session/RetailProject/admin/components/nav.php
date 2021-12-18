@@ -30,21 +30,37 @@
                   <a class="nav-link active" aria-current="page"  href="inventory.php">Inventory</a>
               </li>
 
+              <li class="nav-item">
+                  <a class="nav-link active" aria-current="page"  href="products.php">Products</a>
+              </li>
+
               <li class="nav-item dropdown">
                   <!-- <a class="nav-link dropdown-toggle" href="#" id="dropdown07XL" data-bs-toggle="dropdown" aria-expanded="false"><img style="height:40px; width:40px;"src="https://scontent.fcyz2-1.fna.fbcdn.net/v/t39.30808-6/244976937_4755597054502756_2532027396837009658_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=ZROV0RFscw4AX8mWKB7&_nc_oc=AQlG-yw4ReOnGBii9qNCnr6nbkV1UJEiorGnZEUAumEx4A5g_P-Sl99BXz_izO0vsaA&_nc_ht=scontent.fcyz2-1.fna&oh=54f2088dca621bc979648d163537c9d8&oe=61B5984E" class="rounded-circle" alt="profile"></a> -->
                   <a class="nav-link dropdown-toggle active" href="#" id="dropdown07XL" data-bs-toggle="dropdown" aria-expanded="false">Orders</a>
                   <ul class="dropdown-menu" aria-labelledby="dropdown07XL">
                     <li>
-                      <a class="dropdown-item " href="order.pending.php">Orders</a>
+                      <a class="dropdown-item " href="order.pending.php">Pending</a>
                     </li>
                     <li>
-
+                        <a class="dropdown-item " href="order.delivered.php">Delivered</a>
                     </li>
                   </ul>
               </li>
 
-              <li class="nav-item">
-                  <a class="nav-link active" aria-current="page"href="financialReport.php">Financial Report</a>
+              <li class="nav-item dropdown">
+                  <!-- <a class="nav-link dropdown-toggle" href="#" id="dropdown07XL" data-bs-toggle="dropdown" aria-expanded="false"><img style="height:40px; width:40px;"src="https://scontent.fcyz2-1.fna.fbcdn.net/v/t39.30808-6/244976937_4755597054502756_2532027396837009658_n.jpg?_nc_cat=102&ccb=1-5&_nc_sid=09cbfe&_nc_ohc=ZROV0RFscw4AX8mWKB7&_nc_oc=AQlG-yw4ReOnGBii9qNCnr6nbkV1UJEiorGnZEUAumEx4A5g_P-Sl99BXz_izO0vsaA&_nc_ht=scontent.fcyz2-1.fna&oh=54f2088dca621bc979648d163537c9d8&oe=61B5984E" class="rounded-circle" alt="profile"></a> -->
+                  <a class="nav-link dropdown-toggle active" href="#" id="dropdown07XL" data-bs-toggle="dropdown" aria-expanded="false">Finacial Report</a>
+                  <ul class="dropdown-menu" aria-labelledby="dropdown07XL">
+                    <li>
+                      <a class="dropdown-item " href="order.pending.php">Summary</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item " href="order.delivered.php">Expenses</a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item " href="order.delivered.php">Revenue</a>
+                    </li>
+                  </ul>
               </li>
 
 

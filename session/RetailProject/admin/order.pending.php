@@ -62,7 +62,7 @@
                     <?php
                     $branchID = $_SESSION['branchID'] ;
                     if($_SESSION['admin']==1){ 
-                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart ; ";
+                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1; ";
                     }else{
                         $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
                     }
