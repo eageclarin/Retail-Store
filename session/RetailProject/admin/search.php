@@ -1,3 +1,8 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+    <link rel="stylesheet" href="components/admin.css"/>
+    </head>
 <?php
 
 include '../env/connection.php';
@@ -12,11 +17,13 @@ if (isset($_POST['search'])) {
 
    while ($Result = MySQLi_fetch_array($ExecQuery)) {
        ?>
-
-   <li class="list-group-item" onclick='fill("<?php echo $Result["item_Name"]; ?>")'>
+    
+   <li class="list-group-item" id="displayItem" onclick='fill("<?php echo $Result["item_Name"]; ?>")'>
    <a>
        <?php echo $Result['item_Name']; ?>
    </li></a>
    <?php
 }}
 ?>
+
+</html>

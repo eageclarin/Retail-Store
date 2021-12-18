@@ -36,6 +36,7 @@
 
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+        <link rel="stylesheet" href="components/admin.css"/>
 
         <title>Admin | Inventory</title>
         
@@ -60,14 +61,22 @@
                
                 </div>
         <?php if($_SESSION['admin']!=1){  ?>
-                <div class="col">
-                <form class="d-flex container-sm mx-auto mt-3 mb-3" method="post">
-                        <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="search" id="search">
-                        <input class="btn btn-primary" type="submit" name="searchSubmit" value="Search">
-                        <input class="btn btn-primary" type="submit" name="searchAll" value="All">
-                    </form>
-                    <ul class="list-group" id="display"></ul>
-                </div>
+            
+                <div class="col"> <!-- SEARCH BAR-->
+                <div class="searchBar"> <!-- class here not defined yet-->
+                    <form class="d-flex container-sm mx-auto mt-3 mb-3" method="post" style="float: right;">
+                        <ul class="list-group">    
+                            <div  data-bs-toggle="dropdown" >
+                                <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="search" id="search" style="width:400px; margin-bottom: 0px;">
+                            </div>
+                            <div class="dropdown-menu" id="display" style="width:400px; cursor:pointer;" ></div>
+                         </ul>  
+                        <input class="btn btn-primary" type="submit" name="searchSubmit" value="Search" style="height: 40px; float: right; padding: 5px; margin: 5px;">
+                        <input class="btn btn-primary" type="submit" name="searchAll" value="All" style="height: 40px; width: 40px; float: right; padding: 5px; margin: 5px;">       
+                    </form> 
+                </div> <!-- end of class="searchBar"-->
+                </div> <!-- end of class="col"-->
+               
             </div>
         </div>
 
@@ -98,12 +107,11 @@
                         if (!isset($_POST['searchSubmit'])) {
                             $inventory_query = "SELECT item_Image,item_ID, item_Name, item_RetailPrice, item_WholesalePrice, item_Category, item_Brand, item_Stock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id = '$branchID';"; 
                             
-                        }else {
+                        }else { // if search is clicked, show search items
                             $itemName = $_POST['search']; 
-                            //$inventory_query = "SELECT item_Image,item_ID, item_Name, item_RetailPrice, item_WholesalePrice, item_Category, item_Brand, item_Stock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id = '$branchID' AND item_Name='$itemName';"; 
                             $inventory_query ="SELECT * FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id = '$branchID' AND item_Name LIKE '%$itemName%';";
                         }
-                        if (isset($_POST['seachAll'])) {
+                        if (isset($_POST['seachAll'])) { //if "all" is clicked, show all items
                             unset($_POST['searchSubmit']);
                         }
                         

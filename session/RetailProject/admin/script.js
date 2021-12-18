@@ -9,6 +9,7 @@ function fill(Value) {
         var name = $('#search').val();
         if (name == "") {  
             $("#display").html("");
+
         }
         else {
             $.ajax({
