@@ -28,6 +28,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <!-- jquery -->
         <script src="jquery-3.5.1.min.js"></script>
+        <script type="text/javascript" src="script.js"></script>
 
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -58,11 +59,13 @@
                 <div class="col">
                
                 </div>
-                <div class="col">
-                    <form class="d-flex container-sm mx-auto mt-3 mb-3">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-primary" type="submit">Search</button>
+                <div class="col"> <!-- SEARCH -->
+                    <form class="d-flex container-sm mx-auto mt-3 mb-3" method="post">
+                        <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="search" id="search">
+                        <input class="btn btn-primary" type="submit" name="searchSubmit" value="Search">
+                        <input class="btn btn-primary" type="submit" name="searchAll" value="All">
                     </form>
+                    <ul class="list-group" id="display"></ul>
                 </div>
             </div>
         </div>
@@ -91,7 +94,20 @@
                     <?php
                         $branchID = $_SESSION['branchID'] ;
                         $inventoryID=$_SESSION['inventoryID'];
-                        $inventory_query = "SELECT item_Image,item_ID, item_Name, item_RetailPrice, item_WholesalePrice, item_Category, item_Brand, item_Stock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id = '$branchID';"; 
+                        if (!isset($_POST['searchSubmit'])) {
+                            $inventory_query = "SELECT item_Image,item_ID, item_Name, item_RetailPrice, item_WholesalePrice, item_Category, item_Brand, item_Stock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id = '$branchID';"; 
+                            
+                        }else {
+                            $itemName = $_POST['search']; 
+                            //$inventory_query = "SELECT item_Image,item_ID, item_Name, item_RetailPrice, item_WholesalePrice, item_Category, item_Brand, item_Stock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id = '$branchID' AND item_Name='$itemName';"; 
+                            $inventory_query ="SELECT * FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id = '$branchID' AND item_Name LIKE '%$itemName%';";
+                        }
+                        if (isset($_POST['seachAll'])) {
+                            unset($_POST['searchSubmit']);
+                        }
+                        
+                        
+                        
                         $inventory_result = mysqli_query($conn,$inventory_query);
                         $inventory_Check = mysqli_num_rows($inventory_result);
                     
