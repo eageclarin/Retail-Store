@@ -1,6 +1,5 @@
 <?php
-    require '../env/userConnection.php';
-    // require 'http://localhost/CMSC_P3/session/RetailProject/env/UserAuth.php';
+    require '../env/connection.php';
     $chosenBranch = $brand = $item = $qty = $disable = $name = $id = "";
     $display = "none"; $opacity=1;
 
@@ -165,9 +164,9 @@
             height: 100%;
         }
     </style>
-  
+    <script src="../env/idle.js"></script>
 </head>
-    <body>
+    <body style="overflow-y: hidden; height: 100%;max-height: 100%">
         <div id="content" style="opacity: <?php echo $opacity ?>">
         <div class="container-fluid h-100 bg-danger bg-gradient">
             <div class="row h-100 d-flex justify-content-between">
@@ -313,6 +312,7 @@
                                             </a>
                                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                                                 <li><a class="dropdown-item" href="profile.php">Edit Account</a></li>
+                                                <li><a class="dropdown-item" href="report.php">Order History</a></li>
                                                 <li><a class="dropdown-item" href="../main.php?action=logout">Log out</a></li>
                                             </ul>
                                         </div>
@@ -322,7 +322,7 @@
                         </div>
                     </header> 
 
-                    <div class="container-fluid">
+                    <div class="container-fluid p-3 pb-0">
                         <div class="row">
                             <div class="col-1"> </div>
                             <div class="col-5"> Product </div>
@@ -331,6 +331,7 @@
                             <div class="col-2"> Total </div>
                         </div>
 
+                        <div style="overflow-y: scroll; overflow-x: hidden; height: 69%">
                         <?php
                             $sqlCart = "SELECT * FROM Ca_contains_I cai
                                             INNER JOIN Cu_orders_Ca cca ON (cai.cart_ID = cca.cart_ID)
@@ -344,6 +345,7 @@
                                 while(($rowCart = mysqli_fetch_assoc($resCart))) {
                                     $itemID = $rowCart['item_ID'];
                                     $itemName = $rowCart['item_Name'];
+                                    $itemWeight = $rowCart['item_Weight'];
                                     $itemQty = $rowCart['quantity'];
                                     $itemTotal = $rowCart['total'];
                                     $cartID = $rowCart['cart_ID'];
@@ -360,8 +362,8 @@
                                         $disable = "";
                                     }
                         ?>
-                            <div class="row align-items-center">
-                                <div class="col-1">
+                            <div class="row align-items-center border-bottom p-0">
+                                <div class="col-1 p-0">
                                     <button type="image" class="btn" onclick="delPrompt(<?php echo $itemID ?>, <?php echo $chosenBranch ?>, <?php echo $id ?>)" class="img align-middle d-block"><img src="trash.svg"></button>
                                 </div>
 
@@ -370,11 +372,11 @@
                                 </div>
 
                                 <div class="col-2">
-                                    0.00g
+                                    <?php echo $itemWeight ?>
                                 </div>
 
                                 <div class="col-2">
-                                    <form action="" method="post">
+                                    <form action="" class="my-auto" method="post">
                                         <select <?php echo $disable ?> name="qty" class="select" onchange="changeQty('<?php echo $id ?>', '<?php echo $itemID ?>', this.value, '<?php echo $branch ?>');">
                                         <?php
                                             echo '<option value="'.$itemQty.'" selected>'.$itemQty.' </option>';
@@ -413,17 +415,17 @@
                                 }
                             }
                         ?>
-
-                        <div class="row align-items-end border-top mt-4">
+                        </div>
+                        <div class="row align-items-end">
                             <div class="col mt-4">
                                 <h6>Total:</h6>
                                 <h2 id="totalPrice">
                                     <?php echo $totalPrice ?>
                                 </h2>
                             </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 <form action="cart.php?action=order&id=<?php echo $id ?>&branch=<?php echo $branch ?>" method="post">
-                                    <button class="btn btn-sm btn-success"> Order </button>
+                                    <button class="btn btn-lg btn-success w-100 h-100"> Order </button>
                                 </form>
                             </div>
                         </div>

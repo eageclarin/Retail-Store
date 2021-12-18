@@ -50,14 +50,15 @@
 
         <div class="container mt-5  p-2 text-dark bg-transparent" >
             <div class="row align-items-center">
-                <div class="col">
+                <!-- <div class="col">
                 <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#newItemModal">
                         New item
                     </button>
-                </div>
+                </div> -->
                 <div class="col">
                
                 </div>
+        <?php if($_SESSION['admin']!=1){  ?>
                 <div class="col">
                     <form class="d-flex container-sm mx-auto mt-3 mb-3">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
@@ -68,7 +69,7 @@
         </div>
 
         <div class="container mt-2 bg-transparent ">
-      
+   
             <table class="table table-striped table-hover table-success ">
                 <thead>
                     <tr>
@@ -144,9 +145,56 @@
             </table>
     
         </div>
+    <?php } else{ ?>
+
+    <?php
+        
+          $branch_query = "SELECT * from branch;"; 
+          $branch_result = mysqli_query($conn,$branch_query);
+          $branch_Check = mysqli_num_rows($branch_result);
+          if ($branch_Check>0) {                                                       
+            while($branch_row = mysqli_fetch_assoc($branch_result)) {
+                $branchID=$branch_row["branch_ID"];
+                $branchName=$branch_row["branch_Name"];
+    ?>
+
+            
+                <div class="accordion" id="accordionExample">
+                        <div class="accordion-item">
+                                <h2 class="accordion-header" id="headingOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php  echo $branchID ;?>" aria-expanded="false" aria-controls="collapseOne">
+                                   <?php  echo  $branchName ;?> Branch
+                                </button>
+                                </h2>
+                                <div id="collapse<?php  echo $branchID ;?>" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                    <div class="accordion-body bg-dark bg-opacity-10">
+                                        <div class="row justify-content-center ">
+                                            <div class="col-3">
+                                            Branch ID : <?php  echo $branchID ;?>
+                                            </div>
+                                            <div class="col-3">
+                                            Branch Address: <?php  echo $branch_row["branch_Address"]; ;?>
+                                            </div>
+                                            <div class="col-3">
+                                            Low on Stocks: 
+                                            </div>
+                                            <div class="col-3">
+                                            Available Products:
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+                </div>
+            
 
 
+    <?php 
+            }
+        }
 
+    }; 
+    ?>
     <!-- JavaScript Bundle with Popper -->
     
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous">
@@ -329,52 +377,7 @@
     </div>
 
 
-    <!-- Update Stock Modal ##################################-->
-    <div class="modal fade" id="stockModal" tabindex="-1" aria-labelledby="stockModalLabel"  aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="stockModalLabel">Update Stock</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-
-                <div class="modal-body">
-                    
-                    <form class="row g-3" action="UpdateStock.php" method="post">
-
-                        
-
-                        <div class="col-md-6">
-                            <label for="itemStock" class="form-label">Quantity</label>
-                            <input type="number" class="form-control "   id="itemStock" name="itemStock" min=1 value=0 required>
-                        </div>
-                                                       
-                        <input type="hidden" id="Item_ID" name="Item_ID">
-
-                        <input type="hidden" id="Inventory_ID" name="Inventory_ID">
-
-                        <div class="col-md-6">
-                            <label for="adminPass" class="form-label">Admin Password</label>
-                            <input type="password" class="form-control" name="AdminPass" required>
-                        </div>
-                        <div class="col-12">
-                        <button class="btn btn-primary text-light " name="addStock" type="submit" id="button-addon2" >Increase Stock</button>
-                        
-                        </div>
-
-                        <div class="col-12">
-                        <button class="btn btn-danger text-light " name="decreaseStock" type="submit" id="button-addon2" >Decrease Stock</button>                                          
-                        </div>
-                                                                                  
-                    </form>
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>                                               
-                </div>
-            </div>
-        </div>
-    </div>     
+ 
 
     <!-- delete Stock Modal ##################################-->
     <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"  aria-hidden="true">
@@ -387,7 +390,7 @@
 
                 <div class="modal-body">
                     
-                    <form class="row g-3" action="deleteStock.php" method="post">   
+                    <form class="row g-3" action="delete.branch.php" method="post">   
                                                           
                         <input type="hidden" id="delItem_ID" name="delItem_ID" >
 
@@ -468,7 +471,54 @@
                             </div>
                         </div>
                     </div>
-                </div>          
+                </div>        
+                
+                <!-- Update Stock Modal ##################################-->
+                <div class="modal fade" id="stockModal" tabindex="-1" aria-labelledby="stockModalLabel"  aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="stockModalLabel">Update Stock</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+
+                            <div class="modal-body">
+                                
+                                <form class="row g-3" action="UpdateStock.php" method="post">
+
+                                    
+
+                                    <div class="col-md-6">
+                                        <label for="itemStock" class="form-label">Quantity</label>
+                                        <input type="number" class="form-control "   id="itemStock" name="itemStock" min=1 value=0 required>
+                                    </div>
+                                                                
+                                    <input type="hidden" id="Item_ID" name="Item_ID">
+
+                                    <input type="hidden" id="Inventory_ID" name="Inventory_ID">
+
+                                    <div class="col-md-6">
+                                        <label for="adminPass" class="form-label">Admin Password</label>
+                                        <input type="password" class="form-control" name="AdminPass" required>
+                                    </div>
+                                    <div class="col-12">
+                                    <button class="btn btn-primary text-light " name="addStock" type="submit" id="button-addon2" >Increase Stock</button>
+                                    
+                                    </div>
+
+                                    <div class="col-12">
+                                    <button class="btn btn-danger text-light " name="decreaseStock" type="submit" id="button-addon2" >Decrease Stock</button>                                          
+                                    </div>
+                                                                                            
+                                </form>
+                            </div>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>                                               
+                            </div>
+                        </div>
+                    </div>
+                </div>     
                            
 
   </body>

@@ -49,10 +49,10 @@
 									INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
 									INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
 									INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-									WHERE bii.item_Stock > 0
+									WHERE i.item_Brand = '$brand'
+										AND bii.item_Stock > 0
 										AND bbi.branch_ID = '$branch'
 										OR i.item_Category = '$categ'
-										OR i.item_Brand = '$brand'
 									ORDER BY i.item_$order $sort
 								";
 						$resFilter = mysqli_query($conn, $sqlFilter);
@@ -62,10 +62,10 @@
 									INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
 									INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
 									INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-									WHERE bii.item_Stock > 0
+									WHERE i.item_Brand = '$brand'
+										AND bii.item_Stock > 0
 										AND bbi.branch_ID = '$branch'
 										AND i.item_Category = '$categ'
-										OR i.item_Brand = '$brand'
 									ORDER BY i.item_$order $sort
 								";
 						$resFilter = mysqli_query($conn, $sqlFilter);
@@ -108,9 +108,9 @@
 									INNER JOIN branchInventory bi ON (bi.inventory_ID = bii.inventory_ID)
 									INNER JOIN B_has_BI bbi ON (bbi.inventory_ID = bi.inventory_ID)
 									INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
-									WHERE bii.item_Stock > 0
+									WHERE i.item_Brand = '$brand'
+										AND bii.item_Stock > 0
 										AND bbi.branch_ID = '$branch'
-										OR i.item_Brand = '$brand'
 										OR i.item_Category = '$categ'
 									ORDER BY i.item_$order $sort
 								";
@@ -188,56 +188,57 @@
 					$itemPrice = $rowFilter['item_RetailPrice']; //item price
 					$itemImg = $rowFilter['item_Image']; //item image
 	?>
-				<li style="width:18%" class="py-2">
+				<li style="width:24%;" style="h-100" class="py-2">
 					<form action="addItem.php?itemID=<?php echo $itemID ?>&for=<?php echo $for ?>" method="post" target="_top">
 					<div class="card h-100 shadow bg-light" style="border-radius: 15px; text-decoration: none">
                         <img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="<?php echo $itemImg ?>" alt="<?php echo $itemName ?>">
                         <div class="container card-body">
 							<div class="row">
-								<div class="col-md-8">
-									<h7 class="card-title text-dark"><?php echo $itemName ?></h7>
-									<p class="card-text text-dark" style="font-size: 11px"><?php echo $itemWeight ?></p>
+								<div class="col-md-9">
+									<h7 class="card-title text-dark text-wrap" ><?php echo $itemName ?></h7>
+									<p class="card-text text-dark" style="font-size: 10px"><?php echo $itemWeight ?></p>
 								</div>
-								<div class="col-md-4 text-end">
+								<div class="col-md-3 text-end">
 									<h7 class="card-title text-primary">P<?php echo $itemPrice ?></h7>
 								</div>
 							</div>
                         </div>
 						<div class="card-footer pb-3 pt-0 bg-transparent border-0">
-						<input class="btn btn-primary" type="submit" name="add" value="Add to Cart"/>
+							<input class="btn btn-primary" type="submit" name="add" value="Add to Cart"/>
 						</div>
 					</div>
 					</form>
 				</li>
 	<?php
 					$i++; //number of items in row
-					if($i % 5 == 0) { //5 items per row display
+					if($i % 4 == 0) { //5 items per row display
 						echo "</ul><ul class='nav col-md-12 mb-3 justify-content-between'>"; //next row display
 						$i = 0;
 					}
 
 					if(++$row == $count) {
-						while ($i < 5) { //if less than 5 in row display, add extra hidden item until 4 items
-							echo '<li style="visibility:hidden; width: 18%">
+						while ($i % 4 != 0) { //if less than 5 in row display, add extra hidden item until 4 items
+							echo '<li style="width:24%;visibility:hidden" style="h-100" class="py-2">
 							<form action="" method="" target="">
-							<a href="" class="card shadow bg-light" style="border-radius: 15px; text-decoration: none; visibility:hidden;">
-								<img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="../img/main/brand.jpg" alt="Card image cap">
+							<div class="card h-100 shadow bg-light" style="border-radius: 15px; text-decoration: none">
+								<img class="card-img-top w-100" style="border-radius: 15px 15px 0 0;" src="<?php echo $itemImg ?>" alt="<?php echo $itemName ?>">
 								<div class="container card-body">
 									<div class="row">
-										<div class="col-md-8">
-											<h7 class="card-title text-dark"><?php echo $itemName ?></h7>
-											<p class="card-text text-dark" style="font-size: 11px"><?php echo $itemWeight ?></p>
-											<input type="hidden" name="itemID" value="<?php echo $itemID ?>" />
-											<input class="btn btn-primary" type="submit" name="add" value="Add to Cart"/>
+										<div class="col-md-9">
+											<h7 class="card-title text-dark text-wrap" ><?php echo $itemName ?></h7>
+											<p class="card-text text-dark" style="font-size: 10px"><?php echo $itemWeight ?></p>
 										</div>
-										<div class="col-md-4 text-end">
+										<div class="col-md-3 text-end">
 											<h7 class="card-title text-primary">P<?php echo $itemPrice ?></h7>
 										</div>
 									</div>
 								</div>
-							</a>
+								<div class="card-footer pb-3 pt-0 bg-transparent border-0">
+									<input class="btn btn-primary" type="submit" name="add" value="Add to Cart"/>
+								</div>
+							</div>
 							</form>
-							</li
+							</li>
 							';
 
 							$i++;

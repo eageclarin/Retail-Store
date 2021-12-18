@@ -8,14 +8,6 @@ if(isset($_POST['orderUpdate'])) {
     $cartID =  $_POST['pendingCart_ID'];
     $status =$_POST['status'];
 
-    switch ( $status) {
-        case "2":
-        case "3":
-          break;
-        default:
-        header('location: order.pending.php');
-      }
-
     $password = md5($_POST['AdminPass']);
     $admin_confirmation_query = "SELECT admin_Username FROM admin where admin.admin_Password='$password';";
     $admin_confirmation_result = mysqli_query($conn,$admin_confirmation_query);

@@ -40,22 +40,7 @@
   <body>
         <?php include "./components/nav.php"?>
 
-      
-        <ul class="nav justify-content-center">
-            <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="#">Active</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Link</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link disabled">Disabled</a>
-            </li>
-        </ul>
-      
+    
 
         <div class="container mt-5">
             <table class="table table-striped table-hover table-success">
@@ -68,7 +53,7 @@
                         <th scope="col">Date</th>
                         <th scope="col">Address</th>
                         <th scope="col">Status</th>
-                        <th scope="col">Action</th>
+                        
 
                         
                     </tr>
@@ -77,9 +62,9 @@
                     <?php
                     $branchID = $_SESSION['branchID'] ;
                     if($_SESSION['admin']==1){ 
-                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart ; ";
+                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=2; ";
                     }else{
-                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
+                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=2 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
                     }
                     $status = array("", "Pending", "Delivered","Cancelled");
                     $orders_result = mysqli_query($conn,$orders_query);
@@ -96,7 +81,7 @@
                                     <td>". $orders_row['order_Date'] ."</td>
                                     <td>". $orders_row['cust_ABrgy'] .", ".$orders_row['cust_ACity'] .", ".$orders_row['cust_AProvince'] .", ".$orders_row['cust_APostal'] ."</td>
                                     <td> " . $status[ $orders_row['status']]."</td>
-                                    <td>"?> <button type="button" class="badge btn btn-primary" onclick="orderStatus( <?php  echo $orders_row['cart_ID'];?>)">Update</button> <?php "</td>
+                                   
                                     </tr>";
                             }
                         } 
@@ -154,9 +139,22 @@ function showDetails(cartID){
           
       };
 
-
-
     </script>
+      <?php
+    if($_SESSION['confirm_err']==1){
+        echo '<script>
+        setTimeout(function(){  $(\'#passErr\').modal("show"); }, 500);
+        </script>';
+        $_SESSION['confirm_err']=0;
+    }
+    if($_SESSION['confirm_err']==2){
+        echo '<script>
+        setTimeout(function(){  $(\'#successModal\').modal("show"); }, 500);
+        </script>';
+        $_SESSION['confirm_err']=0;
+    }
+    ?>
+
     <!-- show items modal ##################################-->
     <div class="modal fade" id="showItems" tabindex="-1" aria-labelledby="showItemsLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
@@ -202,12 +200,12 @@ function showDetails(cartID){
                 <div class="modal-body">
                     
                     <form class="row g-3" action="order.update.php" method="post">   
-                        <input type="text" id="pendingCart_ID" name="pendingCart_ID" > 
+                        <input type="hidden" id="pendingCart_ID" name="pendingCart_ID" > 
 
                         <select class="form-select text-center bg-primary bg-opacity-25" aria-label="Default select example" name="status" required>
                             <option selected>Select Status</option>
-                            <option value="1">Delivered</option>
-                            <option value="2">Cancelled</option>
+                            <option value="2">Delivered</option>
+                            <option value="3">Cancelled</option>
                         </select>
 
                         <div class="col-md-12">

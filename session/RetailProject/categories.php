@@ -204,16 +204,17 @@
                             Brand: <?php echo $chosenBrand; ?>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-macos mx-0 shadow" style="width: 220px;">
-                            <li><a class="dropdown-item" href="categories.php?brand=All">All</a></li>
+                            <li><a class="dropdown-item" href="categories.php?brand=All">All Brands</a></li>
                             <li><a class="dropdown-item" href="categories.php?brand=Purefoods">Purefoods</a></li>
                             <li><a class="dropdown-item" href="categories.php?brand=Century">Century</a></li>
+                            <li><a class="dropdown-item" href="categories.php?brand=Mega">Mega</a></li>
                             <li><a class="dropdown-item" href="categories.php?brand=Datu+Puti">Datu Puti</a></li>
                             <li><a class="dropdown-item" href="categories.php?brand=Lorins">Lorins</a></li>
                             <li><a class="dropdown-item" href="categories.php?brand=White+King">White King</a></li>
-                            <li><a class="dropdown-item" href="categories.php?brand=Fiesta">Fiesta</a></li>
+                            <li><a class="dropdown-item" href="categories.php?brand=El Real">El Real</a></li>
                             <li><a class="dropdown-item" href="categories.php?brand=Kopiko">Kopiko</a></li>
+                            <li><a class="dropdown-item" href="categories.php?brand=C2">C2</a></li>
                             <li><a class="dropdown-item" href="categories.php?brand=Rebisco">Rebisco</a></li>
-                            <li><a class="dropdown-item" href="categories.php?brand=Libbys">Libbys</a></li>
                         </ul>
                         </h5>
                     </li>
