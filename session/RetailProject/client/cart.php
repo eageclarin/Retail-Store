@@ -47,8 +47,7 @@
         $itemStatus = $rowDeleted['item_Status'];
         $cartItem = $rowDeleted['item_ID'];
         if ($itemStatus == 1) {
-            $sqlDelItem = "DELETE FROM Ca_contains_I WHERE item_ID = $cartItem";
-            $resDelItem = mysqli_query($conn, $sqlDelItem);
+            header("location: cart.php?action=delete&id=$id&branch=$branch&item=$cartItem");
         }
     }
     
