@@ -46,7 +46,7 @@
         $row = mysqli_fetch_assoc($resTotal);
         $totalPrice = $row['total'];
     } else {
-        $totalPrice = 0;
+        $totalPrice = 0.00;
     }
 
     if (!empty($_GET['action'])) {
@@ -103,8 +103,9 @@
 
 <html>
 <head>
-<title> Cart </title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <title> Cart </title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script>
@@ -150,6 +151,13 @@
         }
     </script>
     <style>
+        body {
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            background: rgb(196,53,49);
+            background: linear-gradient(144deg, rgba(196,53,49,1) 0%, rgba(218,55,50,1) 26%, rgba(228,123,120,1) 78%);
+        }
         #delete {
             position: fixed;
             top: 50%;
@@ -166,15 +174,15 @@
     </style>
     <script src="../env/idle.js"></script>
 </head>
-    <body style="overflow-y: hidden; height: 100%;max-height: 100%">
+    <body>
         <div id="content" style="opacity: <?php echo $opacity ?>">
-        <div class="container-fluid h-100 bg-danger bg-gradient">
+        <div class="container-fluid">
             <div class="row h-100 d-flex justify-content-between">
                 <div class="col-7 p-0">
                     <header class="p-3 m-3 h-20 bg-white" style="border-radius: 15px">
                         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
                             <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                                <img src="../img/logo.jpg" height="50" role="img" />
+                                <img src="../img/logo.png" height="50" role="img" />
                                 <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
                             </a>
                             &nbsp; &nbsp; &nbsp;
@@ -224,22 +232,22 @@
                                     <h6 class="my-0 fw-bold">Shipping</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="form-check">
+                                    <div class="form-check mb-5">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            Grab
+                                            <img src="../img/cart/grab.png" width="60%">
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-4">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            <img src="../img/cart/foodpanda.png" width="60%">
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            Foodpanda
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                        <label class="form-check-label" for="flexRadioDefault1">
-                                            Angkas
+                                            <img src="../img/cart/angkas.png" width="60%">
                                         </label>
                                     </div>
                                 </div>
@@ -251,22 +259,22 @@
                                     <h6 class="my-0 fw-bold">Payment</h6>
                                 </div>
                                 <div class="card-body">
-                                    <div class="form-check">
+                                    <div class="form-check mb-4">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            Paypal
+                                            <img src="../img/cart/paypal.png" width="60%">
+                                        </label>
+                                    </div>
+                                    <div class="form-check mb-4">
+                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            <img src="../img/cart/bpi.png" width="60%">
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
                                         <label class="form-check-label" for="flexRadioDefault1">
-                                            Bank Transfer
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                                        <label class="form-check-label" for="flexRadioDefault1">
-                                            GCash
+                                            <img src="../img/cart/gcash.png" width="60%">
                                         </label>
                                     </div>
                                 </div>
@@ -436,16 +444,16 @@
         </div>
 
         <div id="delete" style="display: <?php echo $display ?>">
-            <div class="modal modal-alert position-static d-block bg-transparent d-block py-5" tabindex="-1" role="dialog" id="modalChoice">
+            <div class="modal modal-alert position-static d-block bg-transparent d-block py-5" class="deleteModal" tabindex="-1" role="dialog" id="modalChoice">
             <div class="modal-dialog bg-transparent" role="document">
-                <div class="modal-content rounded-4 shadow">
+                <div class="modal-content rounded-4">
                 <div class="modal-body p-4 text-center">
                     <h5 class="mb-0">Delete this item?</h5>
                     <p class="mb-0">You can always add this to cart again.</p>
                 </div>
-                <div class="modal-footer flex-nowrap p-0">
-                    <button type="button" onclick="del(<?php echo $id ?>,<?php echo $chosenBranch ?>,<?php echo $item ?>)" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0 border-right"><strong>Yes, delete</strong></button>
-                    <button type="button" onclick="back(<?php echo $chosenBranch ?>)" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 m-0 rounded-0" data-bs-dismiss="modal">No, mb mb</button>
+                <div class="modal-footer p-2 align-items-center">
+                    <button type="button" onclick="del(<?php echo $id ?>,<?php echo $chosenBranch ?>,<?php echo $item ?>)" class="btn btn-danger text-light w-100"><strong>Yes, delete</strong></button>
+                    <button type="button" onclick="back(<?php echo $chosenBranch ?>)" class="btn btn-outline-success text-success w-100" data-bs-dismiss="modal">No, sorry</button>
                 </div>
                 </div>
             </div>

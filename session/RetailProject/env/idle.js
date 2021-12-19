@@ -11,7 +11,7 @@ function updateTimer() {
         }; 
     };
 
-    
+    console.log(duration);
 };
 
 window.addEventListener("mousemove", resetTimer);

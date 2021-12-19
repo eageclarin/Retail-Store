@@ -28,7 +28,7 @@
            
 
     
-        $query = "UPDATE admin NATURAL join admin_contact SET admin.admin_Username='$username',
+        $query = "UPDATE admin NATURAL join admin_contact SET
         admin_contact.contact = '$contact', admin.admin_Password='$pass' 
         WHERE admin_ID = $id;";
 
@@ -38,7 +38,6 @@
         $result = mysqli_query($conn,$query);
     
         if($result){
-            $_SESSION['admin_User']= $username;
             $_SESSION['confirm_err']=2;
             header('location: inventory.php');
         }else{

@@ -111,8 +111,8 @@
     <header class="shadow p-3 mb-0 border-bottom bg-white h-20">
         <div class="container-fluid d-grid gap-3 align-items-center">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="../main.php" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
-                <img src="img/logo.jpg" height="50" role="img" />
+            <a href="main.php" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="img/logo.png" height="50" role="img" />
                 <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
             </a>
             &nbsp; &nbsp; &nbsp;
@@ -161,6 +161,7 @@
                             </a>
                             <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
                                 <li><a class="dropdown-item" href="#">Edit Account</a></li>
+                                <li><a class="dropdown-item" href="client/report.php">Order History</a></li>
                                 <li><a class="dropdown-item" href="main.php?action=logout">Log out</a></li>
                             </ul>
                         </div>

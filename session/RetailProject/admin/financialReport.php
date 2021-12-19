@@ -44,11 +44,45 @@
     </script>
 
  
-    <title>Admin | Summary</title>
+    <title>Admin | Financial Report</title>
     <script src="../env/idle.js"></script>
   </head>
   <body>
         <?php include "./components/nav.php"?>
+
+       
+        
+
+
+        <div class=" d-flex flex-column container bg-info mt-5">
+
+
+            <div class="container-fluid col align-self-center bg-primary">
+                <div class=" d-flex flex-column bd-highlight mb-3">
+                    <div class="p-2 bd-highlight">
+                        <div class=" d-flex justify-content-center">
+                        <form class="row g-3">
+                            <div class="col-auto">
+                                <label for="staticEmail2" class="visually-hidden">Email</label>
+                                <input type="text" readonly class="form-control-plaintext" id="staticEmail2" value="email@example.com">
+                            </div>
+                            <div class="col-auto">
+                                <label for="inputPassword2" class="visually-hidden">Password</label>
+                                <input type="password" class="form-control" id="inputPassword2" placeholder="Password">
+                            </div>
+                            <div class="col-auto">
+                                <button type="submit" class="btn btn-primary mb-3">Confirm identity</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                    <div class="p-2 bd-highlight">Flex item 2</div>
+                 
+                </div>
+            </div>
+
+
+        </div>
 
     
 

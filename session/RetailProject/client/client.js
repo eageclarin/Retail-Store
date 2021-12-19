@@ -47,7 +47,7 @@ $(document).ready(function () {
         username: 'Please enter Name.',
         email: {
           required: 'Please enter Email Address.',
-          email: 'Please enter a valid Email Address.',
+          email: 'Enter a valid Email Address.',
         },
         contact: {
           required: 'Please enter Contact.',
@@ -55,22 +55,22 @@ $(document).ready(function () {
         },
         password: {
           required: 'Please enter Password.',
-          minlength: 'Password must be at least 8 characters long.',          
+          minlength: 'Must be at least 8 characters.',          
         },
         confirmPassword: {
           required: 'Please enter Confirm Password.',
-          equalTo: 'Confirm Password do not match with Password.',
+          equalTo: "Passwords don't match.",
         },
         oldPassword: {
           required: 'Please enter old Password.',         
         },
         newPassword: {
           required: 'Please enter new Password.',    
-          minlength: 'Password must be at least 8 characters long.',     
+          minlength: 'Must be at least 8 characters.',     
         },
         confirmNPassword: {
           required: 'Please enter Confirm Password.',
-          equalTo: 'Confirm Password do not match with Password.',
+          equalTo: "Passwords don't match.",
         }
       },
       submitHandler: function (form) {

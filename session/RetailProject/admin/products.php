@@ -29,6 +29,10 @@
         <!-- jquery -->
         <script src="jquery-3.5.1.min.js"></script>
 
+              
+        <!-- Search bar-->
+        <script type="text/javascript" src="script.branchInventory.js"></script>
+
         <!-- Required meta tags -->
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -60,12 +64,21 @@
                 <div class="col">
                
                 </div>
-                <div class="col">
-                    <form class="d-flex container-sm mx-auto mt-3 mb-3">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-primary" type="submit">Search</button>
-                    </form>
-                </div>
+
+                <div class="col"> <!-- SEARCH BAR-->
+                    <div class="searchBar"> <!-- class here not defined yet-->
+                        <form class="d-flex container-sm mx-auto mt-3 mb-3" method="post" style="float: right;">
+                            <ul class="list-group">    
+                                <div  data-bs-toggle="dropdown" >
+                                    <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="search" id="search" style="width:400px; margin-bottom: 0px;">
+                                </div>
+                                <div class="dropdown-menu" id="display" style="width:400px; cursor:pointer;" ></div>
+                            </ul>  
+                            <input class="btn btn-primary" type="submit" name="searchSubmit" value="Search" style="height: 40px; float: right; padding: 5px; margin: 5px;">
+                            <input class="btn btn-primary" type="submit" name="searchAll" value="All" style="height: 40px; width: 40px; float: right; padding: 5px; margin: 5px;">       
+                        </form> 
+                    </div> <!-- end of class="searchBar"-->
+                </div> <!-- end of class="col"-->
             </div>
         </div>
        
@@ -102,12 +115,22 @@
                     <?php
                         $branchID = $_SESSION['branchID'] ;
                         $inventoryID=$_SESSION['inventoryID'];
-                        $query = "SELECT * from item;"; 
-                        $result = mysqli_query($conn,$query);
-                        $Check = mysqli_num_rows($result);
+
+                        if (!isset($_POST['searchSubmit'])) {
+                            $products_query = "SELECT * from item;"; 
+                        }else { // if search is clicked, show search items
+                            $itemName = $_POST['search']; 
+                            $products_query ="SELECT * FROM item where item_Name LIKE '%$itemName%';";
+                        }
+                        if (isset($_POST['seachAll'])) { //if "all" is clicked, show all items
+                            unset($_POST['searchSubmit']);
+                        }
+
+                        $products_result = mysqli_query($conn,$products_query);
+                        $products_Check = mysqli_num_rows($products_result);
                     
-                        if ($Check>0) {                                                       
-                            while($row = mysqli_fetch_assoc($result)) {
+                        if ($products_Check>0) {                                                       
+                            while($row = mysqli_fetch_assoc($products_result)) {
                                 echo "<tr class=\"fs-6\">"?>
 
                                 <td><img src="<?php echo $row["item_Image"]?>"  style="width: 100px; height: 100px;"></img></td>
@@ -203,10 +226,10 @@
             $('#deleteModal').modal('show');
            
 
-            $.post("update.php",{itemId:itemId},function(data,status){
+            $.post("update.php",{productId:itemId},function(data,status){
                 var json=JSON.parse(data);
                 $("#delItem_ID").val(json.item_ID);
-                $("#delInventory_ID").val(json.inventory_ID);
+             
                 // alert("Data: " + data );
               
             });
@@ -247,7 +270,32 @@
         </script>';
         $_SESSION['confirm_err']=0;
     }
+    if($_SESSION['confirm_err']==3){
+        echo '<script>
+        setTimeout(function(){  $(\'#unableModal\').modal("show"); }, 500);
+        </script>';
+        $_SESSION['confirm_err']=0;
+    }
     ?>
+
+    <!-- Unable to perform Error Modal -->
+    <div class="modal fade" id="unableModal" tabindex="-1" aria-labelledby="passErrLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="passErrLabel">Cannot Perform Action</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                Item still exist on other branch/es. 
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+            </div>
+        </div>
+    </div>
     <!-- password Error Modal -->
     <div class="modal fade" id="passErr" tabindex="-1" aria-labelledby="passErrLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -296,7 +344,7 @@
                 </div>
 
                 <div class="modal-body">
-                    <form class="row g-3"  action="editItem.php" method="post">
+                    <form class="row g-3"  action="products.edit.php" method="post">
                         <div class="col-12">
                             <label for="updateItem_Name" class="form-label">Item name</label>
                             <input type="text" class="form-control" id="updateItem_Name" name="updateItem_Name">
@@ -366,11 +414,11 @@
 
                 <div class="modal-body">
                     
-                    <form class="row g-3" action="deleteStock.php" method="post">   
+                    <form class="row g-3" action="products.delete.php" method="post">   
                                                           
                         <input type="hidden" id="delItem_ID" name="delItem_ID" >
 
-                        <input type="hidden" id="delInventory_ID" name="delInventory_ID">
+                
 
                         <div class="col-md-12">
                             <label for="deleteAdminPass" class="form-label">Admin Password</label>

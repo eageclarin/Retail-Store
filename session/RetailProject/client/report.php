@@ -2,6 +2,8 @@
    require '../env/userConnection.php';
     
     $id = $_SESSION['userID'];
+    $name = $_SESSION['username'];
+    $chosenBranch = $_SESSION['branch'];
     //query customer details
     $cust_query ="SELECT *FROM customer WHERE cust_ID = $id";
     $cust_result = mysqli_query($conn,$cust_query);
@@ -21,7 +23,7 @@
             $postal = $cust_row['cust_APostal'];
         }
      }else{
-            header('location: ../main.php');
+            echo "No Orders Yet";
     }   
     
 
@@ -38,7 +40,60 @@
  
 </head>
 
-<body>
+<body style="background-color:#E6E9F0;" >
+    <header class="shadow p-3 mb-0 border-bottom bg-white h-20">
+        <div class="container-fluid d-grid gap-3 align-items-center">
+        <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
+            <a href="" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                <img src="../img/logo.png" height="50" role="img" />
+                <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
+            </a>
+            &nbsp; &nbsp; &nbsp;
+            <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+            <li><a href="../main.php?branch=<?php echo $chosenBranch ?>" class="nav-link px-2 text-dark">Home</a></li>
+            <li>
+                <div class="nav-link link-dark text-decoration-none">
+                | &nbsp; &nbsp; <strong>Order History </strong>
+                </div>
+            </li>
+            </ul>
+
+            <?php
+                    if (empty($_SESSION['username'])) { //Checks if customer is logged in
+                        ?>
+                        <div class="text-end">
+                            <a href="login.php"><button type="button" class="btn btn-outline-primary me-2">Login</button></a>
+                            <a href="client/register.php"><button type="button" class="btn btn-warning">Sign-up</button></a>
+                        </div>
+                        <?php
+                    } else {
+                        ?>
+                        <div class="text-end nav col-12 col-lg-auto mb-2 mb-md-0">
+                            <a class="nav-link px-2 text-dark"> Hello,
+                            <?php echo $name; ?> </a>
+                        </div>
+                        &nbsp;
+                        <div class="dropdown text-end">
+                            <a href="#" class="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+                            </a>
+                            <ul class="dropdown-menu text-small" aria-labelledby="dropdownUser1">
+                                <li><a class="dropdown-item" href="profile.php">Edit Account</a></li>
+                                <li><a class="dropdown-item" href="main.php?action=logout">Log out</a></li>
+                                
+                            </ul>
+                        </div>
+                        &nbsp;&nbsp;&nbsp;
+                        <a href="cart.php?branch=<?php echo $chosenBranch ?>" class="cart d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                        <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
+                            <img src="../img/cart4.svg" width="32" height="32"/>
+                        </a>
+                        <?php
+                    }
+            ?>
+        </div>
+        </div>
+    </header>
     <div class="container-sm p-5 my-5">    
         <h2> <?php echo $firstName. " " .$lastName; ?></h2>
         <h3> Orders List </h3> </br>
@@ -54,11 +109,17 @@
                     echo "<hr size='10'>";
                     echo "<table class='mt-3 pt-3' style='width:100%;'>";
                     echo "<tr>";
-                    echo "<td> Cart ID: ".$customer_row['cart_ID']."</td>";
-                    echo "<td> Total: ".$customer_row['total']."</td>";
+                    echo "<td> Cart ID: <strong>".$customer_row['cart_ID']."</strong></td>";
+                    echo "<td> Total: <strong>".$customer_row['total']."</strong></td>";
                     echo "</tr> <tr>";
-                    echo "<td> Branch ID: ".$customer_row['branch_ID']."</td>";
-                    echo "<td> Date: ".$customer_row['order_Date']."</td>";
+
+                    switch ($customer_row['branch_ID'] == 1) {
+                        case 1: echo "<td> Branch: <strong>Paoay</strong> </td>"; break;
+                        case 2: echo "<td> Branch: <strong>Vicas</strong> </td>"; break;
+                        case 3: echo "<td> Branch: <strong>Cordon</strong> </td>"; break;
+                    }
+
+                    echo "<td> Date: <strong>".$customer_row['order_Date']."</strong></td>";
                     echo "</tr>";
                     echo "</table>";
                     $cartID = $customer_row['cart_ID'];
@@ -104,17 +165,6 @@
             ?>
         </tbody>
         </table>
-
-        <form action="report.php" method="post" class="form-inline">   
-            <input  type="submit" value="Home" name="home" class="form-control" style="width:150px" > 
-        </form>
     </div>
 </body>
 </html>
-
-<?php
-if (isset($_POST['home'])) {            #if cancel is pressed
-    echo "<script> location.replace('../main.php'); </script>";
-}
-
-?>
