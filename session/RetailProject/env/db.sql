@@ -10,7 +10,8 @@ CREATE TABLE `Item` (
 	`item_WholesalePrice` float(53) NOT NULL,
 	`item_Category` varchar(50) NOT NULL,
 	`item_Image` varchar(100) NOT NULL,
-	`item_Brand` varchar(50) NOT NULL
+	`item_Brand` varchar(50) NOT NULL,
+	`status` TINYINT,
 );
 
 -- table for customer

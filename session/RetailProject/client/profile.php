@@ -28,7 +28,7 @@
     if (isset($_GET['updated']) == 'yes') {
         $color = "success";
         $updated = "Profile Updated";
-    } else {
+    } else if (isset($_GET['updated']) == 'no') {
         $color = "danger";
         $updated = "Username already Exists";
     }
