@@ -84,10 +84,9 @@
         <input type="password"  class="form-control" name="password" if="password" required>
         <label for="password">Password</label>
         </div>
-    
-        <button class="w-100 btn btn-lg btn-primary mb-1" name="login" type="submit">Sign in</button>
-        <a href="main.php"> <button type="submit"name="return" class="w-100 btn btn-lg text-primary border-primary">Return</button> </a>
+        <button class="w-100 btn btn-lg btn-primary" name="login" type="submit">Sign in</button>
     </form>
+    <a href="main.php"> <button type="submit"name="return" class="w-100 btn btn-lg text-primary border-primary">Return</button> </a>
         Don't have an account yet? <a href='client/register.php'>Register here</a>
         <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
     
@@ -143,7 +142,9 @@
                 exit;
             }    
         }
-
+        if(isset($_POST['return'])){
+            header("Location: main.php"); 
+        }
         mysqli_close($conn);
     ?>
 
