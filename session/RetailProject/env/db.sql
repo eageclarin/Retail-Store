@@ -123,8 +123,7 @@ FOREIGN KEY(branch_ID) REFERENCES Branch(branch_ID) ON UPDATE CASCADE
 
 -- insert items
 INSERT INTO `Item` (
-    `item_Name`, `item_Weight`, `item_RetailPrice`, `item_WholesalePrice`, `item_Category`, `item_Image`, `item_Brand`,`item_
-	Status`
+    `item_Name`, `item_Weight`, `item_RetailPrice`, `item_WholesalePrice`, `item_Category`, `item_Image`, `item_Brand`,`item_Status`
 )
 VALUES
 	('Corned Beef','150g',71.0,65.0,'Canned Goods','../img/cg/pf-cornedbeef.png','Purefoods',0),
