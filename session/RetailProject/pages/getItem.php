@@ -253,7 +253,7 @@
 					}
 				}
 					echo "</ul>";
-					echo "</div>";
+					echo "</div><br><br><br><br><br><br>";
 		}
 	?>
 </body>

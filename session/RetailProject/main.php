@@ -132,6 +132,7 @@
             box-shadow: 0 10px 20px rgba(0,0,0,.75), 0 4px 8px rgba(0,0,0,0.75);
             transition: .5s ease;
         }
+       
     </style>
     <title> Main </title>
    
@@ -148,9 +149,9 @@
                 <div class="modal-body py-0">
                     <label for="branch">Branch:</label>
                     <select name="branch" id="branchh" class="dropdown dropdown-menu-macos mx-0 shadow" style="width: 220px;">
-                        <option value="1" selected>Paoay</option>
-                        <option value="2">Vicas</option>
-                        <option value="3">Cordon</option>
+                        <option class="dropdown-item" value="1" selected>Paoay</option>
+                        <option class="dropdown-item" value="2">Vicas</option>
+                        <option class="dropdown-item" value="3">Cordon</option>
                     </select>
                 </div>
                 <div class="modal-footer flex-column border-top-0">

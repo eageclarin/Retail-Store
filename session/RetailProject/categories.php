@@ -107,7 +107,7 @@
     <title> Categories </title>
  
 </head>
-<body style="background-color:#E6E9F0;" class="w-100 h-100">
+<body style="background-color:#E6E9F0; overflow-y: hidden" class="w-100 h-100">
     <header class="shadow p-3 mb-0 border-bottom bg-white h-20">
         <div class="container-fluid d-grid gap-3 align-items-center">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
@@ -249,7 +249,7 @@
             </div>
         </div>
         
-        <div class="row h-100">
+        <div class="row" style="height: 85%">
             <div class="col-md-12 w-100 h-100">
                 <iframe name="display" height="100%" width="100%" src="pages/getItem.php?branch=<?php echo $chosenBranch ?>&for=categ&brand=<?php echo $chosenBrand ?>&categ=<?php echo $chosenCateg ?>&sort=<?php echo $sort ?>&order=<?php echo $order ?>">
             </div>

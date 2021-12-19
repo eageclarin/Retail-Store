@@ -78,11 +78,12 @@
  
     <style>
         body {
-            overflow: hidden;
-            height: 100%;
+            
+            height: 120%;
             width: 100%;
             background: rgb(196,53,49);
             background: linear-gradient(144deg, rgba(196,53,49,1) 0%, rgba(218,55,50,1) 26%, rgba(228,123,120,1) 78%);
+            
         }
         .field-icon {
             float: right;
@@ -115,8 +116,8 @@
 
                 <div class="row">
                     <div class="col-md-12 mb-2">
-                        <label class="form-label" for="username">Username</label>
                         <input type="text" class="form-control" id="username" name="username"  required>
+                        <label class="form-label" for="username">Username</label>
                     </div>
                 </div>
                 <div class="row">
@@ -159,7 +160,7 @@
                     <div class="col-md-6 mb-2">
                         <div class="form-outline">
                             <input type="text" class="form-control" id="email" name="email" required>
-                            <label class="form-label" for="email" >Email: </label>
+                            <label class="form-label" for="email" >Email </label>
                         </div>
                     </div>
                 </div>
@@ -168,13 +169,13 @@
                     <div class="col-md-6 mb-2">
                         <div class="form-outline">
                             <input type="text" class="form-control" id="brgy" name="brgy"  required>
-                            <label class="form-label" for="brgy" >Barangay: </label>
+                            <label class="form-label" for="brgy" >Barangay </label>
                         </div>
                     </div>
                     <div class="col-md-6 mb-2">
                         <div class="form-outline">
                             <input type="text" class="form-control" id="city" name="city"  required>
-                            <label class="form-label" for="city" >City: </label>
+                            <label class="form-label" for="city" >City </label>
                         </div>
                     </div>
                 </div>
@@ -183,13 +184,13 @@
                     <div class="col-md-6 mb-2">
                         <div class="form-outline">
                             <input type="text" class="form-control" id="province" name="province"  required>
-                            <label class="form-label" for="province" >Province: </label>
+                            <label class="form-label" for="province" >Province </label>
                         </div>
                     </div>
                     <div class="col-md-6 mb-2">
                         <div class="form-outline">
                             <input type="text" class="form-control" id="postal" name="postal"  required>
-                            <label class="form-label" for="postal" >Postal Code: </label>
+                            <label class="form-label" for="postal" >Postal Code</label>
                         </div>
                     </div>
                 </div>
