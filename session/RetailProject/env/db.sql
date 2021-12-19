@@ -11,7 +11,7 @@ CREATE TABLE `Item` (
 	`item_Category` varchar(50) NOT NULL,
 	`item_Image` varchar(100) NOT NULL,
 	`item_Brand` varchar(50) NOT NULL,
-	`status` TINYINT,
+	`status` TINYINT
 );
 
 -- table for customer
