@@ -281,7 +281,7 @@ if (isset($_POST['cust_update'])) {           #if update button pressed
      
 
      if ($resultCheck==0) {
-        $insert = "UPDATE customer SET cust_Username='$username', cust_FName='$firstName', cust_LName='$lastName',cust_Contact=$contact, cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
+        $insert = "UPDATE customer SET cust_Username='$username', cust_FName='$firstName', cust_LName='$lastName',cust_Contact='$contact', cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
         $update_result = mysqli_query($conn, $insert);
         if ($update_result) {
             $_SESSION['username'] = $username;
