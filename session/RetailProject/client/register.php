@@ -87,9 +87,9 @@
         }
         .field-icon {
             float: right;
-            margin-left: 19%;
+            margin-left: 38%;
             margin-top: -25px;
-            position: fixed;
+            position: absolute;
             z-index: 2;
         }
     </style>
