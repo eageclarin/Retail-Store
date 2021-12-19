@@ -110,7 +110,7 @@
                 $_SESSION['CustomerID'] = $id;                #store in $_SESSION for referencing later
                 $_SESSION['CartID'] = $rowOrder['cart_ID'];
                 mysqli_close($conn);
-                header("location: order.php?id=$id&branch=$branch&categ=All");                    #redirect to adminHome.php
+                header("location: order.php");
                 exit;
         }
     }
@@ -167,8 +167,7 @@
     </script>
     <style>
         body {
-            overflow: hidden;
-            height: 100%;
+            height: 115%;
             width: 100%;
             background: rgb(196,53,49);
             background: linear-gradient(144deg, rgba(196,53,49,1) 0%, rgba(218,55,50,1) 26%, rgba(228,123,120,1) 78%);
