@@ -37,6 +37,18 @@
         $address = "Brgy. ".$rowUser['cust_ABrgy'].", ".$rowUser['cust_ACity'].", ".$rowUser['cust_AProvince']." ".$rowUser['cust_APostal'];
     }
 
+    $sqlDeleted = "SELECT * FROM Item i
+        INNER JOIN Ca_contains_I cai ON (i.item_ID = cai.item_ID)
+        INNER JOIN Cu_orders_Ca cca ON (cca.cart_ID = cai.cart_ID)
+        WHERE cca.customer_ID = $id AND cca.branch_ID = $branch AND cca.status=0";
+    $resDeleted = mysqli_query($conn, $sqlDeleted);
+    $rowDeleted = mysqli_fetch_assoc($resDeleted);
+
+    if ($rowDeleted['item_Status'] == 1) {
+        $sqlDelItem = "DELETE FROM Ca_contains_I cai INNER JOIN Item i WHERE i.item_Status = 1";
+        $resDelItem = mysqli_query($conn, $sqlDelItem);
+    }
+
     $sqlTotal = "SELECT total FROM Cart c
         INNER JOIN Cu_orders_Ca cca ON (c.cart_ID = cca.cart_ID)
         WHERE cca.customer_ID = $id AND cca.branch_ID = $branch AND cca.status=0";
