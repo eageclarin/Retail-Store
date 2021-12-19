@@ -34,3 +34,7 @@
     height:10px;
     background-color: rgba(72, 163, 241, 0.925);
 }
+
+#displayItem:hover{
+    background-color: #F4F4F4;
+}

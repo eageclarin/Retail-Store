@@ -86,6 +86,47 @@
         $response['message']="Invalid or data not found";
     };
 
+    if (isset($_POST['productID'])){
+
+        $id=$_POST['productID'];
+        $item_query ="SELECT * FROM item where item.item_ID=$id;" ;
+        $item_result = mysqli_query($conn,$item_query);
+        $response=array();
+       
+            while ($item_row = mysqli_fetch_assoc($item_result)){
+                $response = $item_row;
+             
+            };
+        echo json_encode($response);
+
+    }else{
+        
+        // header('location: adminHome.php');
+        $response['status']=200;
+        $response['message']="Invalid or data not found";
+    };
+
+
+    if (isset($_POST['productId'])){
+
+        $item_id=$_POST['productId'];
+        $item_query ="SELECT * FROM item where item_ID=$item_id;" ;
+        $item_result = mysqli_query($conn,$item_query);
+        $response=array();
+       
+            while ($item_row = mysqli_fetch_assoc($item_result)){
+                $response = $item_row;
+             
+            };
+        echo json_encode($response);
+
+    }else{
+        
+        // header('location: adminHome.php');
+        $response['status']=200;
+        $response['message']="Invalid or data not found";
+    };
+
 ?>
 
 

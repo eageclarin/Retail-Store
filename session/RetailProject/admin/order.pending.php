@@ -34,7 +34,7 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>Admin | Summary</title>
+    <title>Order | Pending</title>
     <script src="../env/idle.js"></script>
   </head>
   <body>
@@ -62,7 +62,7 @@
                     <?php
                     $branchID = $_SESSION['branchID'] ;
                     if($_SESSION['admin']==1){ 
-                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart ; ";
+                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1; ";
                     }else{
                         $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
                     }
