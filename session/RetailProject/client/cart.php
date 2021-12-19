@@ -377,8 +377,9 @@
                                                     WHERE bii.item_ID = $itemID";
                                     $resStock = mysqli_query($conn, $sqlStock);
                                     $rowStock = mysqli_fetch_assoc($resStock);
+                                    $itemStock = $rowStock['item_Stock'];
 
-                                    if ($rowStock['item_Stock'] <= 0) {
+                                    if ($itemStock <= 0) {
                                         $disable = "disabled";
                                     } else {
                                         $disable = "";
@@ -402,27 +403,16 @@
                                         <select <?php echo $disable ?> name="qty" class="select" onchange="changeQty('<?php echo $id ?>', '<?php echo $itemID ?>', this.value, '<?php echo $branch ?>');">
                                         <?php
                                             echo '<option value="'.$itemQty.'" selected>'.$itemQty.' </option>';
+                                            $i = 0;
+                                            while ($i <= $itemStock) {
+                                                echo "<option value=".$i.">".$i."</option>";
+                                                $i++;
+
+                                                if ($i > 20) {
+                                                    break;
+                                                }
+                                            }
                                         ?>
-                                            <option value="1"> 1 </option>
-                                            <option value="2"> 2 </option>
-                                            <option value="3"> 3 </option>
-                                            <option value="4"> 4 </option>
-                                            <option value="5"> 5 </option>
-                                            <option value="6"> 6 </option>
-                                            <option value="7"> 7 </option>
-                                            <option value="8"> 8 </option>
-                                            <option value="9"> 9 </option>
-                                            <option value="10"> 10 </option>
-                                            <option value="11"> 11 </option>
-                                            <option value="12"> 12 </option>
-                                            <option value="13"> 13 </option>
-                                            <option value="14"> 14 </option>
-                                            <option value="15"> 15 </option>
-                                            <option value="16"> 16 </option>
-                                            <option value="17"> 17 </option>
-                                            <option value="18"> 18 </option>
-                                            <option value="19"> 19 </option>
-                                            <option value="20"> 20 </option>
                                         </select>
                                     </form> 
                                 </div>
