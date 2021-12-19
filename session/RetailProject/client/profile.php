@@ -32,14 +32,13 @@
             header('location: ../main.php');
     }   
     
-    if (isset($_GET['updated']) == 'yes') {
-        $color = "success";
-        $updated = "Profile Updated";
-    } else if (isset($_GET['updated']) == 'no') {
-        $color = "danger";
-        $updated = "Username already Exists";
+    if (isset($_GET['updated'])) {
+        switch ($_GET['updated']) {
+            case 'yes': $color = "success"; $updated = "Profile Updated"; break;
+            case 'no': $color = "danger"; $updated = "Username already Exists"; break;
+            case 'wrong': $color = "danger"; $updated = "Wrong password"; break;
+        }
     }
-
 ?>
 
 <!DOCTYPE html>
@@ -180,7 +179,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <form id="newform" action="profile.php" method="post" class="form-inline"> 
-            <div class="modal-body">
+            <div class="modal-body mb-2">
                 
                     <div class="mb-1 mt-1">
                         <label for="oldPassword" >Enter current password: </label>
@@ -204,7 +203,7 @@
                 
             </div>
             
-            <div class="modal-footer">
+            <div class="modal-footer pb-0">
                 <input  type="submit" value="Update" name="updatePass" class="form-control btn btn-primary" style="width:150px" > 
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
@@ -321,9 +320,7 @@ if (isset($_POST['updatePass'])) {           #if update password is pressed
         }
         
     } else {
-        echo '<div class="container-sm p-1 my-1 bg-danger text-white" style="max-width:50%;">
-                Wrong Password. Please try again.
-                </div>';
+        echo "<script> location.replace('profile.php?updated=wrong'); </script>";
     }
     unset($_POST['updatePass']);
 }
