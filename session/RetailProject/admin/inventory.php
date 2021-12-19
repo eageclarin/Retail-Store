@@ -28,7 +28,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <!-- jquery -->
         <script src="jquery-3.5.1.min.js"></script>
-        <script type="text/javascript" src="script.js"></script>
+       
+        <!-- Search bar-->
+        <script type="text/javascript" src="script.branchInventory.js"></script>
 
         <!-- Required meta tags -->
         <meta charset="utf-8">
@@ -63,18 +65,18 @@
         <?php if($_SESSION['admin']!=1){  ?>
             
                 <div class="col"> <!-- SEARCH BAR-->
-                <div class="searchBar"> <!-- class here not defined yet-->
-                    <form class="d-flex container-sm mx-auto mt-3 mb-3" method="post" style="float: right;">
-                        <ul class="list-group">    
-                            <div  data-bs-toggle="dropdown" >
-                                <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="search" id="search" style="width:400px; margin-bottom: 0px;">
-                            </div>
-                            <div class="dropdown-menu" id="display" style="width:400px; cursor:pointer;" ></div>
-                         </ul>  
-                        <input class="btn btn-primary" type="submit" name="searchSubmit" value="Search" style="height: 40px; float: right; padding: 5px; margin: 5px;">
-                        <input class="btn btn-primary" type="submit" name="searchAll" value="All" style="height: 40px; width: 40px; float: right; padding: 5px; margin: 5px;">       
-                    </form> 
-                </div> <!-- end of class="searchBar"-->
+                    <div class="searchBar"> <!-- class here not defined yet-->
+                        <form class="d-flex container-sm mx-auto mt-3 mb-3" method="post" style="float: right;">
+                            <ul class="list-group">    
+                                <div  data-bs-toggle="dropdown" >
+                                    <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="search" id="search" style="width:400px; margin-bottom: 0px;">
+                                </div>
+                                <div class="dropdown-menu" id="display" style="width:400px; cursor:pointer;" ></div>
+                            </ul>  
+                            <input class="btn btn-primary" type="submit" name="searchSubmit" value="Search" style="height: 40px; float: right; padding: 5px; margin: 5px;">
+                            <input class="btn btn-primary" type="submit" name="searchAll" value="All" style="height: 40px; width: 40px; float: right; padding: 5px; margin: 5px;">       
+                        </form> 
+                    </div> <!-- end of class="searchBar"-->
                 </div> <!-- end of class="col"-->
                
             </div>
@@ -173,44 +175,61 @@
 
     <?php
         
-          $branch_query = "SELECT * from branch;"; 
+          $branch_query = "SELECT * from branch natural join b_has_bi;"; 
           $branch_result = mysqli_query($conn,$branch_query);
           $branch_Check = mysqli_num_rows($branch_result);
           if ($branch_Check>0) {                                                       
             while($branch_row = mysqli_fetch_assoc($branch_result)) {
                 $branchID=$branch_row["branch_ID"];
                 $branchName=$branch_row["branch_Name"];
+                $inventoryID=$branch_row["inventory_ID"];
     ?>
 
             
-                <div class="accordion" id="accordionExample">
-                        <div class="accordion-item">
-                                <h2 class="accordion-header" id="headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php  echo $branchID ;?>" aria-expanded="false" aria-controls="collapseOne">
-                                   <?php  echo  $branchName ;?> Branch
-                                </button>
+                        <div class="accordion" id="accordionExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading<?php  echo $branchID ;?>">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<?php  echo $branchID ;?>" aria-expanded="false" aria-controls="collapse<?php  echo $branchID ;?>">
+                                        <?php  echo  $branchName ;?> Branch
+                                    </button>
                                 </h2>
-                                <div id="collapse<?php  echo $branchID ;?>" class="accordion-collapse collapse " aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                                <div id="collapse<?php  echo $branchID ;?>" class="accordion-collapse collapse" aria-labelledby="heading<?php  echo $branchID ;?>" data-bs-parent="#accordionExample">
                                     <div class="accordion-body bg-dark bg-opacity-10">
                                         <div class="row justify-content-center ">
                                             <div class="col-3">
-                                            Branch ID : <?php  echo $branchID ;?>
+                                                Branch ID : <?php  echo $branchID ;?>
                                             </div>
                                             <div class="col-3">
-                                            Branch Address: <?php  echo $branch_row["branch_Address"]; ;?>
+                                                Branch Address: <?php  echo $branch_row["branch_Address"]; ?>
+                                            </div>
+                                                <?php  
+                                                   
+                                                    $inventory_query = "SELECT count(item_ID) as lowStock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id =$inventoryID and item_Stock<500 "; 
+                                                    $inventory_result = mysqli_query($conn,$inventory_query);
+                                                    $row = mysqli_fetch_assoc( $inventory_result);
+                                                    $count = $row['lowStock'];
+                                                ?>
+
+                                            <div class="col-3">
+                                                Low on Stocks: <button type="button" class="badge btn btn-secondary" onclick="showLow(<?php  echo $inventoryID ;?>)" ><?php  echo $count;?></button>
                                             </div>
                                             <div class="col-3">
-                                            Low on Stocks: 
-                                            </div>
-                                            <div class="col-3">
-                                            Available Products:
+                                            <?php  
+                                                   
+                                                   $inventory_query = "SELECT count(item_ID) as lowStock FROM item NATURAL JOIN (bi_has_i) NATURAL JOIN branchinventory where inventory_id =$inventoryID  "; 
+                                                   $inventory_result = mysqli_query($conn,$inventory_query);
+                                                   $row = mysqli_fetch_assoc( $inventory_result);
+                                                   $count = $row['lowStock'];
+                                               ?>
+                                                Available Products: <button type="button" class="badge btn btn-secondary" onclick="showAvailable(<?php  echo $inventoryID ;?>)" ><?php  echo $count;?></button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
+                            </div>
                         </div>
-                </div>
-            
+
+
 
 
     <?php 
@@ -275,6 +294,38 @@
               
             });
             
+        };
+
+        function showLow(inventoryID){
+
+            $.post("displayItems.php",{LowInventoryID:inventoryID},function(data,status){
+            var json=JSON.parse(data);
+          
+            document.getElementById("lowStockInfo").innerHTML = json.map(getItem).join("");
+            function getItem(item) {
+            return "<tr><td>"+ item.item_ID + "</td><td>"+ item.item_Name + "</td><td>"+ item.item_Weight + "</td><td>"+ item.item_Stock + "</td></tr>";
+            }
+            // alert("Data: " + data );
+            // document.getElementById("demo").innerHTML = myJSON;            
+            });
+
+            $('#lowStockItems').modal('show');
+        };
+
+        function showAvailable(inventoryID){
+
+            $.post("displayItems.php",{availableInventoryID:inventoryID},function(data,status){
+            var json=JSON.parse(data);
+
+            document.getElementById("availableItemsInfo").innerHTML = json.map(getItem).join("");
+            function getItem(item) {
+            return "<tr><td>"+ item.item_Name + "</td><td>"+ item.item_Weight + "</td><td>"+ item.item_Stock + "</td></tr>";
+            }
+            // alert("Data: " + data );
+            // document.getElementById("demo").innerHTML = myJSON;            
+            });
+
+        $('#availableItems').modal('show');
         };
 
 
@@ -414,7 +465,7 @@
 
                 <div class="modal-body">
                     
-                    <form class="row g-3" action="delete.branch.php" method="post">   
+                    <form class="row g-3" action="delete.branch.item.php" method="post">   
                                                           
                         <input type="hidden" id="delItem_ID" name="delItem_ID" >
 
@@ -542,7 +593,74 @@
                             </div>
                         </div>
                     </div>
-                </div>     
+                </div>
+                
+                
+<!-- Low Stocks items modal ##################################-->
+    <div class="modal fade" id="lowStockItems" tabindex="-1" aria-labelledby="lowStockItemsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="lowStockItemsLabel">Cart Items</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover ">
+                    <thead>
+                        <tr>
+                            <th scope="col">Item ID</th>
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Weight/Volume</th>
+                            <th scope="col">Quantity</th>
+  
+                        </tr>
+                    </thead>
+                    <tbody id="lowStockInfo" >
+                      
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- available items modal ##################################-->
+    <div class="modal fade" id="availableItems" tabindex="-1" aria-labelledby="availableItemsLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-scrollable">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="availableItemsLabel">Cart Items</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-striped table-hover ">
+                    <thead>
+                        <tr>
+                          
+                            <th scope="col">Item Name</th>
+                            <th scope="col">Weight/Volume</th>
+                            <th scope="col">Quantity</th>
+  
+                        </tr>
+                    </thead>
+                    <tbody id="availableItemsInfo" >
+                      
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+
+            </div>
+            </div>
+        </div>
+    </div>
                            
 
   </body>

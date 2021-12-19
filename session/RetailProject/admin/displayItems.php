@@ -50,6 +50,49 @@
     };
 
 
+    if (isset($_POST['LowInventoryID'])){
+
+        $inventoryID=$_POST['LowInventoryID'];
+        $query ="SELECT * from bi_has_i natural join item where bi_has_i.inventory_ID=$inventoryID and item_Stock<500;" ;
+        $result = mysqli_query($conn,$query);
+        $response=array();
+       
+            while ($row = mysqli_fetch_assoc($result)){
+                // $response = $item_row;
+                array_push($response,$row);
+             
+            };
+        echo json_encode($response);
+
+    }else{
+        
+        // header('location: adminHome.php');
+        $response['status']=200;
+        $response['message']="Invalid or data not found";
+    };
+
+    if (isset($_POST['availableInventoryID'])){
+
+        $inventoryID=$_POST['availableInventoryID'];
+        $query ="SELECT * from bi_has_i natural join item where bi_has_i.inventory_ID=$inventoryID ;" ;
+        $result = mysqli_query($conn,$query);
+        $response=array();
+       
+            while ($row = mysqli_fetch_assoc($result)){
+                // $response = $item_row;
+                array_push($response,$row);
+             
+            };
+        echo json_encode($response);
+
+    }else{
+        
+        // header('location: adminHome.php');
+        $response['status']=200;
+        $response['message']="Invalid or data not found";
+    };
+
+
 
 ?>
 

@@ -32,7 +32,7 @@ if ($branchID_Check>0) {
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-    <title>Admin Home</title>
+    <title>Admin | Home</title>
     <script id="helper" data-name="<?php echo $_SESSION['admin_User'];?>" src="../env/idle.js"></script> 
   </head>
   <body>
@@ -217,7 +217,7 @@ if ($branchID_Check>0) {
 
                   </div>
               </div> 
-              <div class="row align-items-center bg-info p-2 text-dark border border-success bg-light border-4 mt-3 rounded">
+              <div class="row align-items-center bg-info p-2 text-dark bg-opacity-50  text-center rounded mt-3">
                             <h1 class="text-center">Recent Orders<h1>
 
                             <table class="table table-striped table-hover fs-6  fw-normal">
@@ -274,7 +274,7 @@ if ($branchID_Check>0) {
             </div>
 
               
-                      <div class="row align-items-center bg-info p-2 text-dark border border-danger bg-light border-4 mt-3 rounded">
+                      <div class="row align-items-center bg-info p-2 text-dark bg-opacity-50 mt-3 text-center rounded">
                             <h1 class="text-center">Low on Stocks<h1>
 
                             <table class="table table-striped table-hover fs-6  fw-normal">
@@ -352,7 +352,7 @@ if ($branchID_Check>0) {
 
         function showDetails(cartID){
 
-        $.post("displayItems.php",{cartID:cartID},function(data,status){
+            $.post("displayItems.php",{cartID:cartID},function(data,status){
             var json=JSON.parse(data);
             let cleanJSON = json;
             document.getElementById("demo").innerHTML = cleanJSON.map(getItem).join("");
@@ -455,7 +455,7 @@ if ($branchID_Check>0) {
                     </div>
                 </div>   
                 
-                <!-- show items modal ##################################-->
+<!-- show items modal ##################################-->
     <div class="modal fade" id="showItems" tabindex="-1" aria-labelledby="showItemsLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-scrollable">
             <div class="modal-content">

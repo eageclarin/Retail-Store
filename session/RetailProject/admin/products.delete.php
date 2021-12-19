@@ -19,20 +19,31 @@
         }
         if($admin_confirmation_user== $_SESSION['admin_User'] ){
 
-            echo $id =$_POST['delItem_ID'];
-            $query = "SELECT sum(item_ID) FROM `item` NATURAL JOIN bi_has_i WHERE item_ID=2;;";
+            $id =$_POST['delItem_ID'];
+            $delete_query = "SELECT count(item_ID) as item_count FROM `item` NATURAL JOIN bi_has_i WHERE item_ID=$id;";
             $result = mysqli_query($conn,$delete_query);
+            $row = mysqli_fetch_assoc( $result);
+            $count = $row['item_count'];
+           
+                       
+                if($row['item_count']==0){
+                    $delete_query = "DELETE from item where item_ID=$id;";
+                    $delete_result = mysqli_query($conn,$delete_query);
     
-            $delete_query = "DELETE from item where item_ID=$id;";
-       
-            $delete_result = mysqli_query($conn,$delete_query);
-        
-            if($delete_result){
-                $_SESSION['confirm_err']=2;
-                header('location: inventory.php');
-            }else{
-                die(mysqli_error($conn));
-            }
+                    if($delete_result){
+                        $_SESSION['confirm_err']=2;
+                        header('location: products.php');
+                    }
+                    else{
+                        die(mysqli_error($conn));
+                    }
+                }else{
+                    $_SESSION['confirm_err']=3;
+                    header('location:  products.php');
+                }
+         
+                 
+            
 
         }else{
             $_SESSION['confirm_err']=1;
