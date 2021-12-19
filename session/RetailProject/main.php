@@ -1,11 +1,14 @@
 <?php
     include_once 'env/userConnection.php';
     $chosenCateg = "All"; $name = "Guest"; $id = $item = $opacity = 0; $display = "";
+    $title = "Home";
     $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = $branch = 1;
 
     if(isset($_SESSION['username']) && isset($_SESSION['userID'])) {
         $name = $_SESSION['username'];
         $id = $_SESSION['userID'];
+
+        $title = $name." | Home";
     }
     
     if (isset($_GET['item'])) {
@@ -134,7 +137,7 @@
         }
        
     </style>
-    <title> Main </title>
+    <title> <?php echo $title ?> </title>
    
 </head>
 <body style="background-color:#E6E9F0;" class="w-100 h-100">

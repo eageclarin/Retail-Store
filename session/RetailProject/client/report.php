@@ -1,9 +1,15 @@
 <?php
    require '../env/userConnection.php';
-    
-    $id = $_SESSION['userID'];
-    $name = $_SESSION['username'];
-    $chosenBranch = $_SESSION['branch'];
+    $title = "Order History";
+
+    if(isset($_SESSION)) {
+        $chosenBranch = $_SESSION['branch'];
+        $name = $_SESSION['username'];
+        $id = $_SESSION['userID'];
+
+        $title = $name." | Order History";
+    }
+
     //query customer details
     $cust_query ="SELECT *FROM customer WHERE cust_ID = $id";
     $cust_result = mysqli_query($conn,$cust_query);
@@ -22,9 +28,7 @@
             $province = $cust_row['cust_AProvince'];
             $postal = $cust_row['cust_APostal'];
         }
-     }else{
-            echo "No Orders Yet";
-    }   
+     }  
     
 
 ?>
@@ -32,7 +36,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title> Report </title>
+<title> <?php echo $title ?> </title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -159,7 +163,9 @@
                         }    
                         
                         
-                    } 
+            } else {
+                echo "No Orders Yet";
+            }
                     
 
             ?>

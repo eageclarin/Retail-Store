@@ -2,6 +2,7 @@
     include_once 'env/userconnection.php';
     $chosenBranch = $name = $id = "";
 	$chosenCateg = $chosenBrand = $categ = "All";
+    $title = "Categories";
 	$sort = "ASC";
 	$order = "Name";
 
@@ -10,6 +11,8 @@
         $chosenBrand = $_SESSION['brand'];
         $name = $_SESSION['username'];
         $id = $_SESSION['userID'];
+
+        $title = $name." | Categories";
     }
     
     if(isset($_SESSION['categ'])) {
@@ -104,14 +107,14 @@
     <link rel="stylesheet" href="main.css" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-    <title> Categories </title>
+    <title> <?php echo $title ?> </title>
  
 </head>
 <body style="background-color:#E6E9F0; overflow-y: hidden" class="w-100 h-100">
     <header class="shadow p-3 mb-0 border-bottom bg-white h-20">
         <div class="container-fluid d-grid gap-3 align-items-center">
         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-            <a href="main.php" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+            <a href="" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                 <img src="img/logo.png" height="50" role="img" />
                 <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
             </a>

@@ -1,8 +1,15 @@
 <?php
-   require '../env/userConnection.php';
+    require '../env/userConnection.php';
+    $updated = $color = ""; $itle = "Edit Profile";
+
+    if(isset($_SESSION)) {
+        $name = $_SESSION['username'];
+        $id = $_SESSION['userID'];
+
+        $title = $name." | Edit Profile";
+    }
+
     
-    $id = $_SESSION['userID'];
-    $updated = $color = "";
     //query customer details
     $cust_query ="SELECT *FROM customer WHERE cust_ID = $id";
     $cust_result = mysqli_query($conn,$cust_query);
@@ -38,7 +45,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title> Edit Profile </title>
+<title> <?php echo $title ?> </title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -57,9 +64,9 @@
         }
         .field-icon {
             float: right;
-            margin-left: 30%;
+            margin-left: 87%;
             margin-top: -25px;
-            position: fixed;
+            position: absolute;
             z-index: 2;
         }
     </style>

@@ -1,11 +1,18 @@
 <?php
    require '../env/userConnection.php';
+
+   if(isset($_SESSION)) {
+    $name = $_SESSION['username'];
+    $id = $_SESSION['userID'];
+
+    $title = $name." | Receipt";
+}
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title> Order </title>
+<title> <?php echo $title ?> </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
