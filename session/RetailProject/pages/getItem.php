@@ -52,7 +52,7 @@
 									WHERE i.item_Brand = '$brand'
 										AND bii.item_Stock > 0
 										AND bbi.branch_ID = '$branch'
-										AND i.status = 0
+										AND i.item_Status = 0
 										OR i.item_Category = '$categ'
 									ORDER BY i.item_$order $sort
 								";
@@ -67,7 +67,7 @@
 										AND bii.item_Stock > 0
 										AND bbi.branch_ID = '$branch'
 										AND i.item_Category = '$categ'
-										AND i.status = 0
+										AND i.item_Status = 0
 									ORDER BY i.item_$order $sort
 								";
 						$resFilter = mysqli_query($conn, $sqlFilter);
@@ -82,7 +82,7 @@
 								INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
 								WHERE bii.item_Stock > 0 
 									AND b.branch_ID = '$branch'
-									AND i.status = 0
+									AND i.item_Status = 0
 									OR i.item_Category = '$categ'
 								ORDER BY i.item_$order $sort
 							";
@@ -96,7 +96,7 @@
 								WHERE bii.item_Stock > 0 
 									AND b.branch_ID = '$branch'
 									AND i.item_Category = '$categ'
-									AND i.status = 0
+									AND i.item_Status = 0
 								ORDER BY i.item_$order $sort
 							";
 						$resFilter = mysqli_query($conn, $sqlFilter);
@@ -115,7 +115,7 @@
 									WHERE i.item_Category = '$categ'
 										AND bii.item_Stock > 0
 										AND bbi.branch_ID = '$branch'
-										AND i.status = 0
+										AND i.item_Status = 0
 										OR i.item_Brand = '$brand'
 									ORDER BY i.item_$order $sort
 								";
@@ -130,7 +130,7 @@
 										AND bii.item_Stock > 0
 										AND bbi.branch_ID = '$branch'
 										AND i.item_Brand = '$brand'
-										AND i.status = 0
+										AND i.item_Status = 0
 									ORDER BY i.item_$order $sort
 								";
 						$resFilter = mysqli_query($conn, $sqlFilter);
@@ -144,7 +144,7 @@
 								INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
 								WHERE bii.item_Stock > 0 
 									AND b.branch_ID = '$branch'
-									AND i.status = 0
+									AND i.item_Status = 0
 									OR i.item_Brand = '$brand'
 								ORDER BY i.item_$order $sort
 							";
@@ -158,7 +158,7 @@
 								WHERE bii.item_Stock > 0 
 									AND b.branch_ID = '$branch'
 									AND i.item_Brand = '$brand'
-									AND i.status = 0
+									AND i.item_Status = 0
 								ORDER BY i.item_$order $sort
 							";
 						$resFilter = mysqli_query($conn, $sqlFilter);

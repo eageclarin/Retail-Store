@@ -139,7 +139,7 @@ VALUES
 	('Chunky Corned Tuna','150g',26.50,25,'Canned Goods','../img/cg/c-tunachunky.png','Century',0),
 	('Chili Corned Tuna','85g',22,20.25,'Canned Goods','../img/cg/c-chilicornedtuna.png','Century',0),
 	('Tuna Paella','180g',38.00,36.25,'Canned Goods','../img/cg/c-tunapaella.png','Century',0),
-	('Mackerel in Natural Oil','425g',62,59,'Canned Goods','../img/cg/m-mackerel.png','Mega'),
+	('Mackerel in Natural Oil','425g',62,59,'Canned Goods','../img/cg/m-mackerel.png','Mega',0),
 	('Sardines in Tomato Sauce','155g',19.25,18.25,'Canned Goods','../img/cg/m-sardines.png','Mega',0),
 	('Tuna Flakes Sweet and Spicy','180g',44.75,43,'Canned Goods','../img/cg/m-tunaflakes.png','Mega',0),
 	('Fried Sardines with Tausi','155g',32.75,31,'Canned Goods','../img/cg/m-friedsardines.png','Mega',0),
