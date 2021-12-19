@@ -23,7 +23,9 @@
 	}
 
 
-	
+    if (empty($_SESSION['username'])) {
+        header("location: ../main.php");
+    }
 ?>
 
 <script>
