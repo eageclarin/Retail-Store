@@ -178,7 +178,7 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Change Password</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form id="form" action="profile.php" method="post" class="form-inline"> 
+            <form id="newform" action="profile.php" method="post" class="form-inline"> 
             <div class="modal-body">
                 
                     <div class="mb-1 mt-1">
@@ -188,13 +188,13 @@
                         </div>
                     </div> 
                     <div class="mb-1 mt-1">
-                        <label for="password" >Password: </label>
+                        <label for="newPassword" >Password: </label>
                         <div>
                             <input type="password" class="form-control" id="newPassword" name="newPassword" required> <span id="toggle" onclick="toggle('newPassword')" class="fa fa-fw fa-eye field-icon toggle-password"> </span>
                         </div>
                     </div> 
                     <div class="mb-1 mt-1">
-                        <label for="confirmPassword" >Confirm Password: </label>
+                        <label for="confirmNPassword" >Confirm Password: </label>
                         <div>
                             <input type="password" class="form-control" id="confirmNPassword" name="confirmNPassword" required> <span id="toggle" onclick="toggle('confirmNPassword')" class="fa fa-fw fa-eye field-icon toggle-password"> </span>
                         </div>
@@ -212,6 +212,46 @@
         </div>
         </div>
             <!--end modal-->
+
+<script>
+    $(document).ready(function () {
+ 
+    $('#newform').validate({
+      rules: {
+        oldPassword: {
+          required: true,
+        },
+        newPassword: {
+          required: true,
+          minlength: 8,
+        },
+        confirmNPassword: {
+          required: true,
+          equalTo: "#newPassword"
+        }
+
+      },
+      messages: {
+        oldPassword: {
+          required: 'Please enter old Password.',         
+        },
+        newPassword: {
+          required: 'Please enter new Password.',    
+          minlength: 'Must be at least 8 characters.',     
+        },
+        confirmNPassword: {
+          required: 'Please enter Confirm Password.',
+          equalTo: "Passwords don't match.",
+        }
+      },
+      submitHandler: function (newform) {
+        newform.submit();
+      }
+    });
+
+  });
+</script>
+
 
 </body>
 </html>
