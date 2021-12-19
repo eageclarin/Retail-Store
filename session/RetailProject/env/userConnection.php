@@ -22,10 +22,6 @@
 		echo "ERROR: Could not be able to execute $sql." . mysqli_error($conn);
 	}
 
-
-    if (empty($_SESSION['username'])) {
-        header("location: ../main.php");
-    }
 ?>
 
 <script>
