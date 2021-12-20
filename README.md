@@ -15,4 +15,4 @@
 * [Eigram Eclarin](https://github.com/eigeexx) , [Elymer Reyno](https://github.com/emreyno) , [Jaemie Campo](https://github.com/JaeCamp00)
 
 ## Disclaimer
-* The images are used for education and presenatation purposes only.
+* The images are used for education and presentation purposes only.
