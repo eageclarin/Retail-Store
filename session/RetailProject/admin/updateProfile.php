@@ -31,7 +31,7 @@
 
     
         $query = "UPDATE admin NATURAL join admin_contact SET
-        admin_contact.contact = '$contact', admin.admin_Password='$pass' ,admin.admin_Username='$username',admin.admin_FirstName='$Fname',admin.admin_Lastname=' $Lname'
+        admin_contact.contact = '$contact', admin.admin_Password='$pass' ,admin.admin_Username='$username',admin.admin_FirstName='$Fname',admin.admin_Lastname='$Lname'
         WHERE admin_ID = $id;";
 
      

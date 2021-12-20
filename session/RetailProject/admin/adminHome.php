@@ -33,6 +33,7 @@ if ($branchID_Check>0) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
     <title>Admin | Home</title>
+  
     <script id="helper" data-name="<?php echo $_SESSION['admin_User'];?>" src="../env/idle.js"></script> 
   </head>
   <body>
@@ -474,41 +475,41 @@ if ($branchID_Check>0) {
                             <div class="modal-body">
                                 <form class="row g-3 pb-4" action="admin.newUser.php" method="post">
                                     <div class="col-12">
-                                        <label for="ItemName" class="form-label">Branch Name</label>
-                                        <input type="text" class="form-control" name="newBranchName" required>
+                                        <label for="newBranchName" class="form-label">Branch Name</label>
+                                        <input type="text" class="form-control" name="newBranchName" id="newBranchName"required>
                                     </div>
 
                                     <div class="col-md-12">
-                                        <label for="Retail_Price" class="form-label">Branch Address</label>
-                                        <input type="text" class="form-control" name="branchAddress"required>
+                                        <label for="branchAddress" class="form-label">Branch Address</label>
+                                        <input type="text" class="form-control" name="branchAddress"  id="branchAddress"required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="Brand" class="form-label">Branch Contact</label>
-                                        <input type="text" class="form-control" name="branchContact" required>
+                                        <label for="branchContact" class="form-label">Branch Contact</label>
+                                        <input type="text" class="form-control" name="branchContact" id="branchContact" pattern="[0-9]{11}"placeholder="ex. 09056447337"  title="pattern 09056537386" required>
                                     </div>
                                     <div class="col-6">
-                                        <label for="ItemName" class="form-label">Admin Username</label>
+                                        <label for="branchUser" class="form-label">Admin Username</label>
                                         <input type="text" class="form-control" name="branchUser" required>
                                     </div>
 
 
                                     <div class="col-md-6">
-                                        <label for="Retail_Price" class="form-label">Admin Password</label>
-                                        <input type="text" class="form-control" name="branchUserPass"required>
+                                        <label for="branchUserPass" class="form-label">Admin Password</label>
+                                        <input type="text" class="form-control" name="branchUserPass"  pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters" required>
                                     </div>
                                     <div class="col-6">
-                                        <label for="ItemName" class="form-label">Admin FirstName</label>
+                                        <label for="adminFN" class="form-label">Admin FirstName</label>
                                         <input type="text" class="form-control" name="adminFN" required>
                                     </div>
 
 
                                     <div class="col-md-6">
-                                        <label for="Retail_Price" class="form-label">Admin LastName</label>
+                                        <label for="adminLN" class="form-label">Admin LastName</label>
                                         <input type="text" class="form-control" name="adminLN"required>
                                     </div>
                                     <div class="col-md-6">
-                                        <label for="Brand" class="form-label">Admin Contact</label>
-                                        <input type="text" class="form-control" name="branchUserContact" required>
+                                        <label for="branchUserContact" class="form-label">Admin Contact</label>
+                                        <input type="tel" class="form-control" name="branchUserContact" placeholder="ex. 09056447337" minlength="11" maxlength="11"required>
                                     </div>
 
                                     <div class="col-md-12">
