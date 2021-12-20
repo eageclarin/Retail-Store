@@ -1,0 +1,16 @@
+
+
+<div style="display:flex; justify-content: space-between;">
+    <?php 
+        echo "<h1> Hello admin " . $_SESSION['admin_User'] . "</h1>";
+    ?>
+      <div >
+            <form action='adminHome.php' method='post' class='form-inline'>   
+                <input type='submit' value='Logout' name='logout' class='form-control' style='width:100px'>
+                </form>
+        </div>
+        
+
+</div>
+
+<?php include "./components/header.html"?>
