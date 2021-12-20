@@ -24,18 +24,18 @@ include_once '../env/adminAuth.php';
 
                 if($admin_confirmation_user== $_SESSION['admin_User'] ){
                      
-                    echo $newbranchName=$_POST['newBranchName'];
+                    $newbranchName=$_POST['newBranchName'];
                     $branchAddress =$_POST['branchAddress'];
                     $adminFN =$_POST['adminFN'];
                     $adminLN = $_POST['adminLN'];
                     $branchContact =$_POST['branchContact'];
                     $branchUser = $_POST['branchUser'];
-                    $branchUserPass = $_POST['branchUserPass'];
+                    $branchUserPass = md5($_POST['branchUserPass']);
                     $branchContact =$_POST['branchUserContact'];
                    
             
         
-                    $query1= "INSERT INTO `admin` ( `admin_Username`, `admin_Firstname`, `admin_Lastname`, `admin_Password`) VALUES ( '$branchUser', '$branchUserPass', ' $adminFN', '$adminLN');";
+                    $query1= "INSERT INTO `admin` ( `admin_Username`, `admin_Firstname`, `admin_Lastname`, `admin_Password`) VALUES ( '$branchUser', ' $adminFN', ' $adminLN', '$branchUserPass');";
                     $query1_res = mysqli_query($conn,$query1);
                         
                     
