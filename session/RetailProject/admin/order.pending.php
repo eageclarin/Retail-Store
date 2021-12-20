@@ -118,7 +118,7 @@ function showDetails(cartID){
             let cleanJSON = json;
             document.getElementById("demo").innerHTML = cleanJSON.map(getItem).join("");
             function getItem(item) {
-            return "<tr><td>"+ item.item_ID + "</td><td>"+ item.item_Name + "</td><td>"+ item.item_RetailPrice + "</td><td>"+ item.quantity + "</td></tr>";
+            return "<tr><td>"+ item.item_ID + "</td><td>"+ item.item_Name + "</td><td>"+ item.item_Weight + "</td><td>"+ item.item_RetailPrice + "</td><td>"+ item.quantity + "</td></tr>";
             }
             // document.getElementById("demo").innerHTML = myJSON;            
         });
@@ -205,6 +205,7 @@ function showDetails(cartID){
                         <tr>
                             <th scope="col">Item ID</th>
                             <th scope="col">Item Name</th>
+                            <th scope="col">Weight/Volume</th>
                             <th scope="col">Price</th>
                             <th scope="col">Quantity</th>
   
@@ -229,7 +230,7 @@ function showDetails(cartID){
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateOrderModalLabel">Delete Item</h5>
+                    <h5 class="modal-title" id="updateOrderModalLabel">Update Order Status</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
 

@@ -67,7 +67,7 @@
     function updateProfile(){
         let username = "<?php echo"$user"?>";
 
-      
+    //   alert(username);
       $('#userUpdateModal').modal('show');
      
 
@@ -76,10 +76,12 @@
           let json=JSON.parse(data);
 
           $("#userUpdate_ID").val(json.admin_ID);
+          $("#userUpdate_FN").val(json.admin_Firstname);
+          $("#userUpdate_LN").val(json.admin_Lastname);
           $("#userUpdate_UserName").val(json.admin_Username);
           $("#userUpdate_contact").val(json.contact);
           $("#userUpdate_pass").val(json.admin_Password);
-        //   alert("Data: " + pass );
+        //   alert("Data: " + data );
         
       });
       
@@ -106,17 +108,25 @@
                                                     
                 <div class="col-md-12">
                     <label for="userUpdate_UserName" class="form-label ">Username</label>
-                    <input type="text" class="form-control " id="userUpdate_UserName" name="userUpdate_UserName" disabled>
+                    <input type="text" class="form-control " id="userUpdate_UserName" name="userUpdate_UserName" required>
+                </div>
+                <div class="col-md-6">
+                    <label for="userUpdate_FN" class="form-label ">Firstname</label>
+                    <input type="text" class="form-control " id="userUpdate_FN" name="userUpdate_FN"required >
+                </div>
+                <div class="col-md-6">
+                    <label for="userUpdate_LN" class="form-label ">Lastname</label>
+                    <input type="text" class="form-control " id="userUpdate_LN" name="userUpdate_LN" required>
                 </div>
 
                 <div class="col-md-6">
                   <label for="userUpdate_contact" class="form-label">Contact Number</label>
-                  <input type="text" class="form-control" id="userUpdate_contact" name="userUpdate_contact" placeholder="ex. 09056447337" >
+                  <input type="text" class="form-control" id="userUpdate_contact" name="userUpdate_contact" placeholder="ex. 09056447337" title="pattern 09056537386" pattern="[0-9]{11}" required>
                 </div>
 
                 <div class="col-md-6">
                     <label class="form-label" for="userUpdate_pass" >Password: </label>
-                    <input type="password" class="form-control" id="userUpdate_pass" name="userUpdate_pass"  required>
+                    <input type="password" class="form-control" id="userUpdate_pass" name="userUpdate_pass" required>
                     <!-- <span id="toggle" onclick="toggle('password')"><i class="fa fa-eye"></i> </span> -->
               </div>
               <div class="col-md-6">

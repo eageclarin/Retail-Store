@@ -5,7 +5,7 @@
     
     if(isset($_POST['updateProfile'])) {
 
-         $password = md5($_POST['userOld_pass']);
+        $password = md5($_POST['userOld_pass']);
         $admin_confirmation_query = "SELECT admin_Username FROM admin where admin.admin_Password='$password';";
         $admin_confirmation_result = mysqli_query($conn,$admin_confirmation_query);
         $admin_confirmation_Check = mysqli_num_rows($admin_confirmation_result);
@@ -20,6 +20,8 @@
         if($admin_confirmation_user== $_SESSION['admin_User'] ){
             $username =  $_POST['userUpdate_UserName'];
             $contact =$_POST['userUpdate_contact'];
+            $Fname =  $_POST['userUpdate_FN'];
+            $Lname =$_POST['userUpdate_LN'];
             $pass = $_POST['userUpdate_pass'];
             if(strlen($pass)!=32){
                 $pass=md5($pass); 
@@ -29,7 +31,7 @@
 
     
         $query = "UPDATE admin NATURAL join admin_contact SET
-        admin_contact.contact = '$contact', admin.admin_Password='$pass' 
+        admin_contact.contact = '$contact', admin.admin_Password='$pass' ,admin.admin_Username='$username',admin.admin_FirstName='$Fname',admin.admin_Lastname='$Lname'
         WHERE admin_ID = $id;";
 
      
@@ -38,6 +40,7 @@
         $result = mysqli_query($conn,$query);
     
         if($result){
+            $_SESSION['admin_User']=$username;
             $_SESSION['confirm_err']=2;
             header('location: inventory.php');
         }else{
