@@ -2,11 +2,14 @@
     require '../env/connection.php';
     $chosenBranch = $brand = $item = $qty = $disable = $name = $id = "";
     $display = "none"; $opacity=1;
+    $title = "Cart";
 
     if(isset($_SESSION)) {
         $chosenBranch = $_SESSION['branch'];
         $name = $_SESSION['username'];
         $id = $_SESSION['userID'];
+
+        $title = $name." | Cart";
     }
 
     if (!empty($_GET['item'])) {
@@ -36,6 +39,21 @@
         $contact = $rowUser['cust_Contact'];
         $address = "Brgy. ".$rowUser['cust_ABrgy'].", ".$rowUser['cust_ACity'].", ".$rowUser['cust_AProvince']." ".$rowUser['cust_APostal'];
     }
+
+    $sqlDeleted = "SELECT i.item_Status, cai.item_ID FROM Item i
+        INNER JOIN Ca_contains_I cai ON (i.item_ID = cai.item_ID)
+        INNER JOIN Cu_orders_Ca cca ON (cca.cart_ID = cai.cart_ID)
+        WHERE cca.customer_ID = $id AND cca.branch_ID = $branch AND cca.status=0 AND i.item_Status = 1";
+    $resDeleted = mysqli_query($conn, $sqlDeleted);
+
+    while ($rowDeleted = mysqli_fetch_assoc($resDeleted)) {
+        $itemStatus = $rowDeleted['item_Status'];
+        $cartItem = $rowDeleted['item_ID'];
+        if ($itemStatus == 1) {
+            header("location: cart.php?action=delete&id=$id&branch=$branch&item=$cartItem");
+        }
+    }
+    
 
     $sqlTotal = "SELECT total FROM Cart c
         INNER JOIN Cu_orders_Ca cca ON (c.cart_ID = cca.cart_ID)
@@ -95,7 +113,7 @@
                 $_SESSION['CustomerID'] = $id;                #store in $_SESSION for referencing later
                 $_SESSION['CartID'] = $rowOrder['cart_ID'];
                 mysqli_close($conn);
-                header("location: order.php?id=$id&branch=$branch&categ=All");                    #redirect to adminHome.php
+                header("location: order.php");
                 exit;
         }
     }
@@ -103,7 +121,7 @@
 
 <html>
 <head>
-    <title> Cart </title>
+    <title> <?php echo $title ?> </title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -152,8 +170,7 @@
     </script>
     <style>
         body {
-            overflow: hidden;
-            height: 100%;
+            height: 115%;
             width: 100%;
             background: rgb(196,53,49);
             background: linear-gradient(144deg, rgba(196,53,49,1) 0%, rgba(218,55,50,1) 26%, rgba(228,123,120,1) 78%);
@@ -181,7 +198,7 @@
                 <div class="col-7 p-0">
                     <header class="p-3 m-3 h-20 bg-white" style="border-radius: 15px">
                         <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-                            <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
+                            <a href="" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none">
                                 <img src="../img/logo.png" height="50" role="img" />
                                 <!-- <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlink:href="#bootstrap"/></svg> -->
                             </a>
@@ -363,8 +380,9 @@
                                                     WHERE bii.item_ID = $itemID";
                                     $resStock = mysqli_query($conn, $sqlStock);
                                     $rowStock = mysqli_fetch_assoc($resStock);
+                                    $itemStock = $rowStock['item_Stock'];
 
-                                    if ($rowStock['item_Stock'] <= 0) {
+                                    if ($itemStock <= 0) {
                                         $disable = "disabled";
                                     } else {
                                         $disable = "";
@@ -388,27 +406,16 @@
                                         <select <?php echo $disable ?> name="qty" class="select" onchange="changeQty('<?php echo $id ?>', '<?php echo $itemID ?>', this.value, '<?php echo $branch ?>');">
                                         <?php
                                             echo '<option value="'.$itemQty.'" selected>'.$itemQty.' </option>';
+                                            $i = 0;
+                                            while ($i <= $itemStock) {
+                                                echo "<option value=".$i.">".$i."</option>";
+                                                $i++;
+
+                                                if ($i > 20) {
+                                                    break;
+                                                }
+                                            }
                                         ?>
-                                            <option value="1"> 1 </option>
-                                            <option value="2"> 2 </option>
-                                            <option value="3"> 3 </option>
-                                            <option value="4"> 4 </option>
-                                            <option value="5"> 5 </option>
-                                            <option value="6"> 6 </option>
-                                            <option value="7"> 7 </option>
-                                            <option value="8"> 8 </option>
-                                            <option value="9"> 9 </option>
-                                            <option value="10"> 10 </option>
-                                            <option value="11"> 11 </option>
-                                            <option value="12"> 12 </option>
-                                            <option value="13"> 13 </option>
-                                            <option value="14"> 14 </option>
-                                            <option value="15"> 15 </option>
-                                            <option value="16"> 16 </option>
-                                            <option value="17"> 17 </option>
-                                            <option value="18"> 18 </option>
-                                            <option value="19"> 19 </option>
-                                            <option value="20"> 20 </option>
                                         </select>
                                     </form> 
                                 </div>

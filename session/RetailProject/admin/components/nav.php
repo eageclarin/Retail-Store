@@ -39,8 +39,9 @@
                   <a class="nav-link dropdown-toggle active" href="#" id="dropdown07XL" data-bs-toggle="dropdown" aria-expanded="false">Orders</a>
                   <ul class="dropdown-menu" aria-labelledby="dropdown07XL">
                     <li>
-                      <a class="dropdown-item " href="order.pending.php">Pending</a>
+                      <a class="dropdown-item " href="order.pending.php">Ordered</a>
                     </li>
+                 
                     <li>
                         <a class="dropdown-item " href="order.delivered.php">Delivered</a>
                     </li>

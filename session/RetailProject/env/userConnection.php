@@ -22,8 +22,6 @@
 		echo "ERROR: Could not be able to execute $sql." . mysqli_error($conn);
 	}
 
-
-	
 ?>
 
 <script>

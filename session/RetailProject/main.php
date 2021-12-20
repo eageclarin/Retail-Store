@@ -1,11 +1,14 @@
 <?php
     include_once 'env/userConnection.php';
     $chosenCateg = "All"; $name = "Guest"; $id = $item = $opacity = 0; $display = "";
+    $title = "Home";
     $orderPrice = $orderQty = $orderTotal = $rand = $chosenBranch = $branch = 1;
 
     if(isset($_SESSION['username']) && isset($_SESSION['userID'])) {
         $name = $_SESSION['username'];
         $id = $_SESSION['userID'];
+
+        $title = $name." | Home";
     }
     
     if (isset($_GET['item'])) {
@@ -132,8 +135,9 @@
             box-shadow: 0 10px 20px rgba(0,0,0,.75), 0 4px 8px rgba(0,0,0,0.75);
             transition: .5s ease;
         }
+       
     </style>
-    <title> Main </title>
+    <title> <?php echo $title ?> </title>
    
 </head>
 <body style="background-color:#E6E9F0;" class="w-100 h-100">
@@ -148,9 +152,9 @@
                 <div class="modal-body py-0">
                     <label for="branch">Branch:</label>
                     <select name="branch" id="branchh" class="dropdown dropdown-menu-macos mx-0 shadow" style="width: 220px;">
-                        <option value="1" selected>Paoay</option>
-                        <option value="2">Vicas</option>
-                        <option value="3">Cordon</option>
+                        <option class="dropdown-item" value="1" selected>Paoay</option>
+                        <option class="dropdown-item" value="2">Vicas</option>
+                        <option class="dropdown-item" value="3">Cordon</option>
                     </select>
                 </div>
                 <div class="modal-footer flex-column border-top-0">

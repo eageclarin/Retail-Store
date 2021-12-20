@@ -24,6 +24,7 @@
                 INNER JOIN Branch b on (b.branch_ID = bbi.branch_ID)
                 WHERE i.item_ID = '$item'
                     AND bii.item_Stock > 0
+                    AND i.item_Status = 0
                     AND b.branch_ID = '$chosenBranch'
                 ";
 	$resItem = mysqli_query($conn, $sqlItem);

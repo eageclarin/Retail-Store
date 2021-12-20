@@ -1,7 +1,15 @@
 <?php
-   require '../env/userConnection.php';
+    require '../env/userConnection.php';
+    $updated = $color = ""; $itle = "Edit Profile";
+
+    if(isset($_SESSION)) {
+        $name = $_SESSION['username'];
+        $id = $_SESSION['userID'];
+
+        $title = $name." | Edit Profile";
+    }
+
     
-    $id = $_SESSION['userID'];
     //query customer details
     $cust_query ="SELECT *FROM customer WHERE cust_ID = $id";
     $cust_result = mysqli_query($conn,$cust_query);
@@ -22,14 +30,21 @@
         }
      }else{
             header('location: ../main.php');
-    }     
-
+    }   
+    
+    if (isset($_GET['updated'])) {
+        switch ($_GET['updated']) {
+            case 'yes': $color = "success"; $updated = "Profile Updated"; break;
+            case 'no': $color = "danger"; $updated = "Username already Exists"; break;
+            case 'wrong': $color = "danger"; $updated = "Wrong password"; break;
+        }
+    }
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-<title> Profile </title>
+<title> <?php echo $title ?> </title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -38,70 +53,122 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
   <script src="client.js"></script>
+  <link rel="stylesheet" href="client.css"/>
  
+    <style>
+        body {
+            height: 115%;
+            width: 100%;
+            background: rgb(196,53,49);
+            background: linear-gradient(144deg, rgba(196,53,49,1) 0%, rgba(218,55,50,1) 26%, rgba(228,123,120,1) 78%);
+        }
+        .field-icon {
+            float: right;
+            margin-left: 87%;
+            margin-top: -25px;
+            position: absolute;
+            z-index: 2;
+        }
+    </style>
 </head>
 
 <body>
-    <!-- customer details -->
-    <div class="container-sm p-5 my-5 mb-1 bg-dark text-white" style="max-width:50%;">
-    <div style="display:flex; padding-right:10px; padding-bottom:10px;">
-        <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" class="pr-5 rounded-circle">
-        <h2 style="padding-left:10px;"> <?php echo $firstName." ". $lastName?> </h2>
-    </div>
-        <form id="form" action="profile.php" method="post" class="form-inline"> 
-            <div class="form-group">
-                <div class="mb-1 mt-1">
-                    <label for="username" >Username: </label>
-                    <input type="text" class="form-control" id="username" name="username"  value="<?php echo $username?>">
+    <!-- Registration form -->
+    <section class="vh-100 gradient-custom">
+    <div class="container py-5 h-100">
+        <div class="row justify-content-center align-items-center h-100">
+        <div class="col-12 col-lg-9 col-xl-7">
+            <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+            <div class="card-body p-4 p-md-5">
+                <div class="row mb-3">
+                <div style="display:flex; padding-right:10px; padding-bottom:10px;">
+                    <img src="https://github.com/mdo.png" alt="mdo" width="50" height="50" class="pr-5 rounded-circle">
+                    <h2 style="padding-left:10px;"> <?php echo $firstName." ". $lastName?> </h2>
                 </div>
-                <div class="mb-1 mt-1">
-                    <label for="firstName" >First Name: </label>
-                    <input type="text" class="form-control" id="firstName" name="firstName"  value="<?php echo $firstName?>">    
                 </div>
-                <div class="mb-1 mt-1">  
-                    <label for="lastName" >Last Name: </label>
-                    <input type="text" class="form-control" id="lastName" name="lastName"  value="<?php echo $lastName?>">
-                </div>
-                <div class="mb-1 mt-1">
-                    <label for="contact" >Contact Number: </label>
-                    <input type="text" class="form-control" id="contact" name="contact"   value="<?php echo $contact?>" >
-                </div>
-                <div class="mb-1 mt-1">
-                    <label for="email" >Email: </label>
-                    <input type="text" class="form-control" id="email" name="email"  value="<?php echo $email?>">
-                </div>
-                <div class="col-xs-3">
-                    <div class="mb-1 mt-1">
-                        <label for="brgy" >Barangay: </label>
-                        <input type="text" class="form-control" id="brgy" name="brgy"  value="<?php echo $brgy?>">
-                    </div>
-                </div>
-                <div class="col-xs-3">
-                    <div class="mb-1 mt-1">
-                        <label for="city" >City: </label>
-                        <input type="text" class="form-control" id="city" name="city"  value="<?php echo $city?>">
-                    </div>
-                </div>
-                <div class="mb-1 mt-1">
-                    <label for="province" >Province: </label>
-                    <input type="text" class="form-control" id="province" name="province"  value="<?php echo $province?>">
-                </div>
-                <div class="mb-1 mt-1">
-                    <label for="postal" >Postal Code: </label>
-                    <input type="text" class="form-control" id="postal" name="postal"  value="<?php echo $postal?>">
-                </div>
-                <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="text-decoration:underline; cursor:pointer">Change Password</a>
-                <div class="mb-3 mt-3">
-                    <input type="submit" value="Update" name="cust_update" class="btn btn-primary" style="width:150px"  >   
-                        
-                </div>
-            </div>
-        </form>  
-        <form action="profile.php" method="post" class="form-inline">   
-            <input  type="submit" value="Cancel" name="cancel" class="form-control" style="width:150px" > 
-        </form>
-    </div>
+                
+                <form id="form" action="profile.php" method="post" class="form-inline"> 
 
+                <div class="row">
+                    <div class="col-md-12 mb-2">
+                        <input type="text" class="form-control" id="username" name="username" value="<?php echo $username?>">
+                        <label class="form-label" for="username">Username</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="firstName" name="firstName" value="<?php echo $firstName?>">   
+                            <label class="form-label" for="firstName" >First Name</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="lastName" name="lastName" value="<?php echo $lastName?>">
+                            <label class="form-label" for="lastName" >Last Name</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="contact" name="contact" value="<?php echo $contact?>">
+                            <label class="form-label" for="contact" >Contact Number</label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="email" name="email" value="<?php echo $email?>">
+                            <label class="form-label" for="email" >Email </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="brgy" name="brgy" value="<?php echo $brgy?>">
+                            <label class="form-label" for="brgy" >Barangay </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="city" name="city" value="<?php echo $city?>">
+                            <label class="form-label" for="city" >City </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="province" name="province" value="<?php echo $province?>">
+                            <label class="form-label" for="province" >Province </label>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-2">
+                        <div class="form-outline">
+                            <input type="text" class="form-control" id="postal" name="postal" value="<?php echo $postal?>">
+                            <label class="form-label" for="postal" >Postal Code </label>
+                        </div>
+                    </div>
+
+                    <a data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="text-decoration:underline; cursor:pointer">Change Password</a>
+                </div>
+
+                <div class="mt-4 pt-2">
+                    <input type="submit" value="Update" name="cust_update" class="btn btn-primary">
+                    <input type="submit" value="Exit" name="exit" class="btn border-primary text-primary">&nbsp; <span class="text-<?php echo $color ?>"> <?php echo $updated ?> </span> 
+                </div>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+    </section>
     <!-- change Password dialog box-->
         <!-- Modal -->
         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -111,34 +178,80 @@
                 <h5 class="modal-title" id="staticBackdropLabel">Change Password</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
-                <form id="form" action="profile.php" method="post" class="form-inline"> 
+            <form id="newform" action="profile.php" method="post" class="form-inline"> 
+            <div class="modal-body mb-2">
+                
                     <div class="mb-1 mt-1">
                         <label for="oldPassword" >Enter current password: </label>
-                        <input type="password" class="form-control" id="oldPassword" name="oldPassword"  value="<?php echo $password?>">
-                        <span id="toggle" onclick="toggle('oldPassword')"><i class="fa fa-eye" style="cursor:pointer;"></i> </span> 
+                        <div>
+                            <input type="password" class="form-control" id="oldPassword" name="oldPassword"  value="<?php echo $password?>"> <span id="toggle" onclick="toggle('oldPassword')" class="fa fa-fw fa-eye field-icon toggle-password"> </span>
+                        </div>
                     </div> 
                     <div class="mb-1 mt-1">
-                        <label for="password" >Password: </label>
-                        <input type="password" class="form-control" id="newPassword" name="newPassword"   required>
-                        <span id="toggle" onclick="toggle('newPassword')"><i class="fa fa-eye"style="cursor:pointer;"></i> </span> 
+                        <label for="newPassword" >Password: </label>
+                        <div>
+                            <input type="password" class="form-control" id="newPassword" name="newPassword" required> <span id="toggle" onclick="toggle('newPassword')" class="fa fa-fw fa-eye field-icon toggle-password"> </span>
+                        </div>
                     </div> 
                     <div class="mb-1 mt-1">
-                        <label for="confirmPassword" >Confirm Password: </label>
-                        <input type="password" class="form-control" id="confirmNPassword" name="confirmNPassword"   required>
-                        <span id="toggle" onclick="toggle('confirmNPassword')"><i class="fa fa-eye"style="cursor:pointer;"></i> </span>
+                        <label for="confirmNPassword" >Confirm Password: </label>
+                        <div>
+                            <input type="password" class="form-control" id="confirmNPassword" name="confirmNPassword" required> <span id="toggle" onclick="toggle('confirmNPassword')" class="fa fa-fw fa-eye field-icon toggle-password"> </span>
+                        </div>
                     </div> 
-                    <input  type="submit" value="Update" name="updatePass" class="form-control" style="width:150px" > 
-                </form>
+                    
+                
             </div>
             
-            <div class="modal-footer">
+            <div class="modal-footer pb-0">
+                <input  type="submit" value="Update" name="updatePass" class="form-control btn btn-primary" style="width:150px" > 
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
             </div>
+            </form>
             </div>
         </div>
         </div>
             <!--end modal-->
+
+<script>
+    $(document).ready(function () {
+ 
+    $('#newform').validate({
+      rules: {
+        oldPassword: {
+          required: true,
+        },
+        newPassword: {
+          required: true,
+          minlength: 8,
+        },
+        confirmNPassword: {
+          required: true,
+          equalTo: "#newPassword"
+        }
+
+      },
+      messages: {
+        oldPassword: {
+          required: 'Please enter old Password.',         
+        },
+        newPassword: {
+          required: 'Please enter new Password.',    
+          minlength: 'Must be at least 8 characters.',     
+        },
+        confirmNPassword: {
+          required: 'Please enter Confirm Password.',
+          equalTo: "Passwords don't match.",
+        }
+      },
+      submitHandler: function (newform) {
+        newform.submit();
+      }
+    });
+
+  });
+</script>
+
 
 </body>
 </html>
@@ -168,17 +281,17 @@ if (isset($_POST['cust_update'])) {           #if update button pressed
      
 
      if ($resultCheck==0) {
-        $insert = "UPDATE customer SET cust_Username='$username', cust_FName='$firstName', cust_LName='$lastName',cust_Contact=$contact, cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
+        $insert = "UPDATE customer SET cust_Username='$username', cust_FName='$firstName', cust_LName='$lastName',cust_Contact='$contact', cust_Email='$email', cust_ABrgy='$brgy', cust_ACity='$city', cust_AProvince='$province', cust_APostal='$postal'  WHERE cust_ID=$id";
         $update_result = mysqli_query($conn, $insert);
         if ($update_result) {
             $_SESSION['username'] = $username;
-            echo "<script> location.replace('../main.php'); </script>";
+            echo "<script> location.replace('profile.php?updated=yes'); </script>";
         } else {
             die(mysqli_error($conn));
         }
 
      } else {
-         echo "username already exists";
+        echo "<script> location.replace('profile.php?updated=no'); </script>";
      }
 
     
@@ -207,14 +320,13 @@ if (isset($_POST['updatePass'])) {           #if update password is pressed
         }
         
     } else {
-        echo '<div class="container-sm p-1 my-1 bg-danger text-white" style="max-width:50%;">
-                Wrong Password. Please try again.
-                </div>';
+        echo "<script> location.replace('profile.php?updated=wrong'); </script>";
     }
     unset($_POST['updatePass']);
 }
 
-if (isset($_POST['cancel'])) {            #if cancel is pressed
+if (isset($_POST['exit'])) {
+    $_SESSION['username'] = $username;
     echo "<script> location.replace('../main.php'); </script>";
 }
 

@@ -27,7 +27,7 @@
            
                        
                 if($row['item_count']==0){
-                    $delete_query = "DELETE from item where item_ID=$id;";
+                    $delete_query = "UPDATE `item` SET `item_Status` = '1' WHERE `item`.`item_ID` = 1";
                     $delete_result = mysqli_query($conn,$delete_query);
     
                     if($delete_result){

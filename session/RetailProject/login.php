@@ -1,6 +1,55 @@
 <?php
     include_once 'env/userConnection.php';
-    $item = $branch = $categ = "";
+    $item = $branch = $categ = $warning = "";
+
+    if (isset($_POST['login'])) {           #if login button is pressed
+        $username = $_POST['username'];
+        $password = $_POST['password'];
+
+        $password = md5($password);         #hash
+
+        #Check if admin or customer ------------------------------------------------------------------------------
+        $admin_query = "SELECT * FROM admin WHERE admin_Username = '$username' AND admin_Password='$password';"; #check if in admin table
+        $admin_result = mysqli_query($conn,$admin_query);
+        $admin_Check = mysqli_num_rows($admin_result);
+
+        if ($admin_Check>0) {                                               #username and password in admin table
+            while($admin_row = mysqli_fetch_assoc($admin_result)) {
+                $_SESSION['admin'] = $admin_row['admin_ID'];                #store in $_SESSION for referencing later
+                $_SESSION['admin_User'] = $admin_row['admin_Username'];
+                mysqli_close($conn);
+                $_SESSION['confirm_err']=0;
+                header("Location: admin/adminHome.php");                    #redirect to adminHome.php
+                exit;
+            }                    
+        }
+
+        $sql = "SELECT * FROM customer;";                                    #check if in customer table
+        $result = mysqli_query($conn,$sql);
+        $resultCheck = mysqli_num_rows($result);
+        $exists = false;                                                     
+  
+        if ($resultCheck>0){
+            while ($row = mysqli_fetch_assoc($result)) {
+                if ($row['cust_Username']==$username && $row['cust_Password']==$password) {
+                    $exists = true;
+                    $_SESSION['userID'] = $row['cust_ID'];      
+                    $_SESSION['username'] = $row['cust_Username'];
+                    mysqli_close($conn);
+
+                    header("Location: main.php");                           #Return to main.php
+                    exit;
+                }
+            }
+        }                
+            
+        if ($exists == false) {                                             #If customer is unregistered
+            $warning = "Wrong username or password.";
+        }    
+    }
+    if(isset($_POST['return'])){
+        header("Location: main.php"); 
+    }
 ?>
 
 <!DOCTYPE html>
@@ -72,7 +121,7 @@
 
 <body class="text-center">
     <main class="form-signin">
-    <form action="login.php" method="post">
+    <form action="login.php" class="mb-1" method="post">
         <img class="mb-4" src="img/logo2.png" alt="" height="150">
         <h1 class="h3 mb-3 fw-normal">Log In</h1>
 
@@ -84,68 +133,15 @@
         <input type="password"  class="form-control" name="password" if="password" required>
         <label for="password">Password</label>
         </div>
-    
-        <button class="w-100 btn btn-lg btn-primary mb-1" name="login" type="submit">Sign in</button>
-        <a href="main.php"> <button type="submit"name="return" class="w-100 btn btn-lg text-primary border-primary">Return</button> </a>
+        <button class="w-100 btn btn-lg btn-primary" name="login" type="submit">Sign in</button>
     </form>
+        <div class="mb-2">
+            <a href="main.php"> <button type="submit"name="return" class="w-100 mb-2 btn btn-lg text-primary border-primary">Return</button> </a>
+            <div class="text-start text-danger" style="font-size: 13px"><?php echo $warning ?></div>
+        </div>
         Don't have an account yet? <a href='client/register.php'>Register here</a>
         <p class="mt-5 mb-3 text-muted">&copy; 2021</p>
     
     </main>
-
-    <?php 
-        if (isset($_POST['login'])) {           #if login button is pressed
-            $username = $_POST['username'];
-            $password = $_POST['password'];
-
-            $password = md5($password);         #hash
-
-            #Check if admin or customer ------------------------------------------------------------------------------
-            $admin_query = "SELECT * FROM admin WHERE admin_Username = '$username' AND admin_Password='$password';"; #check if in admin table
-            $admin_result = mysqli_query($conn,$admin_query);
-            $admin_Check = mysqli_num_rows($admin_result);
-
-            if ($admin_Check>0) {                                               #username and password in admin table
-                while($admin_row = mysqli_fetch_assoc($admin_result)) {
-                    $_SESSION['admin'] = $admin_row['admin_ID'];                #store in $_SESSION for referencing later
-                    $_SESSION['admin_User'] = $admin_row['admin_Username'];
-                    mysqli_close($conn);
-                    $_SESSION['confirm_err']=0;
-                    header("Location: admin/adminHome.php");                    #redirect to adminHome.php
-                    exit;
-                }                    
-            }
-
-            $sql = "SELECT * FROM customer;";                                    #check if in customer table
-            $result = mysqli_query($conn,$sql);
-            $resultCheck = mysqli_num_rows($result);
-            $exists = false;                                                     
-  
-            if ($resultCheck>0){
-                while ($row = mysqli_fetch_assoc($result)) {
-                    if ($row['cust_Username']==$username && $row['cust_Password']==$password) {
-                        $exists = true;
-                        $_SESSION['userID'] = $row['cust_ID'];      
-                        $_SESSION['username'] = $row['cust_Username'];
-                        mysqli_close($conn);
-
-                        header("Location: main.php");                           #Return to main.php
-                        exit;
-                    }
-                }
-            }                
-            
-            if ($exists == false) {                                             #If customer is unregistered
-                echo '<div class="container-sm p-1 my-1 bg-danger text-white" style="max-width:50%;">
-                Wrong username or password.
-                </div>';
-                unset($_SESSION);
-                exit;
-            }    
-        }
-
-        mysqli_close($conn);
-    ?>
-
 </body>
 </html>

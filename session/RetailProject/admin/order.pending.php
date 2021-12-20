@@ -41,7 +41,7 @@
         <?php include "./components/nav.php"?>
 
     
-
+    <?php ?>
         <div class="container mt-5">
             <table class="table table-striped table-hover table-success">
                 <thead>
@@ -62,11 +62,11 @@
                     <?php
                     $branchID = $_SESSION['branchID'] ;
                     if($_SESSION['admin']==1){ 
-                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1; ";
+                        $orders_query = "SELECT * FROM customer inner join cu_orders_ca ON (customer.cust_ID=cu_orders_ca.customer_ID) NATURAL join cart where cu_orders_ca.status=1; ";
                     }else{
-                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
+                        $orders_query = "SELECT * FROM customer inner join cu_orders_ca ON (customer.cust_ID=cu_orders_ca.customer_ID) NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
                     }
-                    $status = array("", "Pending", "Delivered","Cancelled");
+                    $status = array("", "Ordered", "Delivered","Cancelled");
                     $orders_result = mysqli_query($conn,$orders_query);
                     $orders_Check = mysqli_num_rows($orders_result);
                    
@@ -241,7 +241,7 @@ function showDetails(cartID){
                         <select class="form-select text-center bg-primary bg-opacity-25" aria-label="Default select example" name="status" required>
                             <option selected>Select Status</option>
                             <option value="2">Delivered</option>
-                            <option value="3">Cancelled</option>
+                            <!-- <option value="3">Cancelled</option> -->
                         </select>
 
                         <div class="col-md-12">

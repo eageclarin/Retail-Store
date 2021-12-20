@@ -117,7 +117,7 @@
                         $inventoryID=$_SESSION['inventoryID'];
 
                         if (!isset($_POST['searchSubmit'])) {
-                            $products_query = "SELECT * from item;"; 
+                            $products_query = "SELECT * from item where item.item_Status=0;"; 
                         }else { // if search is clicked, show search items
                             $itemName = $_POST['search']; 
                             $products_query ="SELECT * FROM item where item_Name LIKE '%$itemName%';";

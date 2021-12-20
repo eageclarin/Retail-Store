@@ -38,28 +38,115 @@ if ($branchID_Check>0) {
   <body>
  
   <?php include "./components/nav.php"?>
+
+
+  <?php if($_SESSION['admin']==1){?>
+  
+ 
+ <!-- ---------------------- -->
+ <div class="container mt-5  p-2 text-dark bg-transparent" >
+        
+        <div class="row align-items-center">
+           
+                <h1 class="text-center">General Manager</h1>
+                <table class="table table-striped table-hover fs-6  fw-normal">
+                    <thead>
+                        <tr>
+                            <th scope="col">Name</th>
+                            <th scope="col">Contact</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody>
+                <?php
+                    
+                            $query = "SELECT * FROM admin natural join admin_contact where admin.admin_ID=1;"; 
+                            $result = mysqli_query($conn,$query);
+                            $Check = mysqli_num_rows($result);
+                        
+                                if ( $Check>0) {                                                       
+                                    while($row = mysqli_fetch_assoc($result)) {
+                                    echo"<tr>
+                                    <td>".$row['admin_Firstname']. " ". $row['admin_Lastname']."</td>
+                                    <td>". $row['contact'] ." </td>
+                        
+                                    </tr>";
+                            
+                                    }
+                                } 
+                
+                                
+                            ?>
+                            </tbody>
+                </table>  
+            </div>
+
+            <div class="row align-items-center">
+                <h1 class="text-center">Branch Managers</h1>
     
+                <div class="fs-6">
+                <h5 > <span class="btn badge btn-dark" onclick="managerForm()" >Add Manager</span></h5 >
+                </div>
+    
+                <table class="table table-striped table-hover fs-6  fw-normal">
+                    <thead>
+                        <tr>
+                            <th scope="col">Branch Name</th>
+                            <th scope="col">Address</th>
+                            <th scope="col">Contact</th>
+                            <th scope="col">Manager</th>
+        
+                        </tr>
+                    </thead>
+                    <tbody>
+                            <?php
+        
+                            $query = "SELECT * FROM branch natural join a_manages_b natural join branch_contact natural join admin where admin.admin_ID>1;"; 
+                            $result = mysqli_query($conn,$query);
+                            $Check = mysqli_num_rows($result);
+                                if ( $Check>0) {                                                       
+                                    while($row = mysqli_fetch_assoc($result)) {
+                                    echo"<tr>
+                                    <td>".$row['branch_Name']."</td>
+                                    <td>". $row['branch_Address'] ." </td>
+                                    <td>". $row['contact'] ." </td>
+                                    <td>"; ?> <button type="button" class="badge btn btn-secondary" onclick="showManager(<?php  echo $row['admin_ID'] ;?>)" >See Info</button></td>
+                                    <?php echo "</td>                                                   
+                                    </tr>";                         
+                                    }
+                                } 
+                        
+                            ?>
+                    </tbody>
+                </table>
+                </div>  
+        </div>
+            
+    </div>
+
+
+  <?php }else{ ?>
+
+
+    <!-- ---------------------- -->
     <div class="container-fluid     mt-4 pt-4 pb-4 ps-4 pe-4">
         <div class="row align-items-start">
-        <div class="col  bg-dark p-2 text-dark bg-opacity-10 rounded">
-          <div class="col  bg-transparent ms-2 me-2 p-2 text-dark  rounded">
-          <h1 class="text-center">General Manager</h1>
-          <table class="table table-striped table-hover fs-6  fw-normal">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Contact</th>
-                      
-            
+            <div class="col  bg-dark p-2 text-dark bg-opacity-10 rounded">
+                <div class="col  bg-transparent ms-2 me-2 p-2 text-dark  rounded">
+                    <h1 class="text-center">General Manager</h1>
+                    <table class="table table-striped table-hover fs-6  fw-normal">
+                        <thead>
+                            <tr>
+                                <th scope="col">Name</th>
+                                <th scope="col">Contact</th>
+ 
+                            </tr>
+                        </thead>
 
-                        
-                    </tr>
-                </thead>
-                <tbody>
-            <?php
-                
-                       
-                        
+                        <tbody>
+
+                        <?php
+       
                          $query = "SELECT * FROM admin natural join admin_contact where admin.admin_ID=1;"; 
                          $result = mysqli_query($conn,$query);
                          $Check = mysqli_num_rows($result);
@@ -75,33 +162,12 @@ if ($branchID_Check>0) {
                                 }
                             } 
 
-                        
-
-                            
-                            
-                          
-                            
                         ?>
                          </tbody>
-            </table>  
-          </div>
+                    </table>  
+                </div>
+
             <h1 class="text-center">Branch Managers</h1>
-
-            <?php 
-
-            if($_SESSION['admin']==1){  ?>
-            <div class="fs-6">
-            <h5 > <span class="btn badge btn-dark" onclick="managerForm()" >Add Manager</span></h5 >
-            </div>
-           
-
-              
-            <?php 
-
-            }
-            
-            ?>
-
             <table class="table table-striped table-hover fs-6  fw-normal">
                 <thead>
                     <tr>
@@ -109,14 +175,11 @@ if ($branchID_Check>0) {
                         <th scope="col">Address</th>
                         <th scope="col">Contact</th>
                         <th scope="col">Manager</th>
-                      
-            
-
-                        
+       
                     </tr>
                 </thead>
                 <tbody>
-            <?php
+                    <?php
                 
                        
                         
@@ -138,20 +201,17 @@ if ($branchID_Check>0) {
                                 }
                             } 
 
-                        
-
+      
                             
-                            
-                          
-                            
-                        ?>
-                         </tbody>
+                    ?>
+                </tbody>
             </table>  
 
-          </div>
+        </div>
+    </div>
+    <!-- --------------------------- -->
 
-       
-          <div class="col-9 ms-3">
+    <div class="col-12 mt-5">
             <div class="row align-items-center bg-info p-2 text-dark bg-opacity-50  text-center rounded">
 
                   <div class="col   ">
@@ -325,8 +385,13 @@ if ($branchID_Check>0) {
               
              
           </div>
-      </div>
-    </div>
+
+       
+              
+             
+
+<?php  } ?>
+    <!-- --------------------------- -->
 
     <script type="text/javascript">
         function showManager(adminID){
@@ -399,7 +464,7 @@ if ($branchID_Check>0) {
         </div>
     </div>
 
- <!-- New Item Modal ##################################-->
+ <!-- New Branch Modal ##################################-->
  <div class="modal fade" id="newManager" tabindex="-1" aria-labelledby="newManagerModalLabel"  aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -408,33 +473,43 @@ if ($branchID_Check>0) {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <form class="row g-3 pb-4" action="addItem.php" method="post">
+                                <form class="row g-3 pb-4" action="admin.newUser.php" method="post">
                                     <div class="col-12">
                                         <label for="ItemName" class="form-label">Branch Name</label>
-                                        <input type="text" class="form-control" name="ItemName" required>
+                                        <input type="text" class="form-control" name="newBranchName" required>
                                     </div>
 
                                     <div class="col-md-12">
                                         <label for="Retail_Price" class="form-label">Branch Address</label>
-                                        <input type="text" class="form-control" name="Category"required>
+                                        <input type="text" class="form-control" name="branchAddress"required>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="Brand" class="form-label">Branch Contact</label>
-                                        <input type="text" class="form-control" name="Brand" required>
+                                        <input type="text" class="form-control" name="branchContact" required>
                                     </div>
                                     <div class="col-6">
                                         <label for="ItemName" class="form-label">Admin Username</label>
-                                        <input type="text" class="form-control" name="ItemName" required>
+                                        <input type="text" class="form-control" name="branchUser" required>
                                     </div>
 
 
                                     <div class="col-md-6">
                                         <label for="Retail_Price" class="form-label">Admin Password</label>
-                                        <input type="text" class="form-control" name="Category"required>
+                                        <input type="text" class="form-control" name="branchUserPass"required>
+                                    </div>
+                                    <div class="col-6">
+                                        <label for="ItemName" class="form-label">Admin FirstName</label>
+                                        <input type="text" class="form-control" name="adminFN" required>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <label for="Retail_Price" class="form-label">Admin LastName</label>
+                                        <input type="text" class="form-control" name="adminLN"required>
                                     </div>
                                     <div class="col-md-6">
                                         <label for="Brand" class="form-label">Admin Contact</label>
-                                        <input type="text" class="form-control" name="Brand" required>
+                                        <input type="text" class="form-control" name="branchUserContact" required>
                                     </div>
 
                                     <div class="col-md-12">
@@ -443,7 +518,7 @@ if ($branchID_Check>0) {
                                     </div>
 
                                     <div class="col-12">
-                                        <button type="submit" class="btn btn-dark" name="Add">Submit</button>
+                                        <button type="submit" class="btn btn-dark" name="newUser">Submit</button>
                                     </div>
                                 </form>
                             </div>
