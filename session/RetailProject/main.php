@@ -233,7 +233,8 @@
         </div>
     </header>
                     
-    <div class="container-fluid row p-4 mx-auto">
+    <div class="container-fluid p-4 mx-auto">
+        <div class="row">
         <div class="col-md-7">
                 <div class="col shadow mb-3 bg-white" style="border-radius: 15px">
                     <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
@@ -350,8 +351,8 @@
                     </ul>
                 </div>
             </div>
-            <div class="shadow p-4 mb-4 bg-white" style="border-radius: 15px">
-                <p class="text-center"> About Us <br>
+            <div class="shadow p-4 mb-4 bg-white" style="border-radius: 15px; height: 55%">
+                <p class="text-center my-auto"> About Us <br>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, necessitatibus rerum quia enim explicabo, quaerat error atque ut corporis consectetur, deserunt temporibus id nemo dolores delectus? Libero odio aspernatur distinctio.
                 <br><br> Contact Us <br>
                 Facebook: CMSC 127 <br>
@@ -360,6 +361,7 @@
                 Contact No.: 091234567890
                 </p>
             </div>
+        </div>
         </div>
     </div>
     </div>
