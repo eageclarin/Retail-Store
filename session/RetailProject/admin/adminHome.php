@@ -158,7 +158,7 @@ if ($branchID_Check>0) {
                       <h1 > Total Sales<h1>
                       <?php
                               $branchID = $_SESSION['branchID'] ;
-                              $orders_query = "SELECT sum(total) AS sales FROM customer NATURAL join cu_orders_ca  NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
+                              $orders_query = "SELECT sum(total) AS sales FROM customer inner join cu_orders_ca ON (customer.cust_ID=cu_orders_ca.customer_ID)  NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
                               $orders_result = mysqli_query($conn,$orders_query);
                               $orders_Check = mysqli_num_rows($orders_result);
                             
@@ -192,7 +192,7 @@ if ($branchID_Check>0) {
                       <h1>Total Orders</h1>
                       <?php
                               $branchID = $_SESSION['branchID'] ;
-                              $orders_query = "SELECT COUNT(cart_ID) FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
+                              $orders_query = "SELECT COUNT(cart_ID) FROM customer inner join cu_orders_ca ON (customer.cust_ID=cu_orders_ca.customer_ID) NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID;"; 
                               $orders_result = mysqli_query($conn,$orders_query);
                               $orders_Check = mysqli_num_rows($orders_result);
                             
@@ -238,9 +238,9 @@ if ($branchID_Check>0) {
                                 <?php
                     $branchID = $_SESSION['branchID'] ;
                     if($_SESSION['admin']==1){ 
-                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart  Limit 10; ";
+                        $orders_query = "SELECT * FROM customer inner join cu_orders_ca ON (customer.cust_ID=cu_orders_ca.customer_ID) NATURAL join cart Limit 10; ";
                     }else{
-                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID order by cart_ID DESC limit 10;"; 
+                        $orders_query = "SELECT * FROM customer inner join cu_orders_ca ON (customer.cust_ID=cu_orders_ca.customer_ID) NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID order by cart_ID DESC limit 10;"; 
                     }
                     $status = array("Cancelled", "Ordered", "Delivered");
                     $orders_result = mysqli_query($conn,$orders_query);

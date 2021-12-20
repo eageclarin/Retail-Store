@@ -62,9 +62,9 @@
                     <?php
                     $branchID = $_SESSION['branchID'] ;
                     if($_SESSION['admin']==1){ 
-                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1; ";
+                        $orders_query = "SELECT * FROM customer inner join cu_orders_ca ON (customer.cust_ID=cu_orders_ca.customer_ID) NATURAL join cart where cu_orders_ca.status=1; ";
                     }else{
-                        $orders_query = "SELECT * FROM customer NATURAL join cu_orders_ca NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
+                        $orders_query = "SELECT * FROM customer inner join cu_orders_ca ON (customer.cust_ID=cu_orders_ca.customer_ID) NATURAL join cart where cu_orders_ca.status=1 AND customer.cust_ID=cu_orders_ca.customer_ID AND branch_ID=$branchID"; 
                     }
                     $status = array("", "Pending", "Delivered","Cancelled");
                     $orders_result = mysqli_query($conn,$orders_query);
