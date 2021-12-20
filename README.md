@@ -8,8 +8,8 @@
 ## Setting Up the Database
 1. Run CMSC-127/seesion/RetailProject/main.php
 2. A new database named 'cmsc127retailproject' will be created on phpMyAdmin.
-3. Import CMSC-127\seesion\RetailProject\env\db.sql on the database to create tables and insert data
-4. Proceed on using the web applicatin starting at main.php
+3. Import CMSC-127/seesion/RetailProject/env/db.sql on the database to create tables and insert data
+4. Proceed on using the web application starting at main.php
 
 ## Developers
 * [Eigram Eclarin](https://github.com/eigeexx) , [Elymer Reyno](https://github.com/emreyno) , [Jaemie Campo](https://github.com/JaeCamp00)
