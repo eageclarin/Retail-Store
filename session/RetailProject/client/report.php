@@ -11,13 +11,14 @@
     }
 
     //query customer details
-    $cust_query ="SELECT *FROM customer inner join cu_orders_ca ON (customer.cust_ID=cu_orders_ca.customer_ID) WHERE cust_ID = $id";
+    $cust_query ="SELECT *FROM customer WHERE cust_ID = $id";
     $cust_result = mysqli_query($conn,$cust_query);
     $cust_Check = mysqli_num_rows($cust_result);
             
     if ($cust_Check>0){
         while ($cust_row = mysqli_fetch_assoc($cust_result)){
             $username = $cust_row['cust_Username'];
+            $password = $cust_row['cust_Password'];
             $firstName = $cust_row['cust_FName'];
             $lastName = $cust_row['cust_LName'];
             $contact = $cust_row['cust_Contact'];
@@ -26,7 +27,6 @@
             $city = $cust_row['cust_ACity'];
             $province = $cust_row['cust_AProvince'];
             $postal = $cust_row['cust_APostal'];
-            $branch = $cust_row['branch_ID'];
         }
      }  
     
@@ -104,7 +104,7 @@
         <?php
             $customer_query = "SELECT * FROM  Cu_orders_Ca cca 
             INNER JOIN cart  ON (cca.cart_ID = cart.cart_ID)
-            WHERE cca.customer_ID='$id' AND cca.status>0";
+            WHERE cca.customer_ID='$id' AND cca.status=1";
             $customer_result = mysqli_query($conn,$customer_query);
             $customer_Check = mysqli_num_rows($customer_result); 
         
@@ -116,9 +116,8 @@
                     echo "<td> Cart ID: <strong>".$customer_row['cart_ID']."</strong></td>";
                     echo "<td> Total: <strong>".$customer_row['total']."</strong></td>";
                     echo "</tr> <tr>";
-                    $branch = $customer_row['branch_ID'];
-                    
-                    switch ($branch) {
+
+                    switch ($customer_row['branch_ID'] == 1) {
                         case 1: echo "<td> Branch: <strong>Paoay</strong> </td>"; break;
                         case 2: echo "<td> Branch: <strong>Vicas</strong> </td>"; break;
                         case 3: echo "<td> Branch: <strong>Cordon</strong> </td>"; break;

@@ -352,7 +352,7 @@
             </div>
             <div class="shadow p-4 mb-4 bg-white" style="border-radius: 15px">
                 <p class="text-center"> About Us <br>
-                Robinsons Supermarket is a supermarket chain in the Philippines and a division of Robinsons Retail Holdings, Inc. It is the second largest supermarket chain in the Philippines with 274 stores across the Philippines.
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ullam, necessitatibus rerum quia enim explicabo, quaerat error atque ut corporis consectetur, deserunt temporibus id nemo dolores delectus? Libero odio aspernatur distinctio.
                 <br><br> Contact Us <br>
                 Facebook: CMSC 127 <br>
                 Twitter: cmsc_127 <br>

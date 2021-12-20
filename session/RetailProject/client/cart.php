@@ -440,17 +440,7 @@
                             </div>
                             <div class="col-3">
                                 <form action="cart.php?action=order&id=<?php echo $id ?>&branch=<?php echo $branch ?>" method="post">
-                                    <?php
-                                    if ($totalPrice==0) {
-                                        echo '<button class="btn btn-lg btn-success w-100 h-100 mt-3" disabled> Order </button>';
-                                        //echo '<script>document.getElementById("orderbtn").disabled = true;</script>';
-                                    } else {
-                                        echo '<button class="btn btn-lg btn-success w-100 h-100 mt-3"> Order </button>';
-                                        //echo '<script>document.getElementById("orderbtn").disabled = false;</script>';
-                                    }
-                                    ?>
-
-                                   <!-- <button class="btn btn-lg btn-success w-100 h-100" id="orderbtn"> Order </button> -->
+                                    <button class="btn btn-lg btn-success w-100 h-100"> Order </button>
                                 </form>
                             </div>
                         </div>

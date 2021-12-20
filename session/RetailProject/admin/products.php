@@ -518,9 +518,9 @@
                             <input type="number" class="form-control " id="itemStock" name="itemStock" min=1 value=0 required>
                         </div>
                                                        
-                        <input type="text" id="Item_ID" name="Item_ID" >
+                        <input type="hidden" id="Item_ID" name="Item_ID" >
 
-                        <input type="text" id="Inventory_ID" name="Inventory_ID" value=" <?php echo $_SESSION['inventoryID'] ?>" >
+                        <input type="hidden" id="Inventory_ID" name="Inventory_ID" value=" <?php echo $_SESSION['inventoryID'] ?>" >
 
                         <div class="col-md-6">
                             <label for="adminPass" class="form-label">Admin Password</label>

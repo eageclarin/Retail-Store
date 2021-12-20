@@ -85,7 +85,7 @@ if ($branchID_Check>0) {
                 <h1 class="text-center">Branch Managers</h1>
     
                 <div class="fs-6">
-                <h5 > <span class="btn badge btn-dark" onclick="managerForm()" >Add Manager</span></h5 >
+                <h5 > <span class="btn badge btn-dark" onclick="managerForm()" >New Branch</span></h5 >
                 </div>
     
                 <table class="table table-striped table-hover fs-6  fw-normal">
@@ -127,9 +127,8 @@ if ($branchID_Check>0) {
 
   <?php }else{ ?>
 
-
     <!-- ---------------------- -->
-    <div class="container-fluid     mt-4 pt-4 pb-4 ps-4 pe-4">
+    <div class="container-md   mt-4 pt-4 pb-4 ps-4 pe-4">
         <div class="row align-items-start">
             <div class="col  bg-dark p-2 text-dark bg-opacity-10 rounded">
                 <div class="col  bg-transparent ms-2 me-2 p-2 text-dark  rounded">
@@ -469,7 +468,7 @@ if ($branchID_Check>0) {
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="newManagerModalLabel">New Branch Manager Form</h5>
+                                <h5 class="modal-title" id="newManagerModalLabel">New Branch Form</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">

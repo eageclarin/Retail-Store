@@ -85,7 +85,7 @@
         
                     //update qty and total of item in ca_contains_i then update cart and stock
                     $sqlUpdate = "UPDATE Ca_contains_I SET quantity = '$orderQty', total = '$orderTotal'
-                                    WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id' AND branch_ID = '$chosenBranch' AND `status`=0) AND item_ID='$item'
+                                    WHERE cart_ID = (SELECT cart_ID FROM Cu_orders_Ca WHERE customer_ID = '$id' AND branch_ID = '$chosenBranch' AND `status`=0)
                                 ";
                     $resUpdate = mysqli_query($conn, $sqlUpdate);
         
