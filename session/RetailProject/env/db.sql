@@ -46,7 +46,7 @@ CREATE TABLE `Branch` (
 -- table for branch contact
 CREATE TABLE `Branch_Contact` (
 	`branch_ID` int NOT NULL, 
-	`contact` int(12) NOT NULL,
+	`contact`  varchar(11) NOT NULL,
 	PRIMARY KEY(branch_ID,contact),
 	FOREIGN KEY(branch_ID) REFERENCES Branch(branch_ID) ON UPDATE CASCADE
 );
@@ -67,7 +67,7 @@ CREATE TABLE `Admin` (
 -- table for admin contact
 CREATE TABLE `Admin_Contact` (
 	`admin_ID` int NOT NULL,
-	`contact` int(12) NOT NULL,
+	`contact` varchar(11) NOT NULL,
 	PRIMARY KEY(admin_ID,contact),
 	FOREIGN KEY(admin_ID) REFERENCES Admin(admin_ID) ON UPDATE CASCADE
 );
@@ -216,10 +216,10 @@ UPDATE `Admin` SET
 -- insert admin contact
 INSERT INTO `Admin_Contact` (`admin_ID`,`contact`)
 VALUES
-    (1,0998779154),
-    (2,0988765432),
-    (3,0567483920),
-	(4,0935483920)
+    (1,'09987791541'),
+    (2,'09887654321'),
+    (3,'05674839201'),
+	(4,'09354839210')
 ;
 
 -- insert branch managers
